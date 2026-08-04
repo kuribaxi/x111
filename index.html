@@ -758,8 +758,45 @@ function isCloudflareProtected(url) {
   return CLOUDFLARE_DOMAINS.some(function(d) { return url.indexOf(d) !== -1; });
 }
 
+// ========== MANUELL ÖVERSTYRNINGSLISTA ==========
+// Om du hittar en kanals RIKTIGA direkta .m3u8-länk (t.ex. genom att öppna
+// kanalsidan i Chrome på datorn, trycka F12 -> fliken "Network", filtrera på
+// "m3u8" och spela upp kanalen) - klistra in den här. Då slipper den kanalen
+// all gissning/proxy-extraktion och spelas direkt, snabbt och pålitligt varje
+// gång, oavsett om proxies är nere.
+//
+// Format: nyckeln är kanalens sid-URL (exakt som i kanallistan), värdet är
+// den riktiga .m3u8-länken.
+//
+// Exempel (kommenterat bort tills en riktig länk finns):
+// 'https://karwan.tv/niroj-tv/': 'https://exempel-cdn.se/niroj/index.m3u8',
+var MANUAL_DIRECT_LINKS = {
+};
+
+function normalizeChannelUrl(u) {
+  return String(u).trim().replace(/\/+$/, '').toLowerCase();
+}
+
+function findManualLink(pageUrl) {
+  var norm = normalizeChannelUrl(pageUrl);
+  for (var key in MANUAL_DIRECT_LINKS) {
+    if (Object.prototype.hasOwnProperty.call(MANUAL_DIRECT_LINKS, key) && normalizeChannelUrl(key) === norm) {
+      return MANUAL_DIRECT_LINKS[key];
+    }
+  }
+  return null;
+}
+
 function playWithExtractor(pageUrl, name) {
   var wrap = document.getElementById('vwrap');
+
+  // Steg 0: manuell överstyrning - snabbast och mest pålitligt om den finns.
+  var manual = findManualLink(pageUrl);
+  if (manual) {
+    playDirectHLS(manual, name);
+    return;
+  }
+
   wrap.innerHTML =
     '<div class="extract-box">' +
       '<div class="spinner"></div>' +
@@ -773,8 +810,9 @@ function playWithExtractor(pageUrl, name) {
       '</div>' +
     '</div>';
 
-  // Kända direkta CDN-mönster för karwan.tv-slugs. Speda/Ava har egna domäner
-  // och matchar inte detta mönster, så de går direkt till proxy-extraktion nedan.
+  // Kända direkta CDN-mönster för karwan.tv-slugs. Fungerar sällan (karwan.tv
+  // kör faktiskt alla kanaler genom en generisk /embed/{id}/-sida, inte per-
+  // kanal CDN-URL:er), men kostar inget extra att testa snabbt innan proxy.
   var knownPatterns = [];
   if (pageUrl.indexOf('karwan.tv') !== -1) {
     var slug = pageUrl.replace(/^https?:\/\/karwan\.tv\//, '').replace(/\/$/, '').split('/')[0].split('?')[0];
@@ -786,10 +824,16 @@ function playWithExtractor(pageUrl, name) {
     ];
   }
 
+  // Flera proxies som fallback. "jina" kör sidan genom en tjänst som faktiskt
+  // exekverar JavaScript (till skillnad från de andra som bara hämtar rå
+  // HTML), vilket kan hitta länkar som byggs dynamiskt av sidans egen JS.
   var proxies = [
+    'jina',
     'https://api.allorigins.win/raw?url=',
     'https://corsproxy.io/?',
-    'https://api.codetabs.com/v1/proxy?quest='
+    'https://api.codetabs.com/v1/proxy?quest=',
+    'https://thingproxy.freeboard.io/fetch/',
+    'https://api.cors.lol/?url='
   ];
 
   var statusEl = document.getElementById('extractStatus');
@@ -797,7 +841,7 @@ function playWithExtractor(pageUrl, name) {
 
   testKnownLinks(knownPatterns, 0, name, statusEl, logEl, function(found) {
     if (found) return;
-    tryProxyExtraction(pageUrl, proxies, 0, statusEl, logEl, name);
+    tryProxyExtraction(pageUrl, proxies, 0, statusEl, logEl, name, 0);
   });
 }
 
@@ -885,47 +929,97 @@ function playDirectHLS(hlsUrl, name) {
   }
 }
 
-function tryProxyExtraction(pageUrl, proxies, idx, statusEl, logEl, name) {
+// Letar igenom hämtad HTML/text efter troliga stream-länkar via flera
+// mönster (inte bara rena https://...m3u8-strängar), samt dekodar base64-
+// strängar som skickas till atob() ifall länken är obfuskerad så.
+function extractCandidateLinks(text) {
+  var candidates = [];
+  var m;
+
+  var direct = text.match(/https?:\/\/[^"'\s\\<>]+\.m3u8[^"'\s\\<>]*/gi);
+  if (direct) candidates = candidates.concat(direct);
+
+  var jsonRegex = /"(?:file|source|src|hlsUrl|streamUrl|manifest|url)"\s*:\s*"([^"]+)"/gi;
+  while ((m = jsonRegex.exec(text)) !== null) {
+    if (m[1].indexOf('.m3u8') !== -1) candidates.push(m[1]);
+  }
+
+  var dataSrcRegex = /data-(?:src|stream|hls|url)=["']([^"']+\.m3u8[^"']*)["']/gi;
+  while ((m = dataSrcRegex.exec(text)) !== null) candidates.push(m[1]);
+
+  var atobRegex = /atob\(\s*["']([A-Za-z0-9+/=]{16,})["']\s*\)/g;
+  while ((m = atobRegex.exec(text)) !== null) {
+    try {
+      var decoded = atob(m[1]);
+      var innerMatch = decoded.match(/https?:\/\/[^"'\s\\<>]+\.m3u8[^"'\s\\<>]*/i);
+      if (innerMatch) candidates.push(innerMatch[0]);
+    } catch (e) { /* inte giltig base64, ignorera */ }
+  }
+
+  candidates = candidates.map(function(u) { return u.replace(/\\\//g, '/').replace(/\\/g, ''); });
+
+  var seen = {}, out = [];
+  candidates.forEach(function(u) { if (!seen[u]) { seen[u] = true; out.push(u); } });
+  return out;
+}
+
+// Letar efter länkar till karwan.tv:s generiska embed-sida (/embed/{id}/),
+// som all kanalinformation faktiskt går via bakom kulisserna.
+function extractEmbedLinks(text) {
+  var out = [];
+  var m;
+  var embedRegex = /https?:\/\/karwan\.tv\/embed\/\d+\/?/gi;
+  while ((m = embedRegex.exec(text)) !== null) out.push(m[0]);
+  var iframeRegex = /<iframe[^>]+src=["']([^"']+)["']/gi;
+  while ((m = iframeRegex.exec(text)) !== null) out.push(m[1]);
+  var seen = {}, uniq = [];
+  out.forEach(function(u) { if (!seen[u]) { seen[u] = true; uniq.push(u); } });
+  return uniq;
+}
+
+function tryProxyExtraction(pageUrl, proxies, idx, statusEl, logEl, name, depth) {
+  depth = depth || 0;
   if (idx >= proxies.length) {
-    statusEl.textContent = '⚠️ Kunde inte extrahera direkt - visa fallback';
-    logEl.textContent = 'Alla proxies misslyckades. Prova iframe eller helskärm.';
+    if (depth === 0) {
+      statusEl.textContent = '⚠️ Kunde inte extrahera direkt - visa fallback';
+      logEl.textContent = 'Alla proxies misslyckades. Prova iframe eller helskärm.';
+    }
     return;
   }
-  var proxyUrl = proxies[idx] + encodeURIComponent(pageUrl);
-  logEl.textContent = 'Proxy ' + (idx + 1) + ': ' + proxies[idx].split('?')[0];
+  // Stoppa oändlig rekursion om embed-länkar pekar i cirklar.
+  if (depth > 2) {
+    statusEl.textContent = '⚠️ Kunde inte extrahera direkt - visa fallback';
+    logEl.textContent = 'För många omdirigeringar. Prova iframe eller helskärm.';
+    return;
+  }
+
+  var proxyBase = proxies[idx];
+  var proxyUrl = proxyBase === 'jina' ? ('https://r.jina.ai/' + pageUrl) : (proxyBase + encodeURIComponent(pageUrl));
+  logEl.textContent = 'Proxy ' + (idx + 1) + '/' + proxies.length + (depth ? (' (steg ' + (depth + 1) + ')') : '') + '...';
   statusEl.textContent = '🔍 Försöker proxy ' + (idx + 1) + '...';
 
   fetch(proxyUrl)
     .then(function(r) { return r.text(); })
     .then(function(html) {
-      var m3u8Regex = /https?:\/\/[^"'\s]+\.m3u8[^"'\s]*/gi;
-      var matches = html.match(m3u8Regex);
-      if (matches && matches.length > 0) {
-        var best = matches.find(function(u) { return u.indexOf('karwan') > -1 || u.indexOf('cdn') > -1; }) || matches[0];
-        best = best.replace(/\\/g, '');
+      var candidates = extractCandidateLinks(html);
+      if (candidates.length > 0) {
+        var best = candidates.find(function(u) { return u.indexOf('karwan') > -1 || u.indexOf('cdn') > -1; }) || candidates[0];
         statusEl.textContent = '✅ Hittade länk via proxy!';
         logEl.textContent = best;
         playDirectHLS(best, name);
+        return;
+      }
+      var embeds = extractEmbedLinks(html);
+      if (embeds.length > 0 && depth < 2) {
+        logEl.textContent = 'Följer embed-länk: ' + embeds[0].substring(0, 80);
+        tryProxyExtraction(embeds[0], proxies, 0, statusEl, logEl, name, depth + 1);
       } else {
-        var iframeRegex = /<iframe[^>]+src=["']([^"']+)["']/gi;
-        var m;
-        var iframes = [];
-        while ((m = iframeRegex.exec(html)) !== null) { iframes.push(m[1]); }
-        if (iframes.length > 0) {
-          logEl.textContent = 'Hittade iframe: ' + iframes[0].substring(0, 80);
-          if (iframes[0].indexOf('.m3u8') > -1) {
-            playDirectHLS(iframes[0], name);
-          } else {
-            tryProxyExtraction(iframes[0], proxies, 0, statusEl, logEl, name);
-          }
-        } else {
-          tryProxyExtraction(pageUrl, proxies, idx + 1, statusEl, logEl, name);
-        }
+        tryProxyExtraction(pageUrl, proxies, idx + 1, statusEl, logEl, name, depth);
       }
     })
     .catch(function(err) {
       logEl.textContent = 'Proxy fel: ' + err.message;
-      tryProxyExtraction(pageUrl, proxies, idx + 1, statusEl, logEl, name);
+      tryProxyExtraction(pageUrl, proxies, idx + 1, statusEl, logEl, name, depth);
     });
 }
 
