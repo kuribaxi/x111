@@ -12,7 +12,6 @@
     .header { background: rgba(0,0,0,0.4); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); padding: 18px 20px 10px 20px; text-align: center; border-bottom: 1px solid rgba(78,204,163,0.3); }
     .header h1 { font-size: 2.3em; color: #4ecca3; letter-spacing: -0.5px; margin-bottom: 6px; text-shadow: 0 2px 5px rgba(0,0,0,0.3); }
     .header p { opacity: 0.8; font-size: 0.85rem; }
-
     .info-panel {
       background: rgba(0, 0, 0, 0.55);
       -webkit-backdrop-filter: blur(12px);
@@ -148,7 +147,6 @@
       .clock-section, .date-section, .weather-section { -webkit-justify-content: space-between; justify-content: space-between; width: 100%; }
       .clock-display { font-size: 1.5rem; min-width: auto; }
     }
-
     .nav-buttons {
       display: -webkit-box;
       display: -webkit-flex;
@@ -187,7 +185,6 @@
       margin: 3px 0; background: rgba(255,255,255,0.05); font-weight: 500; font-size: 0.85rem;
     }
     .dropdown-item:hover { background: #4ecca3; color: #0a1c2a; -webkit-transform: translateX(5px); transform: translateX(5px); }
-
     .container { display: -webkit-box; display: -webkit-flex; display: flex; height: calc(100vh - 280px); padding: 0 16px 16px; }
     .channel-list { width: 280px; background: rgba(0,0,0,0.45); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); overflow-y: auto; border-radius: 22px; padding: 12px; scrollbar-width: thin; margin-right: 16px; }
     .video-container {
@@ -289,7 +286,6 @@
     }
     .tv-mode .video-container { border-radius: 0; }
     .tv-mode .channel-list { background: #000000cc; }
-
     .fs-nav {
       position: fixed; top: 50%; -webkit-transform: translateY(-50%); transform: translateY(-50%);
       z-index: 9999; display: none;
@@ -319,8 +315,6 @@
       max-width: 90px; text-align: center; white-space: nowrap; overflow: hidden;
       text-overflow: ellipsis; -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); margin-top: 6px;
     }
-
-    /* ===== TV / LJUD MODE SWITCHER ===== */
     .mode-switcher {
       display: none;
       -webkit-align-items: center; align-items: center;
@@ -335,8 +329,6 @@
     }
     .mode-btn.active { background: #4ecca3; color: #0a1c2a; }
     .mode-btn:hover { background: rgba(78,204,163,0.2); color: #fff; }
-
-    /* Radio Player Styles */
     .radio-player {
       display: -webkit-box; display: -webkit-flex; display: flex;
       -webkit-flex-direction: column; flex-direction: column;
@@ -364,8 +356,6 @@
     @-webkit-keyframes barAnim { from { height: 6px; opacity:0.4; } to { height: 36px; opacity:1; } }
     @keyframes barAnim { from { height: 6px; opacity:0.4; } to { height: 36px; opacity:1; } }
     .radio-status { font-size: 0.82rem; opacity: 0.65; letter-spacing: 1px; }
-
-    /* ===== LJUD-LÄGE (HLS -> audio only) ===== */
     .audio-only-player {
       display: -webkit-box; display: -webkit-flex; display: flex;
       -webkit-flex-direction: column; flex-direction: column;
@@ -413,24 +403,20 @@
       padding: 5px 14px; font-size: 0.75rem; color: #4ecca3aa; letter-spacing: 1px; margin: 4px;
     }
   </style>
-<base target="_blank">
 </head>
 <body>
 <div class="fs-nav fs-nav-prev hidden" id="fs-prev"><button class="fs-nav-btn" onclick="fsNavChannel(-1)" title="Föregående kanal">&#8592;</button><div class="fs-nav-label" id="fs-prev-label">Föregående</div></div>
 <div class="fs-nav fs-nav-next hidden" id="fs-next"><button class="fs-nav-btn" onclick="fsNavChannel(1)" title="Nästa kanal">&#8594;</button><div class="fs-nav-label" id="fs-next-label">Nästa</div></div>
-
 <div class="header">
   <h1>KURDISH · KARWAN · Radio✨</h1>
   <p>Dra för att ändra ordning • Klicka för att spela</p>
 </div>
-
 <div class="info-panel">
   <div class="clock-section">
     <div id="digitalClockDisplay" class="clock-display">--:--:--</div>
     <canvas id="analogCanvas" class="analog-canvas" width="120" height="120" style="width:70px; height:70px; display: none;"></canvas>
     <button id="toggleClockBtn" class="toggle-clock">🔁 Analog</button>
   </div>
-
   <div class="date-section">
     <div class="date-selector">
       <select id="calendarSelect">
@@ -441,7 +427,6 @@
     </div>
     <div id="dateDisplay" class="date-text">Laddar datum...</div>
   </div>
-
   <div class="weather-section">
     <div class="weather-input">
       <input type="text" id="cityInput" placeholder="Stad" value="Stockholm">
@@ -451,7 +436,6 @@
     <div id="weatherInfo" class="weather-info">Sök väder</div>
   </div>
 </div>
-
 <div class="nav-buttons">
   <button class="nav-btn active" onclick="showAll(this)">Alla</button>
   <button class="nav-btn" id="btn-favs" onclick="showFavs(this)">Favoriter</button>
@@ -464,7 +448,6 @@
   <div class="dd-wrap"><button class="nav-btn" id="btn-karwan" onclick="toggleDD(event,'dd-karwan')">Karwan TV</button><div class="dropdown-menu" id="dd-karwan"><div class="dropdown-item" onclick="filterSub('karwan','all')">Alla Karwan</div><div class="dropdown-item" onclick="filterSub('karwan','blue')">Kids</div><div class="dropdown-item" onclick="filterSub('karwan','purple')">Movie</div><div class="dropdown-item" onclick="filterSub('karwan','pink')">Dubbad</div><div class="dropdown-item" onclick="filterSub('karwan','grey')">Blandad</div><div class="dropdown-item" onclick="filterSub('karwan','yellow')">Music</div><div class="dropdown-item" onclick="filterSub('karwan','maroon')">Dokumentär</div><div class="dropdown-item" onclick="filterSub('karwan','green')">Dini</div><div class="dropdown-item" onclick="filterSub('karwan','brown')">Kultur</div><div class="dropdown-item" onclick="filterSub('karwan','magenta')">Srodi Dini</div><div class="dropdown-item" onclick="filterSub('karwan','beige')">Nyhet</div></div></div>
   <button class="nav-btn" id="btn-Radio" onclick="filterDirect(this,'Radio')">Radio</button>
 </div>
-
 <div class="container">
   <aside class="channel-list" id="channel-list"><button class="close-btn" onclick="toggleList()">Stäng</button><div id="ch-container"></div></aside>
   <main class="video-container">
@@ -491,9 +474,7 @@
     </div>
   </main>
 </div>
-
 <script>
-// ========== POLYFILLS FÖR GAMLA IOS ==========
 if (!Array.prototype.flat) {
   Array.prototype.flat = function(depth) {
     var d = depth === undefined ? 1 : Math.floor(depth);
@@ -506,13 +487,11 @@ if (!Array.prototype.flat) {
     })(this, d);
   };
 }
-
 if (!Object.values) {
   Object.values = function(obj) {
     return Object.keys(obj).map(function(k) { return obj[k]; });
   };
 }
-
 if (!Array.prototype.findIndex) {
   Array.prototype.findIndex = function(predicate) {
     for (var i = 0; i < this.length; i++) {
@@ -521,7 +500,6 @@ if (!Array.prototype.findIndex) {
     return -1;
   };
 }
-
 if (!Array.prototype.find) {
   Array.prototype.find = function(predicate) {
     for (var i = 0; i < this.length; i++) {
@@ -530,8 +508,6 @@ if (!Array.prototype.find) {
     return undefined;
   };
 }
-
-// ========== KANALDATA ==========
 var akhbarRaw = [
   { name: 'Zagros', url: 'https://5a3ed7a72ed4b.streamlock.net/zagrostv/SMIL:myStream.smil/playlist.m3u8', color: 'teal' },
   { name: 'MMN News', url: 'http://mmn.mypsx.net:1935/live/mmnhdnews/playlist.m3u8', color: 'teal' },
@@ -594,7 +570,7 @@ var filmRaw = [
   { name: 'MMN Movies', url: 'http://mmn.mypsx.net:1935/live/mmnhdmovies/playlist.m3u8', color: 'purple' },
   { name: 'Avar TV', url: 'https://avr.host247.net/live/AvarTv/tracks-v1a1/mono.m3u8', color: 'purple' },
   { name: 'Khak TV', url: 'http://bblserver.ddns.net:1935/stream/khakhd/playlist.m3u8', color: 'purple' },
-  { name: 'Cihan TV', url: 'https://www.cihanhd.com/playlist', color: 'purple' },
+  { name: 'Cihan TV', url: 'https://www.cihanhd.com/playlist', method:'hls', color: 'purple', isCihan: true },
   { name: 'UTV Hawler', url: 'https://utvhawler.net/index.htm', method:'iframe', color: 'purple' },
   { name: 'Soran Entertainment', url: 'https://karwan.tv/soran-entertainment-tv/', method:'iframe', color:'purple' },
   { name: 'Barin Movies', url: 'https://karwan.tv/barin-movies/', method:'iframe', color:'purple' },
@@ -629,7 +605,6 @@ var diniRaw = [
   { name: 'Kanal 21', url: 'https://karwan.tv/kanali-21', method:'iframe', color:'blue' },
   { name: 'Mihrab TV', url: 'https://karwan.tv/mihrab-tv', method:'iframe', color:'blue' },
 ];
-
 var sportRaw = [
   { name: 'MMN Sport', url: 'http://mmn.mypsx.net:1935/live/mmnhdsport/playlist.m3u8', color: 'green' },
   { name: 'Shna TV sport', url: 'https://karwan.tv/shna-tv-3/', method:'iframe', color:'green' },
@@ -637,7 +612,6 @@ var sportRaw = [
   { name: 'NRT sport', url: 'https://karwan.tv/nrt-sport/', method:'iframe', color:'green' },
   { name: 'Next TV', url: 'https://karwan.tv/next-tv/', method:'iframe', color:'green' },
 ];
-
 var karwanRaw = [
   { name: 'Znar TV', url: 'https://karwan.tv/znar-tv/', method:'iframe', color:'grey' },
   { name: 'Ronya tv', url: 'https://karwan.tv/ranya-city/', method:'iframe', color:'grey' },
@@ -652,9 +626,7 @@ var karwanRaw = [
   { name: 'Shna TV', url: 'https://karwan.tv/shna-tv', method:'iframe', color:'grey' },
   { name: 'TV Kurdi deng', url: 'https://karwan.tv/tv-kurdi/', method:'iframe', color:'grey' },
   { name: 'Kirkuk TV', url: 'https://karwan.tv/kirkuk-tv', method:'iframe', color:'beige', subgroup:'beige' },
-
 ];
-
 var RadioRaw = [
   { name: 'Rudaw Radio',   url: 'https://radio.rudaw.net/stream/live',                                    method:'audio', color:'cyan' },
   { name: 'Kurdsat Radio', url: 'http://uk3.internet-radio.com:8011/stream/',                               method:'audio', color:'cyan' },
@@ -665,8 +637,6 @@ var RadioRaw = [
   { name: 'Ava Radio',     url: 'https://ava.holan.it.com/;?type=http&nocache=1',                         method:'audio', color:'cyan' },
   { name: 'Mahabad Radio',     url: 'http://s0.cdn1.iranseda.ir:1935/liveedgeprovincial/radio-mahabad/playlist.m3u8',       method:'audio', color:'cyan' }
 ];
-
-// ========== ORDER / STORAGE ==========
 function loadOrder(cat) { try { var o = localStorage.getItem('order_'+cat); return o ? JSON.parse(o) : null; } catch(e) { return null; } }
 function saveOrder(cat, arr) { localStorage.setItem('order_'+cat, JSON.stringify(arr.map(function(c){ return c.url; }))); }
 function applyStoredOrder(arr, key) {
@@ -690,14 +660,10 @@ var channels = {
   Radio:  applyStoredOrder(RadioRaw.slice(),  'Radio')
 };
 function reorderCategory(cat, newArr) { channels[cat] = newArr; saveOrder(cat, newArr); }
-
-// ========== STATE ==========
 var hlsInst = null, dashInst = null, cur = null, favs = [], jsEnabled = true, tvMode = false, curFilter = null, curSub = 'all';
 var playMode = 'tv';
-
 try { favs = JSON.parse(localStorage.getItem('xomfavs') || '[]'); } catch(e) { favs = []; }
 try { var pm = localStorage.getItem('xom_playmode'); if (pm) playMode = pm; } catch(e) {}
-
 function destroyPlayers() { if (hlsInst) { hlsInst.destroy(); hlsInst = null; } if (dashInst) { dashInst.reset(); dashInst = null; } }
 function reload() { if (cur) play(cur.url, cur.name, cur.method, cur.referer); }
 function pip() { var v = document.getElementById('vplayer'); if (v && document.pictureInPictureEnabled) { document.pictureInPictureElement ? document.exitPictureInPicture() : v.requestPictureInPicture().catch(function(){}); } }
@@ -733,12 +699,9 @@ function fav(url, name) {
   render(curFilter, curSub);
 }
 function toggleList() { document.getElementById('channel-list').classList.toggle('show'); }
-
-// ========== TV / LJUD MODE SWITCHER ==========
 function isDirectStream(method) {
   return !method || method === 'hls' || method === 'hls-radio';
 }
-
 function setPlayMode(mode) {
   playMode = mode;
   localStorage.setItem('xom_playmode', mode);
@@ -746,44 +709,23 @@ function setPlayMode(mode) {
   document.getElementById('mode-audio').classList.toggle('active', mode === 'audio');
   if (cur) play(cur.url, cur.name, cur.method, cur.referer);
 }
-
 function showModeSwitcher(show) {
   var sw = document.getElementById('mode-switcher');
   sw.classList.toggle('visible', show);
 }
-
 function updateModeSwitcherUI() {
   document.getElementById('mode-tv').classList.toggle('active', playMode === 'tv');
   document.getElementById('mode-audio').classList.toggle('active', playMode === 'audio');
 }
-
-// ========== CLOUDFLARE-BYPASS EXTRACTOR ==========
-// Domäner som kräver Cloudflare-godkännande / inte funkar bra i iframe.
-// Lägg till fler domäner här om fler kanaler behöver samma fix.
-var CLOUDFLARE_DOMAINS = ['karwan.tv', 'speda.net', 'ava.news'];
+var CLOUDFLARE_DOMAINS = ['karwan.tv', 'speda.net', 'ava.news', 'cihanhd.com', 'cihan'];
 function isCloudflareProtected(url) {
   return CLOUDFLARE_DOMAINS.some(function(d) { return url.indexOf(d) !== -1; });
 }
-
-// ========== MANUELL ÖVERSTYRNINGSLISTA ==========
-// Om du hittar en kanals RIKTIGA direkta .m3u8-länk (t.ex. genom att öppna
-// kanalsidan i Chrome på datorn, trycka F12 -> fliken "Network", filtrera på
-// "m3u8" och spela upp kanalen) - klistra in den här. Då slipper den kanalen
-// all gissning/proxy-extraktion och spelas direkt, snabbt och pålitligt varje
-// gång, oavsett om proxies är nere.
-//
-// Format: nyckeln är kanalens sid-URL (exakt som i kanallistan), värdet är
-// den riktiga .m3u8-länken.
-//
-// Exempel (kommenterat bort tills en riktig länk finns):
-// 'https://karwan.tv/niroj-tv/': 'https://exempel-cdn.se/niroj/index.m3u8',
 var MANUAL_DIRECT_LINKS = {
 };
-
 function normalizeChannelUrl(u) {
   return String(u).trim().replace(/\/+$/, '').toLowerCase();
 }
-
 function findManualLink(pageUrl) {
   var norm = normalizeChannelUrl(pageUrl);
   for (var key in MANUAL_DIRECT_LINKS) {
@@ -793,17 +735,13 @@ function findManualLink(pageUrl) {
   }
   return null;
 }
-
 function playWithExtractor(pageUrl, name) {
   var wrap = document.getElementById('vwrap');
-
-  // Steg 0: manuell överstyrning - snabbast och mest pålitligt om den finns.
   var manual = findManualLink(pageUrl);
   if (manual) {
     playDirectHLS(manual, name);
     return;
   }
-
   wrap.innerHTML =
     '<div class="extract-box">' +
       '<div class="spinner"></div>' +
@@ -816,10 +754,6 @@ function playWithExtractor(pageUrl, name) {
         (isTV() ? '' : '<button class="btn" onclick="copyLinkToClipboard(\'' + escapeHtml(pageUrl) + '\', this)">📋 Kopiera länk</button>') +
       '</div>' +
     '</div>';
-
-  // Kända direkta CDN-mönster för karwan.tv-slugs. Fungerar sällan (karwan.tv
-  // kör faktiskt alla kanaler genom en generisk /embed/{id}/-sida, inte per-
-  // kanal CDN-URL:er), men kostar inget extra att testa snabbt innan proxy.
   var knownPatterns = [];
   if (pageUrl.indexOf('karwan.tv') !== -1) {
     var slug = pageUrl.replace(/^https?:\/\/karwan\.tv\//, '').replace(/\/$/, '').split('/')[0].split('?')[0];
@@ -830,10 +764,6 @@ function playWithExtractor(pageUrl, name) {
       'https://karwan.tv/live/' + slug + '/index.m3u8'
     ];
   }
-
-  // Flera proxies som fallback. "jina" kör sidan genom en tjänst som faktiskt
-  // exekverar JavaScript (till skillnad från de andra som bara hämtar rå
-  // HTML), vilket kan hitta länkar som byggs dynamiskt av sidans egen JS.
   var proxies = [
     'jina',
     'https://api.allorigins.win/raw?url=',
@@ -842,16 +772,13 @@ function playWithExtractor(pageUrl, name) {
     'https://thingproxy.freeboard.io/fetch/',
     'https://api.cors.lol/?url='
   ];
-
   var statusEl = document.getElementById('extractStatus');
   var logEl = document.getElementById('extractLog');
-
   testKnownLinks(knownPatterns, 0, name, statusEl, logEl, function(found) {
     if (found) return;
     tryProxyExtraction(pageUrl, proxies, 0, statusEl, logEl, name, 0);
   });
 }
-
 function testKnownLinks(list, idx, name, statusEl, logEl, cb) {
   if (idx >= list.length) { cb(false); return; }
   var testUrl = list[idx];
@@ -870,7 +797,6 @@ function testKnownLinks(list, idx, name, statusEl, logEl, cb) {
     testKnownLinks(list, idx + 1, name, statusEl, logEl, cb);
   });
 }
-
 function tryPlayDirect(hlsUrl, name, callback) {
   var testId = 'test_' + Date.now();
   var div = document.createElement('div');
@@ -884,7 +810,6 @@ function tryPlayDirect(hlsUrl, name, callback) {
       callback(false);
     }
   }, 4000);
-
   if (typeof Hls !== 'undefined' && Hls.isSupported()) {
     var tempHls = new Hls({ enableWorker: false });
     tempHls.loadSource(hlsUrl);
@@ -919,7 +844,6 @@ function tryPlayDirect(hlsUrl, name, callback) {
     });
   }
 }
-
 function playDirectHLS(hlsUrl, name) {
   var wrap = document.getElementById('vwrap');
   wrap.innerHTML = '<video id="vplayer" controls autoplay style="width:100%;height:100%;"></video><div style="position:absolute;top:8px;left:8px;background:#0f2a1e;border:1px solid #4ecca3;color:#4ecca3;font-size:0.65rem;padding:3px 8px;border-radius:12px;">Direkt HLS - Ingen Cloudflare</div>';
@@ -935,43 +859,30 @@ function playDirectHLS(hlsUrl, name) {
     vid.play().catch(function(){});
   }
 }
-
-// Letar igenom hämtad HTML/text efter troliga stream-länkar via flera
-// mönster (inte bara rena https://...m3u8-strängar), samt dekodar base64-
-// strängar som skickas till atob() ifall länken är obfuskerad så.
 function extractCandidateLinks(text) {
   var candidates = [];
   var m;
-
   var direct = text.match(/https?:\/\/[^"'\s\\<>]+\.m3u8[^"'\s\\<>]*/gi);
   if (direct) candidates = candidates.concat(direct);
-
   var jsonRegex = /"(?:file|source|src|hlsUrl|streamUrl|manifest|url)"\s*:\s*"([^"]+)"/gi;
   while ((m = jsonRegex.exec(text)) !== null) {
     if (m[1].indexOf('.m3u8') !== -1) candidates.push(m[1]);
   }
-
   var dataSrcRegex = /data-(?:src|stream|hls|url)=["']([^"']+\.m3u8[^"']*)["']/gi;
   while ((m = dataSrcRegex.exec(text)) !== null) candidates.push(m[1]);
-
   var atobRegex = /atob\(\s*["']([A-Za-z0-9+/=]{16,})["']\s*\)/g;
   while ((m = atobRegex.exec(text)) !== null) {
     try {
       var decoded = atob(m[1]);
       var innerMatch = decoded.match(/https?:\/\/[^"'\s\\<>]+\.m3u8[^"'\s\\<>]*/i);
       if (innerMatch) candidates.push(innerMatch[0]);
-    } catch (e) { /* inte giltig base64, ignorera */ }
+    } catch (e) { }
   }
-
   candidates = candidates.map(function(u) { return u.replace(/\\\//g, '/').replace(/\\/g, ''); });
-
   var seen = {}, out = [];
   candidates.forEach(function(u) { if (!seen[u]) { seen[u] = true; out.push(u); } });
   return out;
 }
-
-// Letar efter länkar till karwan.tv:s generiska embed-sida (/embed/{id}/),
-// som all kanalinformation faktiskt går via bakom kulisserna.
 function extractEmbedLinks(text) {
   var out = [];
   var m;
@@ -983,28 +894,24 @@ function extractEmbedLinks(text) {
   out.forEach(function(u) { if (!seen[u]) { seen[u] = true; uniq.push(u); } });
   return uniq;
 }
-
 function tryProxyExtraction(pageUrl, proxies, idx, statusEl, logEl, name, depth) {
   depth = depth || 0;
   if (idx >= proxies.length) {
     if (depth === 0) {
-      statusEl.textContent = '⚠️ Kunde inte extrahera direkt - visa fallback';
+      statusEl.textContent = '⚠ Kunde inte extrahera direkt - visa fallback';
       logEl.textContent = 'Alla proxies misslyckades. Prova iframe eller helskärm.';
     }
     return;
   }
-  // Stoppa oändlig rekursion om embed-länkar pekar i cirklar.
   if (depth > 2) {
-    statusEl.textContent = '⚠️ Kunde inte extrahera direkt - visa fallback';
+    statusEl.textContent = '⚠ Kunde inte extrahera direkt - visa fallback';
     logEl.textContent = 'För många omdirigeringar. Prova iframe eller helskärm.';
     return;
   }
-
   var proxyBase = proxies[idx];
   var proxyUrl = proxyBase === 'jina' ? ('https://r.jina.ai/' + pageUrl) : (proxyBase + encodeURIComponent(pageUrl));
   logEl.textContent = 'Proxy ' + (idx + 1) + '/' + proxies.length + (depth ? (' (steg ' + (depth + 1) + ')') : '') + '...';
   statusEl.textContent = '🔍 Försöker proxy ' + (idx + 1) + '...';
-
   fetch(proxyUrl)
     .then(function(r) { return r.text(); })
     .then(function(html) {
@@ -1029,22 +936,16 @@ function tryProxyExtraction(pageUrl, proxies, idx, statusEl, logEl, name, depth)
       tryProxyExtraction(pageUrl, proxies, idx + 1, statusEl, logEl, name, depth);
     });
 }
-
 function forceIframe(url, name) {
   var wrap = document.getElementById('vwrap');
   var bust = Date.now();
   wrap.innerHTML = '<div style="width:100%;height:100%;display:flex;flex-direction:column"><div style="padding:8px;background:#0f212e;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px"><span style="color:#4ecca3;font-size:0.8rem">' + escapeHtml(name) + ' - iframe läge</span><div style="display:flex;gap:6px;flex-wrap:wrap">' + (isTV() ? '' : '<button class="btn" onclick="copyLinkToClipboard(\'' + escapeHtml(url) + '\', this)">📋 Kopiera länk</button>') + '<button class="btn purple" onclick="approveTop(\'' + escapeHtml(url) + '\')">✅ Godkänn Cloudflare helskärm</button></div></div><iframe src="' + escapeHtml(url) + '?_=' + bust + '" style="flex:1;width:100%;border:none;background:#fff" allowfullscreen sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-presentation"></iframe></div>';
 }
-
-// Fjärrkontroll-vänlig bekräftelse (ersätter window.confirm som inte alltid
-// är pålitlig/navigerbar med D-pad på smart-TV-webbläsare). Stora knappar,
-// tydliga numrerade steg, och autofokus så OK-knappen på fjärrkontrollen
-// direkt träffar "Fortsätt".
 function approveTop(url) {
   var wrap = document.getElementById('vwrap');
   wrap.innerHTML =
     '<div class="extract-box">' +
-      '<div style="font-size:2.2rem;margin-bottom:8px">☁️</div>' +
+      '<div style="font-size:2.2rem;margin-bottom:8px">☁</div>' +
       '<div style="color:#4ecca3;font-weight:bold;font-size:1.05rem;margin-bottom:10px">Cloudflare-godkännande krävs</div>' +
       '<div style="font-size:0.85rem;opacity:0.85;max-width:420px;line-height:1.6;text-align:left">' +
         '1. Tryck <b>Fortsätt</b> nedan<br>' +
@@ -1052,20 +953,17 @@ function approveTop(url) {
         '3. Tryck <b>bakåt-knappen</b> på fjärrkontrollen för att komma tillbaka hit' +
       '</div>' +
       '<div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center">' +
-        '<button id="approveContinueBtn" class="btn primary" onclick="window.location.href=\'' + escapeHtml(url) + '\'" style="font-size:1rem;padding:12px 26px;">▶️ Fortsätt</button>' +
-        '<button class="btn" onclick="cancelApproveTop()" style="font-size:1rem;padding:12px 26px;">✖️ Avbryt</button>' +
+        '<button id="approveContinueBtn" class="btn primary" onclick="window.location.href=\'' + escapeHtml(url) + '\'" style="font-size:1rem;padding:12px 26px;">▶ Fortsätt</button>' +
+        '<button class="btn" onclick="cancelApproveTop()" style="font-size:1rem;padding:12px 26px;">✖ Avbryt</button>' +
       '</div>' +
     '</div>';
   var btn = document.getElementById('approveContinueBtn');
   if (btn) btn.focus();
 }
-
 function cancelApproveTop() {
   var wrap = document.getElementById('vwrap');
   wrap.innerHTML = '<div class="error-msg"><h3>Avbrutet</h3><p style="font-size:13px;margin-top:10px;">Välj en kanal igen.</p></div>';
 }
-
-// ========== AUDIO-ONLY PLAYER (för HLS i ljud-läge) ==========
 function renderAudioOnlyPlayer(url, name) {
   var wrap = document.getElementById('vwrap');
   wrap.innerHTML =
@@ -1087,13 +985,10 @@ function renderAudioOnlyPlayer(url, name) {
       '</div>' +
       '<video id="vplayer" style="display:none;" autoplay></video>' +
     '</div>';
-
   var vid = document.getElementById('vplayer');
   var badge = document.getElementById('audioStatusBadge');
   var volSlider = document.getElementById('audioVolSlider');
-
   volSlider.addEventListener('input', function() { if (vid) vid.volume = parseFloat(volSlider.value); });
-
   if (typeof Hls !== 'undefined' && Hls.isSupported() && jsEnabled) {
     hlsInst = new Hls({ enableWorker: false });
     hlsInst.loadSource(url);
@@ -1115,8 +1010,6 @@ function renderAudioOnlyPlayer(url, name) {
     badge.textContent = 'LIVE';
   }
 }
-
-// ========== RENDER ==========
 function render(filter, sub) {
   curFilter = filter; curSub = sub || 'all';
   var html = '';
@@ -1143,7 +1036,6 @@ function render(filter, sub) {
   attachDragListeners();
   attachChannelEvents();
 }
-
 function row(ch, idx, catKey) {
   var m = ch.method || 'hls';
   var badge = '';
@@ -1157,23 +1049,17 @@ function row(ch, idx, catKey) {
   var activeClass = (cur && cur.url === ch.url) ? 'active' : '';
   return '<div class="channel-item ' + ch.color + ' ' + activeClass + '" draggable="true" data-url="' + escapeHtml(ch.url) + '" data-name="' + escapeHtml(ch.name) + '" data-method="' + m + '" data-referer="' + (ch.referer || '') + '" data-cat="' + catKey + '" data-idx="' + idx + '"><span>' + ch.name + badge + '</span><button class="' + favClass + '" onclick="event.stopPropagation();fav(\'' + escapeHtml(ch.url) + '\',\'' + escapeHtml(ch.name) + '\')">' + star + '</button></div>';
 }
-
 function escapeHtml(str) {
   return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
-
-// ========== ENHETSDETEKTERING (TV / fjärrkontroll utan klistra-in) ==========
 function isTV() {
   return /Web0S|webOS|LG Browser|Large Screen|SmartTV|Tizen|SMART-TV|HbbTV|NetCast|GoogleTV|AppleTV|Roku|Viera|BRAVIA|CrKey/i.test(navigator.userAgent);
 }
-
-// Kopiera länk till urklipp - endast meningsfullt på enheter som faktiskt
-// kan klistra in någonstans (telefon, dator). Visas inte på TV.
 function copyLinkToClipboard(url, btnEl) {
   function showCopied(ok) {
     if (!btnEl) return;
     var original = btnEl.textContent;
-    btnEl.textContent = ok ? '✅ Kopierad!' : '⚠️ Kunde inte kopiera';
+    btnEl.textContent = ok ? '✅ Kopierad!' : '⚠ Kunde inte kopiera';
     setTimeout(function() { btnEl.textContent = original; }, 2000);
   }
   if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -1195,8 +1081,6 @@ function copyLinkToClipboard(url, btnEl) {
     }
   }
 }
-
-// ========== DRAG ==========
 function attachDragListeners() {
   var items = document.querySelectorAll('.channel-item[draggable="true"]');
   for (var i=0; i<items.length; i++) {
@@ -1257,7 +1141,6 @@ function cleanupDrag() {
   for (var i=0; i<items.length; i++) items[i].classList.remove('drag-over');
   dragSource = null;
 }
-
 function attachChannelEvents() {
   var items = document.querySelectorAll('.channel-item');
   for (var i=0; i<items.length; i++) {
@@ -1267,20 +1150,15 @@ function attachChannelEvents() {
     });
   }
 }
-
-// ========== PLAY ==========
 function play(url, name, method, referer) {
   if (window.innerWidth <= 768) document.getElementById('channel-list').classList.remove('show');
   cur = { url: url, name: name, method: method, referer: referer };
   document.getElementById('ch-title').textContent = name;
   destroyPlayers();
   var wrap = document.getElementById('vwrap');
-
   var isDirect = isDirectStream(method);
   showModeSwitcher(isDirect);
   if (isDirect) updateModeSwitcherUI();
-
-  // ----- AUDIO (direkta radio-streams: MP3, AAC, Icecast) -----
   if (method === 'audio') {
     if (!jsEnabled) {
       window.open(url, '_blank');
@@ -1312,12 +1190,7 @@ function play(url, name, method, referer) {
     render(curFilter, curSub);
     return;
   }
-
-  // ----- IFRAME -----
   if (method === 'iframe') {
-    // Kanaler på Cloudflare-skyddade domäner (karwan.tv, speda.net, ava.news, ...)
-    // körs genom extraktorn som försöker hitta en direkt HLS-länk och spela
-    // den utan Cloudflare-verifiering, med iframe/helskärm som fallback.
     if (isCloudflareProtected(url) && jsEnabled) {
       playWithExtractor(url, name);
       render(curFilter, curSub);
@@ -1332,40 +1205,78 @@ function play(url, name, method, referer) {
     render(curFilter, curSub);
     return;
   }
-
-  // ----- HLS — LJUD-LÄGE -----
   if (playMode === 'audio') {
     renderAudioOnlyPlayer(url, name);
     render(curFilter, curSub);
     return;
   }
-
-  // TV-läge (standard video)
-  wrap.innerHTML = '<video id="vplayer" controls autoplay style="width:100%;height:100%;"></video>';
-  var vid = document.getElementById('vplayer');
-  if (typeof Hls !== 'undefined' && Hls.isSupported() && jsEnabled) {
-    hlsInst = new Hls({ enableWorker: false });
-    hlsInst.loadSource(url);
-    hlsInst.attachMedia(vid);
-    hlsInst.on(Hls.Events.MANIFEST_PARSED, function() { vid.play().catch(function(){}); });
-    hlsInst.on(Hls.Events.ERROR, function(ev, d) {
-      if (d.fatal) {
-        if (d.type === Hls.ErrorTypes.NETWORK_ERROR) setTimeout(function(){ if(hlsInst) hlsInst.startLoad(); },2000);
-        else destroyPlayers();
+  // Special handling for Cihan - try direct first, then proxy if cert fails
+  var isCihan = url.indexOf('cihanhd.com') !== -1;
+  function playHlsWithFallback(targetUrl, useProxy) {
+    var displayUrl = useProxy ? 'Proxy: ' + targetUrl : targetUrl;
+    wrap.innerHTML = '<video id="vplayer" controls autoplay style="width:100%;height:100%;"></video><div style="position:absolute;top:8px;left:8px;background:#0f2a1e;border:1px solid #4ecca3;color:#4ecca3;font-size:0.65rem;padding:3px 8px;border-radius:12px;">' + (useProxy ? 'PROXY HLS' : 'DIREKT HLS') + '</div><div class="extract-log" style="position:absolute;bottom:8px;left:8px;right:8px;">' + escapeHtml(displayUrl) + '</div>';
+    var vid = document.getElementById('vplayer');
+    var failed = false;
+    var failTimer = setTimeout(function(){
+      if(!vid || vid.readyState >= 1) return;
+      if(isCihan && !useProxy){
+        console.log('Cihan direkt fail, testar proxy...');
+        playHlsWithFallback('https://corsproxy.io/?' + encodeURIComponent(targetUrl), true);
+      } else {
+        wrap.innerHTML = '<div class="error-msg"><h3>⚠ Kunde inte spela ' + escapeHtml(name) + '</h3><p style="font-size:0.8rem;margin-top:8px">URL: ' + escapeHtml(targetUrl) + '</p><p style="font-size:0.8rem;margin-top:6px">Testa JS AV-läge eller öppna direkt i LG Browser: <br><code>' + escapeHtml(url) + '</code></p><button class="btn primary" style="margin-top:12px" onclick="window.open(\'' + escapeHtml(url) + '\', \'_blank\')">Öppna i ny flik (Brave Shields AV)</button><button class="btn" style="margin-top:12px" onclick="playHlsWithFallback(\'https://api.allorigins.win/raw?url=' + encodeURIComponent(url) + '\', true)">Prova AllOrigins proxy</button></div>';
       }
-    });
-  } else if (vid.canPlayType('application/vnd.apple.mpegurl')) {
-    vid.src = url;
-    vid.play().catch(function(){
-      wrap.innerHTML = '<div class="error-msg"><h3>Kunde inte spela</h3><p>Prova att byta till Ljud-läge.</p></div>';
-    });
-  } else {
-    wrap.innerHTML = '<div class="error-msg"><h3>Kunde inte spela</h3><p>Din enhet stöder inte detta format.</p></div>';
+    }, 6000);
+    if (typeof Hls !== 'undefined' && Hls.isSupported() && jsEnabled) {
+      hlsInst = new Hls({ 
+        enableWorker: false,
+        xhrSetup: function(xhr, u){
+          // Försök kringgå CORS för cihanhd
+          xhr.withCredentials = false;
+        }
+      });
+      hlsInst.loadSource(targetUrl);
+      hlsInst.attachMedia(vid);
+      hlsInst.on(Hls.Events.MANIFEST_PARSED, function() { clearTimeout(failTimer); vid.play().catch(function(){}); });
+      hlsInst.on(Hls.Events.ERROR, function(ev, d) {
+        if (d.fatal) {
+          if (d.type === Hls.ErrorTypes.NETWORK_ERROR && !useProxy && isCihan) {
+            clearTimeout(failTimer);
+            playHlsWithFallback('https://corsproxy.io/?' + encodeURIComponent(url), true);
+          } else if (d.type === Hls.ErrorTypes.NETWORK_ERROR) {
+            setTimeout(function(){ if(hlsInst) hlsInst.startLoad(); },2000);
+          } else {
+            if(!useProxy && isCihan){
+              clearTimeout(failTimer);
+              playHlsWithFallback('https://corsproxy.io/?' + encodeURIComponent(url), true);
+            }
+          }
+        }
+      });
+    } else if (vid.canPlayType('application/vnd.apple.mpegurl')) {
+      vid.src = targetUrl;
+      vid.play().catch(function(){
+        clearTimeout(failTimer);
+        if(!useProxy && isCihan){
+          playHlsWithFallback('https://corsproxy.io/?' + encodeURIComponent(url), true);
+        } else {
+          wrap.innerHTML = '<div class="error-msg"><h3>Kunde inte spela</h3><p>Prova att byta till Ljud-läge.</p></div>';
+        }
+      });
+      vid.addEventListener('loadedmetadata', function(){ clearTimeout(failTimer); });
+      vid.addEventListener('error', function(){
+        clearTimeout(failTimer);
+        if(!useProxy && isCihan){
+          playHlsWithFallback('https://corsproxy.io/?' + encodeURIComponent(url), true);
+        }
+      });
+    } else {
+      clearTimeout(failTimer);
+      wrap.innerHTML = '<div class="error-msg"><h3>Kunde inte spela</h3><p>Din enhet stöder inte detta format.</p></div>';
+    }
   }
+  playHlsWithFallback(url, false);
   render(curFilter, curSub);
 }
-
-// ========== FULLSCREEN NAV ==========
 function getAllChannels() {
   if (curFilter && channels[curFilter]) {
     if (curFilter === 'karwan' && curSub !== 'all') return channels.karwan.filter(function(c){ return c.subgroup === curSub; });
@@ -1417,8 +1328,6 @@ document.addEventListener('keydown', function(e) {
   if (e.key === 'ArrowLeft') { fsNavChannel(-1); showFsNav(); }
   if (e.key === 'ArrowRight') { fsNavChannel(1); showFsNav(); }
 });
-
-// ========== NAV FILTER ==========
 function setAllBtnsInactive() {
   var btns = document.querySelectorAll('.nav-btn');
   for (var i=0; i<btns.length; i++) btns[i].classList.remove('active');
@@ -1436,8 +1345,6 @@ function toggleDD(ev, ddId) {
   for (var i=0; i<all.length; i++) all[i].classList.remove('show');
   if (!isOpen) dd.classList.add('show');
 }
-
-// ========== KLOCKA ==========
 var clockMode = 'digital';
 var clockInterval;
 function initClock() {
@@ -1492,8 +1399,6 @@ function initClock() {
   clockInterval = setInterval(function() { if (clockMode === 'digital') updateDigital(); else drawAnalog(); }, 1000);
   updateDigital(); drawAnalog();
 }
-
-// ========== DATUM — säker för gamla iOS ==========
 function updateDateByCalendar() {
   var cal = document.getElementById('calendarSelect').value;
   var now = new Date();
@@ -1523,8 +1428,6 @@ function updateDateByCalendar() {
   }
   document.getElementById('dateDisplay').innerHTML = formatted;
 }
-
-// ========== VÄDER ==========
 function fetchWeather() {
   var city = document.getElementById('cityInput').value.trim();
   var country = document.getElementById('countryInput').value.trim();
@@ -1560,8 +1463,6 @@ function fetchWeather() {
       document.getElementById('weatherInfo').innerHTML = 'Fel: ' + err.message;
     });
 }
-
-// ========== INIT ==========
 document.addEventListener('DOMContentLoaded', function() {
   initClock();
   document.getElementById('calendarSelect').addEventListener('change', updateDateByCalendar);
@@ -1580,7 +1481,6 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   updateModeSwitcherUI();
 });
-
 render(null, 'all');
 </script>
 </body>
