@@ -171,20 +171,6 @@
       background: #4ecca3; color: #0a1c2a; -webkit-transform: scale(1.02); transform: scale(1.02);
       box-shadow: 0 4px 10px rgba(78,204,163,0.3);
     }
-    .dd-wrap { position: relative; display: inline-block; }
-    .dropdown-menu {
-      position: absolute; top: calc(100% + 8px); left: 50%; -webkit-transform: translateX(-50%); transform: translateX(-50%);
-      background: #0f212ed9; -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
-      border-radius: 18px; padding: 10px; min-width: 200px; z-index: 1000; display: none;
-      border: 1px solid #4ecca355; box-shadow: 0 15px 30px rgba(0,0,0,0.5);
-    }
-    .dropdown-menu.show { display: block; }
-    .dropdown-item {
-      padding: 9px 16px; cursor: pointer; border-radius: 30px;
-      -webkit-transition: all 0.2s; transition: all 0.2s;
-      margin: 3px 0; background: rgba(255,255,255,0.05); font-weight: 500; font-size: 0.85rem;
-    }
-    .dropdown-item:hover { background: #4ecca3; color: #0a1c2a; -webkit-transform: translateX(5px); transform: translateX(5px); }
     .container { display: -webkit-box; display: -webkit-flex; display: flex; height: calc(100vh - 280px); padding: 0 16px 16px; }
     .channel-list { width: 280px; background: rgba(0,0,0,0.45); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); overflow-y: auto; border-radius: 22px; padding: 12px; scrollbar-width: thin; margin-right: 16px; }
     .video-container {
@@ -439,13 +425,13 @@
 <div class="nav-buttons">
   <button class="nav-btn active" onclick="showAll(this)">Alla</button>
   <button class="nav-btn" id="btn-favs" onclick="showFavs(this)">Favoriter</button>
-  <div class="dd-wrap"><button class="nav-btn" id="btn-akhbar" onclick="toggleDD(event,'dd-akhbar')">Akhbar</button><div class="dropdown-menu" id="dd-akhbar"><div class="dropdown-item" onclick="filterSub('akhbar','all')">Alla Akhbar</div><div class="dropdown-item" onclick="filterSub('akhbar','news')">Nyheter</div></div></div>
+  <button class="nav-btn" id="btn-akhbar" onclick="filterDirect(this,'akhbar')">Akhbar</button>
   <button class="nav-btn" id="btn-musik" onclick="filterDirect(this,'musik')">Musik</button>
   <button class="nav-btn" id="btn-minal" onclick="filterDirect(this,'minal')">Minal</button>
   <button class="nav-btn" id="btn-film" onclick="filterDirect(this,'film')">Film & Serie</button>
   <button class="nav-btn" id="btn-dini" onclick="filterDirect(this,'dini')">Dini</button>
   <button class="nav-btn" id="btn-sport" onclick="filterDirect(this,'sport')">Sport</button>
-  <div class="dd-wrap"><button class="nav-btn" id="btn-karwan" onclick="toggleDD(event,'dd-karwan')">Karwan TV</button><div class="dropdown-menu" id="dd-karwan"><div class="dropdown-item" onclick="filterSub('karwan','all')">Alla Karwan</div><div class="dropdown-item" onclick="filterSub('karwan','blue')">Kids</div><div class="dropdown-item" onclick="filterSub('karwan','purple')">Movie</div><div class="dropdown-item" onclick="filterSub('karwan','pink')">Dubbad</div><div class="dropdown-item" onclick="filterSub('karwan','grey')">Blandad</div><div class="dropdown-item" onclick="filterSub('karwan','yellow')">Music</div><div class="dropdown-item" onclick="filterSub('karwan','maroon')">Dokumentär</div><div class="dropdown-item" onclick="filterSub('karwan','green')">Dini</div><div class="dropdown-item" onclick="filterSub('karwan','brown')">Kultur</div><div class="dropdown-item" onclick="filterSub('karwan','magenta')">Srodi Dini</div><div class="dropdown-item" onclick="filterSub('karwan','beige')">Nyhet</div></div></div>
+  <button class="nav-btn" id="btn-karwan" onclick="filterDirect(this,'karwan')">Karwan TV</button>
   <button class="nav-btn" id="btn-Radio" onclick="filterDirect(this,'Radio')">Radio</button>
 </div>
 <div class="container">
@@ -476,10 +462,9 @@
 </div>
 <script>
 var akhbarRaw = [
-  { name: 'Kirkuk', url: 'https://live.kirkuklive.live/hls/stream/index.m3u8', color: 'teal' },
-  { name: 'Waar', url: 'https://live.kwikmotion.com/waarmedialive/waarmedia.smil/waarmediapublish/waarmedia_source/chunks.m3u8', color: 'teal' },
   { name: 'Kurdistan TV', url: 'https://5a3ed7a72ed4b.streamlock.net/live/SMIL:myStream.smil/playlist.m3u8', color: 'teal' },
   { name: 'Kurdsat HD', url: 'https://hlspackager.akamaized.net/live/DB/KURDSAT_HD/HLS/KURDSAT_HD.m3u8', color: 'teal' },
+  { name: 'Kurdistan24', url: 'https://live.kurdistan24.net/hls/k24/master.m3u8', color: 'teal' },
   { name: 'MMN News', url: 'http://mmn.mypsx.net:1935/live/mmnhdnews/playlist.m3u8', color: 'teal' },
   { name: 'Kanal8', url: 'https://live.channel8.com/Channel8-Kurdish/index.fmp4.m3u8', color: 'teal' },
   { name: 'AVA1', url: 'https://ava4.store/upload/ava.m3u8', color: 'teal' },
@@ -493,13 +478,17 @@ var akhbarRaw = [
   { name: 'Komala', url: 'https://komhls.wns.live/hls/stream.m3u8', color: 'teal' },
   { name: 'Zagros24 TV', url: 'https://hlspackager.akamaized.net/live/DB/ZAGROS_24/HLS/ZAGROS_24.m3u8', method:'iframe', color:'teal' },
   { name: 'Ronahi', url: 'https://hlspackager.akamaized.net/live/DB/RONAHI_TV/HLS/RONAHI_TV.m3u8', color: 'teal' },
+   { name: 'Kirkuk', url: 'https://live.kirkuklive.live/hls/stream/index.m3u8', color: 'teal' },
+  { name: 'Waar', url: 'https://live.kwikmotion.com/waarmedialive/waarmedia.smil/waarmediapublish/waarmedia_source/chunks.m3u8', color: 'teal' },
   { name: 'Rojhelat TV', url: 'https://karwan.tv/rojhelat-tv', method:'iframe', color:'teal' },
   { name: 'Payam TV', url: 'https://media2.streambrothers.com:1936/8218/8218/chunklist_w1239498607.m3u8', color: 'teal' },
-  { name: 'Kurdistan24', url: 'https://manifest.googlevideo.com/api/manifest/hls_variant/expire/1788581844/ei/dEObas2yH8PU0u8P37jJuQQ/ip/90.227.110.245/id/yZ7eZ8H_a1I.1216/source/yt_live_broadcast/requiressl/yes/xpc/EgVo2aDSNQ%3D%3D/hfr/1/playlist_duration/30/manifest_duration/30/maudio/1/bui/AR3QkAl6cyEKxfHluqgYZ_L4uuBK3XMki-dX1qn6dNmOBKnicFaUBoQ2EOLNQOjh0wLYBrrp9zIxvEUT/spc/I-rgIS3yzRag1z5aqU0wBajNQLyw3ORT1DTL1voZV7yH39orKGP2gRGvspOF80Llnn2LEFJR/vprv/1/go/1/ns/i23O13ugpyF_vP1bAY5OBMYY/rqh/5/reg/0/pacing/0/nvgoi/1/ncsapi/1/keepalive/yes/fexp/51565115%2C52135441%2C52189887/dover/11/n/jnlKXPjA-TwVaw/itag/0/playlist_type/DVR/sparams/expire%2Cei%2Cip%2Cid%2Csource%2Crequiressl%2Cxpc%2Chfr%2Cplaylist_duration%2Cmanifest_duration%2Cmaudio%2Cbui%2Cspc%2Cvprv%2Cgo%2Cns%2Crqh%2Creg%2Citag%2Cplaylist_type/sig/AE0s2JYwRAIga16ILC4NUyzv4OhI4H8HMewSB2Pv9e3tkR2KNJsKb2gCICSOJ5IdqiBXJFtYANvCWbVpkbmmKZtDBIGbkh0QeovM/file/index.m3u8', method:'iframe', color: 'teal' },
   { name: 'Nuce tv', url: 'https://karwan.tv/nuce-tv/', method:'iframe', color:'teal' },
   { name: 'Welat TV', url: 'https://karwan.tv/welat-tv/', method:'iframe', color:'teal' },
   { name: 'Strek tv', url: 'https://karwan.tv/sterk-tv/', method:'iframe', color:'teal' },
   { name: 'Zagros', url: 'https://5a3ed7a72ed4b.streamlock.net/zagrostv/SMIL:myStream.smil/playlist.m3u8', color: 'teal' },
+  { name: 'Sahar', url: 'https://sepehrtv.ir/live/sahar3/', method:'iframe', color:'teal' },
+  { name: 'Mahabad', url: 'https://corsply-v0s4.cfcross.workers.dev/?url=https://live-aburayhan1110.telewebion.ir/ek/mahabad/live/720p/index.m3u8', method:'iframe', color:'teal' },
+  { name: 'Sine', url: 'https://sepehrtv.ir/live/kordestan/', method:'iframe', color:'teal' },
   { name: 'Kurdistan', url: 'https://www.kurdistan.tv/', method:'iframe', color: 'teal' },
 ];
 var musikRaw = [
@@ -588,7 +577,7 @@ var karwanRaw = [
   { name: 'Zed TV Plus', url: 'https://karwan.tv/zed-tv-plus', method:'iframe', color:'grey' },
   { name: 'Shna TV', url: 'https://karwan.tv/shna-tv', method:'iframe', color:'grey' },
   { name: 'TV Kurdi deng', url: 'https://karwan.tv/tv-kurdi/', method:'iframe', color:'grey' },
-  { name: 'Kirkuk TV', url: 'https://karwan.tv/kirkuk-tv', method:'iframe', color:'beige', subgroup:'beige' },
+  { name: 'Kirkuk TV', url: 'https://karwan.tv/kirkuk-tv', method:'iframe', color:'grey' },
 ];
 var RadioRaw = [
   { name: 'Rudaw Radio',   url: 'https://radio.rudaw.net/stream/live',                                    method:'audio', color:'cyan' },
@@ -985,8 +974,9 @@ function render(filter, sub) {
       html = '<div class="category-title">Favoriter (' + favList.length + ')</div>' + favList.map(function(ch,i){ return row(ch,i,'__favs__'); }).join('');
     }
   } else if (filter === 'karwan') {
-    var list = curSub === 'all' ? channels.karwan : channels.karwan.filter(function(c){ return c.subgroup === curSub; });
-    html = '<div class="category-title">Karwan TV — ' + sub + ' (' + list.length + ')</div>' + list.map(function(ch,i){ return row(ch,i,'karwan'); }).join('');
+    // FIX 2: visa alla direkt utan sub-filter
+    var list = channels.karwan;
+    html = '<div class="category-title">Karwan TV (' + list.length + ')</div>' + list.map(function(ch,i){ return row(ch,i,'karwan'); }).join('');
   } else if (filter && channels[filter]) {
     html = '<div class="category-title">' + filter + '</div>' + channels[filter].map(function(ch,i){ return row(ch,i,filter); }).join('');
   } else {
@@ -1132,7 +1122,7 @@ function play(url, name, method, referer) {
         '<div style="font-size:0.9rem;opacity:0.8;margin-bottom:20px">Öppnas externt på kurdtvs.net</div>' +
         '<div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">' +
           '<button class="btn primary" style="padding:12px 28px;font-size:1rem" onclick="window.open(\'' + escapeHtml(url) + '\', \'_blank\')">▶ Öppna Cihan TV nu</button>' +
-          '<button class="btn" style="padding:12px 20px" onclick="openExternalIframe(\'' + escapeHtml(url) + '\',\'' + escapeHtml(name) + '\')">🖥️ Visa inbäddad här</button>' +
+          '<button class="btn" style="padding:12px 20px" onclick="openExternalIframe(\'' + escapeHtml(url) + '\',\'' + escapeHtml(name) + '\')">🖥 Visa inbäddad här</button>' +
         '</div>' +
         '<div class="extract-log" style="margin-top:18px">' + escapeHtml(url) + '</div>' +
       '</div>';
@@ -1193,13 +1183,14 @@ function play(url, name, method, referer) {
     return;
   }
   var isCihan = url.indexOf('cihanhd.com') !== -1;
+  var isK24 = name.toLowerCase().indexOf('kurdistan24') !== -1 || url.indexOf('kurdistan24') !== -1;
   function playHlsWithFallback(targetUrl, useProxy) {
     var displayUrl = useProxy ? 'Proxy: ' + targetUrl : targetUrl;
     wrap.innerHTML = '<video id="vplayer" controls autoplay style="width:100%;height:100%;"></video><div style="position:absolute;top:8px;left:8px;background:#0f2a1e;border:1px solid #4ecca3;color:#4ecca3;font-size:0.65rem;padding:3px 8px;border-radius:12px;">' + (useProxy ? 'PROXY HLS' : 'DIREKT HLS') + '</div><div class="extract-log" style="position:absolute;bottom:8px;left:8px;right:8px;">' + escapeHtml(displayUrl) + '</div>';
     var vid = document.getElementById('vplayer');
     var failTimer = setTimeout(function(){
       if(!vid || vid.readyState >= 1) return;
-      if(isCihan && !useProxy){
+      if((isCihan || isK24) && !useProxy){
         playHlsWithFallback('https://corsproxy.io/?' + encodeURIComponent(targetUrl), true);
       } else {
         wrap.innerHTML = '<div class="error-msg"><h3>⚠ Kunde inte spela ' + escapeHtml(name) + '</h3><p style="font-size:0.8rem;margin-top:8px">URL: ' + escapeHtml(targetUrl) + '</p><p style="font-size:0.8rem;margin-top:6px">Testa JS AV-läge</p><button class="btn primary" style="margin-top:12px" onclick="window.open(\'' + escapeHtml(url) + '\', \'_blank\')">Öppna i ny flik</button></div>';
@@ -1215,13 +1206,13 @@ function play(url, name, method, referer) {
       hlsInst.on(Hls.Events.MANIFEST_PARSED, function() { clearTimeout(failTimer); vid.play().catch(function(){}); });
       hlsInst.on(Hls.Events.ERROR, function(ev, d) {
         if (d.fatal) {
-          if (d.type === Hls.ErrorTypes.NETWORK_ERROR && !useProxy && isCihan) {
+          if (d.type === Hls.ErrorTypes.NETWORK_ERROR && !useProxy && (isCihan || isK24)) {
             clearTimeout(failTimer);
             playHlsWithFallback('https://corsproxy.io/?' + encodeURIComponent(url), true);
           } else if (d.type === Hls.ErrorTypes.NETWORK_ERROR) {
             setTimeout(function(){ if(hlsInst) hlsInst.startLoad(); },2000);
           } else {
-            if(!useProxy && isCihan){
+            if(!useProxy && (isCihan || isK24)){
               clearTimeout(failTimer);
               playHlsWithFallback('https://corsproxy.io/?' + encodeURIComponent(url), true);
             }
@@ -1232,7 +1223,7 @@ function play(url, name, method, referer) {
       vid.src = targetUrl;
       vid.play().catch(function(){
         clearTimeout(failTimer);
-        if(!useProxy && isCihan){
+        if(!useProxy && (isCihan || isK24)){
           playHlsWithFallback('https://corsproxy.io/?' + encodeURIComponent(url), true);
         } else {
           wrap.innerHTML = '<div class="error-msg"><h3>Kunde inte spela</h3><p>Prova att byta till Ljud-läge.</p></div>';
@@ -1241,7 +1232,7 @@ function play(url, name, method, referer) {
       vid.addEventListener('loadedmetadata', function(){ clearTimeout(failTimer); });
       vid.addEventListener('error', function(){
         clearTimeout(failTimer);
-        if(!useProxy && isCihan){
+        if(!useProxy && (isCihan || isK24)){
           playHlsWithFallback('https://corsproxy.io/?' + encodeURIComponent(url), true);
         }
       });
@@ -1259,7 +1250,6 @@ function openExternalIframe(url, name) {
 }
 function getAllChannels() {
   if (curFilter && channels[curFilter]) {
-    if (curFilter === 'karwan' && curSub !== 'all') return channels.karwan.filter(function(c){ return c.subgroup === curSub; });
     return channels[curFilter];
   }
   var all = [];
