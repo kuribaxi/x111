@@ -475,39 +475,6 @@
   </main>
 </div>
 <script>
-if (!Array.prototype.flat) {
-  Array.prototype.flat = function(depth) {
-    var d = depth === undefined ? 1 : Math.floor(depth);
-    if (d < 1) return Array.prototype.slice.call(this);
-    return (function flat(arr, d) {
-      return arr.reduce(function(acc, val) {
-        if (Array.isArray(val) && d > 0) return acc.concat(flat(val, d - 1));
-        else { acc.push(val); return acc; }
-      }, []);
-    })(this, d);
-  };
-}
-if (!Object.values) {
-  Object.values = function(obj) {
-    return Object.keys(obj).map(function(k) { return obj[k]; });
-  };
-}
-if (!Array.prototype.findIndex) {
-  Array.prototype.findIndex = function(predicate) {
-    for (var i = 0; i < this.length; i++) {
-      if (predicate(this[i], i, this)) return i;
-    }
-    return -1;
-  };
-}
-if (!Array.prototype.find) {
-  Array.prototype.find = function(predicate) {
-    for (var i = 0; i < this.length; i++) {
-      if (predicate(this[i], i, this)) return this[i];
-    }
-    return undefined;
-  };
-}
 var akhbarRaw = [
   { name: 'Zagros', url: 'https://5a3ed7a72ed4b.streamlock.net/zagrostv/SMIL:myStream.smil/playlist.m3u8', color: 'teal' },
   { name: 'MMN News', url: 'http://mmn.mypsx.net:1935/live/mmnhdnews/playlist.m3u8', color: 'teal' },
@@ -536,7 +503,6 @@ var akhbarRaw = [
   { name: 'Strek tv', url: 'https://karwan.tv/sterk-tv/', method:'iframe', color:'teal' },
   { name: 'Kurdistan', url: 'https://www.kurdistan.tv/', method:'iframe', color: 'teal' },
   { name: 'Ava TV', url: 'https://www.ava.news/livewatch', method:'iframe', color: 'teal' },
-  { name: 'Speda', url: 'https://www.speda.net/tv1/', method:'iframe', color: 'teal' },
 ];
 var musikRaw = [
   { name: '4 Kurd', url: 'https://4kuhls.persiana.live/hls/stream.m3u8', color: 'teal' },
@@ -556,13 +522,12 @@ var minalRaw = [
   { name: 'Zarok Kurmanci', url: 'https://zindikurmanci.zaroktv.com.tr/hls/0/stream.m3u8', color: 'blue' },
   { name: 'Zarok Sorani', url: 'https://zindisorani.zaroktv.com.tr/hls/stream.m3u8', color: 'blue' },
   { name: 'MMN Kids', url: 'http://mmn.mypsx.net:1935/live/mmnhdkids/playlist.m3u8', color: 'blue' },
-  { name: 'Znar Kids', url: 'https://karwan.tv/znar-kids/', method:'iframe', color:'blue' },
   { name: 'Spi Kids', url: 'https://live20.bozztv.com/giatv/giatv-spikids4k2025/spikids4k2025/chunks.m3u8', color:'blue' },
   { name: 'One Kids', url: 'https://karwan.tv/one-kids/', method:'iframe', color:'blue' },
+  { name: 'Znar Kids', url: 'https://karwan.tv/znar-kids/', method:'iframe', color:'blue' },
 ];
 var filmRaw = [
   { name: 'Speda Drama', url: 'https://www.speda.net/tv2/', method:'iframe', color: 'purple' },
-  { name: 'StreamIMDB', url: 'https://streamimdb.ru/', method:'iframe', color: 'purple' },
   {name: 'Infinity TV', url: 'https://karwan.tv/infinity-tv/', method:'iframe', color:'purple' },
   { name: 'Befrin TV', url: 'https://cdn.karwan.tv/befrin-tv/index.m3u8', color: 'purple' },
   { name: 'MixKurdy', url: 'https://avr.host247.net/live/Mix-kurdy/tracks-v1a1/mono.m3u8', color: 'purple' },
@@ -570,7 +535,7 @@ var filmRaw = [
   { name: 'MMN Movies', url: 'http://mmn.mypsx.net:1935/live/mmnhdmovies/playlist.m3u8', color: 'purple' },
   { name: 'Avar TV', url: 'https://avr.host247.net/live/AvarTv/tracks-v1a1/mono.m3u8', color: 'purple' },
   { name: 'Khak TV', url: 'http://bblserver.ddns.net:1935/stream/khakhd/playlist.m3u8', color: 'purple' },
-  { name: 'Cihan TV', url: 'https://www.cihanhd.com/playlist', method:'hls', color: 'purple', isCihan: true },
+  { name: 'Cihan TV', url: 'https://kurdtvs.net/channels.php?slug=cihan-tv-hd', method:'external', color: 'purple' },
   { name: 'UTV Hawler', url: 'https://utvhawler.net/index.htm', method:'iframe', color: 'purple' },
   { name: 'Soran Entertainment', url: 'https://karwan.tv/soran-entertainment-tv/', method:'iframe', color:'purple' },
   { name: 'Barin Movies', url: 'https://karwan.tv/barin-movies/', method:'iframe', color:'purple' },
@@ -582,6 +547,7 @@ var filmRaw = [
 ];
 var diniRaw = [
   { name: 'Amozhgary', url: 'https://app-live.org/live/3268334b/index.m3u8', color: 'blue' },
+  { name: 'Qalam', url: 'https://app-live.org/live/3268334b/index.m3u8', method:'iframe', color: 'blue' },
   { name: 'Shar', url: 'https://live20.bozztv.com/giatv/giatv-sharqurantv/sharqurantv/chunks.m3u8', color: 'blue' },
   { name: 'Esra TV2', url: 'https://live20.bozztv.com/giatv/giatv-esra2hd_kamalblbas/esra2hd_kamalblbas/chunks.m3u8', color: 'blue' },
   { name: 'MMN Quran', url: 'http://mmn.mypsx.net:1935/live/mmnhdquran/playlist.m3u8', color: 'blue' },
@@ -721,8 +687,7 @@ var CLOUDFLARE_DOMAINS = ['karwan.tv', 'speda.net', 'ava.news', 'cihanhd.com', '
 function isCloudflareProtected(url) {
   return CLOUDFLARE_DOMAINS.some(function(d) { return url.indexOf(d) !== -1; });
 }
-var MANUAL_DIRECT_LINKS = {
-};
+var MANUAL_DIRECT_LINKS = {};
 function normalizeChannelUrl(u) {
   return String(u).trim().replace(/\/+$/, '').toLowerCase();
 }
@@ -870,7 +835,7 @@ function extractCandidateLinks(text) {
   }
   var dataSrcRegex = /data-(?:src|stream|hls|url)=["']([^"']+\.m3u8[^"']*)["']/gi;
   while ((m = dataSrcRegex.exec(text)) !== null) candidates.push(m[1]);
-  var atobRegex = /atob\(\s*["']([A-Za-z0-9+/=]{16,})["']\s*\)/g;
+  var atobRegex = /atob\(\s*["']([A-Za-z0-9+\/=]{16,})["']\s*\)/g;
   while ((m = atobRegex.exec(text)) !== null) {
     try {
       var decoded = atob(m[1]);
@@ -1041,8 +1006,10 @@ function row(ch, idx, catKey) {
   var badge = '';
   if (m === 'iframe') badge = ' <span class="tag">live</span>';
   else if (m === 'audio') badge = ' <span class="tag">radio</span>';
+  else if (m === 'external') badge = ' <span class="tag">extern</span>';
   else badge = ' <span class="tag">hls</span>';
-  if (isCloudflareProtected(ch.url)) badge += ' <span class="tag">direkt/cf</span>';
+  if (m === 'external') badge += ' <span class="tag">kurdtvs</span>';
+  else if (isCloudflareProtected(ch.url)) badge += ' <span class="tag">direkt/cf</span>';
   var isFav = favs.some(function(f){ return f.url === ch.url; });
   var star = isFav ? '&#9733;' : '&#9734;';
   var favClass = isFav ? 'fav-btn is-fav' : 'fav-btn';
@@ -1159,6 +1126,24 @@ function play(url, name, method, referer) {
   var isDirect = isDirectStream(method);
   showModeSwitcher(isDirect);
   if (isDirect) updateModeSwitcherUI();
+
+  if (method === 'external' || url.indexOf('kurdtvs.net') !== -1) {
+    wrap.innerHTML =
+      '<div class="extract-box">' +
+        '<div style="font-size:3rem;margin-bottom:12px">📺</div>' +
+        '<div style="color:#4ecca3;font-weight:bold;font-size:1.3rem;margin-bottom:8px">' + escapeHtml(name) + '</div>' +
+        '<div style="font-size:0.9rem;opacity:0.8;margin-bottom:20px">Öppnas externt på kurdtvs.net</div>' +
+        '<div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">' +
+          '<button class="btn primary" style="padding:12px 28px;font-size:1rem" onclick="window.open(\'' + escapeHtml(url) + '\', \'_blank\')">▶ Öppna Cihan TV nu</button>' +
+          '<button class="btn" style="padding:12px 20px" onclick="openExternalIframe(\'' + escapeHtml(url) + '\',\'' + escapeHtml(name) + '\')">🖥️ Visa inbäddad här</button>' +
+        '</div>' +
+        '<div class="extract-log" style="margin-top:18px">' + escapeHtml(url) + '</div>' +
+      '</div>';
+    window.open(url, '_blank');
+    render(curFilter, curSub);
+    return;
+  }
+
   if (method === 'audio') {
     if (!jsEnabled) {
       window.open(url, '_blank');
@@ -1210,29 +1195,23 @@ function play(url, name, method, referer) {
     render(curFilter, curSub);
     return;
   }
-  // Special handling for Cihan - try direct first, then proxy if cert fails
   var isCihan = url.indexOf('cihanhd.com') !== -1;
   function playHlsWithFallback(targetUrl, useProxy) {
     var displayUrl = useProxy ? 'Proxy: ' + targetUrl : targetUrl;
     wrap.innerHTML = '<video id="vplayer" controls autoplay style="width:100%;height:100%;"></video><div style="position:absolute;top:8px;left:8px;background:#0f2a1e;border:1px solid #4ecca3;color:#4ecca3;font-size:0.65rem;padding:3px 8px;border-radius:12px;">' + (useProxy ? 'PROXY HLS' : 'DIREKT HLS') + '</div><div class="extract-log" style="position:absolute;bottom:8px;left:8px;right:8px;">' + escapeHtml(displayUrl) + '</div>';
     var vid = document.getElementById('vplayer');
-    var failed = false;
     var failTimer = setTimeout(function(){
       if(!vid || vid.readyState >= 1) return;
       if(isCihan && !useProxy){
-        console.log('Cihan direkt fail, testar proxy...');
         playHlsWithFallback('https://corsproxy.io/?' + encodeURIComponent(targetUrl), true);
       } else {
-        wrap.innerHTML = '<div class="error-msg"><h3>⚠ Kunde inte spela ' + escapeHtml(name) + '</h3><p style="font-size:0.8rem;margin-top:8px">URL: ' + escapeHtml(targetUrl) + '</p><p style="font-size:0.8rem;margin-top:6px">Testa JS AV-läge eller öppna direkt i LG Browser: <br><code>' + escapeHtml(url) + '</code></p><button class="btn primary" style="margin-top:12px" onclick="window.open(\'' + escapeHtml(url) + '\', \'_blank\')">Öppna i ny flik (Brave Shields AV)</button><button class="btn" style="margin-top:12px" onclick="playHlsWithFallback(\'https://api.allorigins.win/raw?url=' + encodeURIComponent(url) + '\', true)">Prova AllOrigins proxy</button></div>';
+        wrap.innerHTML = '<div class="error-msg"><h3>⚠ Kunde inte spela ' + escapeHtml(name) + '</h3><p style="font-size:0.8rem;margin-top:8px">URL: ' + escapeHtml(targetUrl) + '</p><p style="font-size:0.8rem;margin-top:6px">Testa JS AV-läge</p><button class="btn primary" style="margin-top:12px" onclick="window.open(\'' + escapeHtml(url) + '\', \'_blank\')">Öppna i ny flik</button></div>';
       }
     }, 6000);
     if (typeof Hls !== 'undefined' && Hls.isSupported() && jsEnabled) {
       hlsInst = new Hls({ 
         enableWorker: false,
-        xhrSetup: function(xhr, u){
-          // Försök kringgå CORS för cihanhd
-          xhr.withCredentials = false;
-        }
+        xhrSetup: function(xhr, u){ xhr.withCredentials = false; }
       });
       hlsInst.loadSource(targetUrl);
       hlsInst.attachMedia(vid);
@@ -1276,6 +1255,10 @@ function play(url, name, method, referer) {
   }
   playHlsWithFallback(url, false);
   render(curFilter, curSub);
+}
+function openExternalIframe(url, name) {
+  var wrap = document.getElementById('vwrap');
+  wrap.innerHTML = '<div style="width:100%;height:100%;display:flex;flex-direction:column"><div style="padding:8px;background:#0f212e;display:flex;justify-content:space-between;align-items:center"><span style="color:#4ecca3;font-size:0.8rem">' + escapeHtml(name) + ' - extern sida</span><button class="btn primary" onclick="window.open(\'' + escapeHtml(url) + '\', \'_blank\')">Öppna i ny flik</button></div><iframe src="' + escapeHtml(url) + '" style="flex:1;width:100%;border:none;background:#fff" allowfullscreen sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-presentation"></iframe></div>';
 }
 function getAllChannels() {
   if (curFilter && channels[curFilter]) {
