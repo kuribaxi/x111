@@ -587,7 +587,10 @@ var RadioRaw = [
   { name: 'Kurdland',  url: 'http://radio.kurdland.net/mp3', method:'hls',   color:'cyan' },
   { name: 'Mihrab MP3',    url: 'http://siliconvalley.servep2p.com:8000/mihrab',                          method:'audio', color:'cyan' },
   { name: 'Ava Radio',     url: 'https://ava.holan.it.com/;?type=http&nocache=1',                         method:'audio', color:'cyan' },
-  { name: 'Mahabad Radio',     url: 'http://s0.cdn1.iranseda.ir:1935/liveedgeprovincial/radio-mahabad/playlist.m3u8',       method:'audio', color:'cyan' }
+  { name: 'Mahabad Radio',     url: 'http://s0.cdn1.iranseda.ir:1935/liveedgeprovincial/radio-mahabad/playlist.m3u8', method:'audio', color:'cyan' },
+  { name: 'Mahabad Radio', url: 'https://sepehrtv.ir/live/radiomahabad', method:'iframe', color:'cyan' },
+  { name: 'Sine Radio, url: 'https://sepehrtv.ir/live/radiokordestan', method:'iframe', color:'cyan' },
+  { name: 'Sahar Radio, url: 'https://sepehrtv.ir/live/r-world5', method:'iframe', color:'cyan' },
 ];
 function loadOrder(cat) { try { var o = localStorage.getItem('order_'+cat); return o ? JSON.parse(o) : null; } catch(e) { return null; } }
 function saveOrder(cat, arr) { localStorage.setItem('order_'+cat, JSON.stringify(arr.map(function(c){ return c.url; }))); }
