@@ -552,7 +552,7 @@ var akhbarRaw = [
   { name: 'Ronahi', url: 'https://hlspackager.akamaized.net/live/DB/RONAHI_TV/HLS/RONAHI_TV.m3u8', color: 'teal' },
   { name: 'Payam TV', url: 'https://media2.streambrothers.com:1936/8218/8218/chunklist_w1239498607.m3u8', color: 'teal' },
   { name: 'Kurdistan24', url: 'https://www.kurdistan24.net/en/live', method:'iframe', color: 'teal' },
-  { name: 'Kurdistan24', url: 'https://kurdtvs.net/channels.php?slug=kurdistan24-tv', method:'external', color: 'teal' },
+  { name: 'Kurdistan24 (external)', url: 'https://kurdtvs.net/channels.php?slug=kurdistan24-tv', method:'external', color: 'teal' },
   { name: 'Kurdistan24 (ParsaTV sida)', url: 'https://www.parsatv.com/name=Kurdistan-24#kurdish', method:'iframe', color: 'teal' },
   { name: 'Nuce tv', url: 'https://karwan.tv/nuce-tv/', method:'iframe', color:'teal' },
   { name: 'Welat TV', url: 'https://karwan.tv/welat-tv/', method:'iframe', color:'teal' },
@@ -597,7 +597,7 @@ var filmRaw = [
   { name: 'Avar TV', url: 'https://avr.host247.net/live/AvarTv/tracks-v1a1/mono.m3u8', color: 'purple' },
   { name: 'Khak TV', url: 'http://bblserver.ddns.net:1935/stream/khakhd/playlist.m3u8', color: 'purple' },
   { name: 'Cihan TV', url: 'https://www.cihanhd.com/', method:'iframe', color: 'purple' },
-  { name: 'Cihan TV', url: 'https://kurdtvs.net/channels.php?slug=cihan-tv-hd', method:'external', color: 'purple' },
+  { name: 'Cihan TV (external)', url: 'https://kurdtvs.net/channels.php?slug=cihan-tv-hd', method:'external', color: 'purple' },
   { name: 'UTV Hawler', url: 'https://utvhawler.net/index.htm', method:'iframe', color: 'purple' },
   { name: 'Soran Entertainment', url: 'https://karwan.tv/soran-entertainment-tv/', method:'iframe', color:'purple' },
   { name: 'Barin Movies', url: 'https://karwan.tv/barin-movies/', method:'iframe', color:'purple' },
@@ -765,25 +765,11 @@ function updateModeSwitcherUI() {
 }
 
 // ========== CLOUDFLARE-BYPASS EXTRACTOR ==========
-// Domäner som kräver Cloudflare-godkännande / inte funkar bra i iframe.
-// Lägg till fler domäner här om fler kanaler behöver samma fix.
 var CLOUDFLARE_DOMAINS = ['karwan.tv', 'speda.net', 'ava.news'];
 function isCloudflareProtected(url) {
   return CLOUDFLARE_DOMAINS.some(function(d) { return url.indexOf(d) !== -1; });
 }
 
-// ========== MANUELL ÖVERSTYRNINGSLISTA ==========
-// Om du hittar en kanals RIKTIGA direkta .m3u8-länk (t.ex. genom att öppna
-// kanalsidan i Chrome på datorn, trycka F12 -> fliken "Network", filtrera på
-// "m3u8" och spela upp kanalen) - klistra in den här. Då slipper den kanalen
-// all gissning/proxy-extraktion och spelas direkt, snabbt och pålitligt varje
-// gång, oavsett om proxies är nere.
-//
-// Format: nyckeln är kanalens sid-URL (exakt som i kanallistan), värdet är
-// den riktiga .m3u8-länken.
-//
-// Exempel (kommenterat bort tills en riktig länk finns):
-// 'https://karwan.tv/niroj-tv/': 'https://exempel-cdn.se/niroj/index.m3u8',
 var MANUAL_DIRECT_LINKS = {
 };
 
@@ -803,8 +789,6 @@ function findManualLink(pageUrl) {
 
 function playWithExtractor(pageUrl, name) {
   var wrap = document.getElementById('vwrap');
-
-  // Steg 0: manuell överstyrning - snabbast och mest pålitligt om den finns.
   var manual = findManualLink(pageUrl);
   if (manual) {
     playDirectHLS(manual, name);
@@ -824,9 +808,6 @@ function playWithExtractor(pageUrl, name) {
       '</div>' +
     '</div>';
 
-  // Kända direkta CDN-mönster för karwan.tv-slugs. Fungerar sällan (karwan.tv
-  // kör faktiskt alla kanaler genom en generisk /embed/{id}/-sida, inte per-
-  // kanal CDN-URL:er), men kostar inget extra att testa snabbt innan proxy.
   var knownPatterns = [];
   if (pageUrl.indexOf('karwan.tv') !== -1) {
     var slug = pageUrl.replace(/^https?:\/\/karwan\.tv\//, '').replace(/\/$/, '').split('/')[0].split('?')[0];
@@ -838,9 +819,6 @@ function playWithExtractor(pageUrl, name) {
     ];
   }
 
-  // Flera proxies som fallback. "jina" kör sidan genom en tjänst som faktiskt
-  // exekverar JavaScript (till skillnad från de andra som bara hämtar rå
-  // HTML), vilket kan hitta länkar som byggs dynamiskt av sidans egen JS.
   var proxies = [
     'jina',
     'https://api.allorigins.win/raw?url=',
@@ -943,9 +921,6 @@ function playDirectHLS(hlsUrl, name) {
   }
 }
 
-// Letar igenom hämtad HTML/text efter troliga stream-länkar via flera
-// mönster (inte bara rena https://...m3u8-strängar), samt dekodar base64-
-// strängar som skickas till atob() ifall länken är obfuskerad så.
 function extractCandidateLinks(text) {
   var candidates = [];
   var m;
@@ -967,7 +942,7 @@ function extractCandidateLinks(text) {
       var decoded = atob(m[1]);
       var innerMatch = decoded.match(/https?:\/\/[^"'\s\\<>]+\.m3u8[^"'\s\\<>]*/i);
       if (innerMatch) candidates.push(innerMatch[0]);
-    } catch (e) { /* inte giltig base64, ignorera */ }
+    } catch (e) { }
   }
 
   candidates = candidates.map(function(u) { return u.replace(/\\\//g, '/').replace(/\\/g, ''); });
@@ -977,8 +952,6 @@ function extractCandidateLinks(text) {
   return out;
 }
 
-// Letar efter länkar till karwan.tv:s generiska embed-sida (/embed/{id}/),
-// som all kanalinformation faktiskt går via bakom kulisserna.
 function extractEmbedLinks(text) {
   var out = [];
   var m;
@@ -995,14 +968,13 @@ function tryProxyExtraction(pageUrl, proxies, idx, statusEl, logEl, name, depth)
   depth = depth || 0;
   if (idx >= proxies.length) {
     if (depth === 0) {
-      statusEl.textContent = '⚠️ Kunde inte extrahera direkt - visa fallback';
+      statusEl.textContent = '⚠ Kunde inte extrahera direkt - visa fallback';
       logEl.textContent = 'Alla proxies misslyckades. Prova iframe eller helskärm.';
     }
     return;
   }
-  // Stoppa oändlig rekursion om embed-länkar pekar i cirklar.
   if (depth > 2) {
-    statusEl.textContent = '⚠️ Kunde inte extrahera direkt - visa fallback';
+    statusEl.textContent = '⚠ Kunde inte extrahera direkt - visa fallback';
     logEl.textContent = 'För många omdirigeringar. Prova iframe eller helskärm.';
     return;
   }
@@ -1043,15 +1015,11 @@ function forceIframe(url, name) {
   wrap.innerHTML = '<div style="width:100%;height:100%;display:flex;flex-direction:column"><div style="padding:8px;background:#0f212e;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px"><span style="color:#4ecca3;font-size:0.8rem">' + escapeHtml(name) + ' - iframe läge</span><div style="display:flex;gap:6px;flex-wrap:wrap">' + (isTV() ? '' : '<button class="btn" onclick="copyLinkToClipboard(\'' + escapeHtml(url) + '\', this)">📋 Kopiera länk</button>') + '<button class="btn purple" onclick="approveTop(\'' + escapeHtml(url) + '\')">✅ Godkänn Cloudflare helskärm</button></div></div><iframe src="' + escapeHtml(url) + '?_=' + bust + '" style="flex:1;width:100%;border:none;background:#fff" allowfullscreen sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-presentation"></iframe></div>';
 }
 
-// Fjärrkontroll-vänlig bekräftelse (ersätter window.confirm som inte alltid
-// är pålitlig/navigerbar med D-pad på smart-TV-webbläsare). Stora knappar,
-// tydliga numrerade steg, och autofokus så OK-knappen på fjärrkontrollen
-// direkt träffar "Fortsätt".
 function approveTop(url) {
   var wrap = document.getElementById('vwrap');
   wrap.innerHTML =
     '<div class="extract-box">' +
-      '<div style="font-size:2.2rem;margin-bottom:8px">☁️</div>' +
+      '<div style="font-size:2.2rem;margin-bottom:8px">☁</div>' +
       '<div style="color:#4ecca3;font-weight:bold;font-size:1.05rem;margin-bottom:10px">Cloudflare-godkännande krävs</div>' +
       '<div style="font-size:0.85rem;opacity:0.85;max-width:420px;line-height:1.6;text-align:left">' +
         '1. Tryck <b>Fortsätt</b> nedan<br>' +
@@ -1059,8 +1027,8 @@ function approveTop(url) {
         '3. Tryck <b>bakåt-knappen</b> på fjärrkontrollen för att komma tillbaka hit' +
       '</div>' +
       '<div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center">' +
-        '<button id="approveContinueBtn" class="btn primary" onclick="window.location.href=\'' + escapeHtml(url) + '\'" style="font-size:1rem;padding:12px 26px;">▶️ Fortsätt</button>' +
-        '<button class="btn" onclick="cancelApproveTop()" style="font-size:1rem;padding:12px 26px;">✖️ Avbryt</button>' +
+        '<button id="approveContinueBtn" class="btn primary" onclick="window.location.href=\'' + escapeHtml(url) + '\'" style="font-size:1rem;padding:12px 26px;">▶ Fortsätt</button>' +
+        '<button class="btn" onclick="cancelApproveTop()" style="font-size:1rem;padding:12px 26px;">✖ Avbryt</button>' +
       '</div>' +
     '</div>';
   var btn = document.getElementById('approveContinueBtn');
@@ -1156,6 +1124,7 @@ function row(ch, idx, catKey) {
   var badge = '';
   if (m === 'iframe') badge = ' <span class="tag">live</span>';
   else if (m === 'audio') badge = ' <span class="tag">radio</span>';
+  else if (m === 'external') badge = ' <span class="tag">extern länk</span>';
   else badge = ' <span class="tag">hls</span>';
   if (isCloudflareProtected(ch.url)) badge += ' <span class="tag">direkt/cf</span>';
   var isFav = favs.some(function(f){ return f.url === ch.url; });
@@ -1169,18 +1138,15 @@ function escapeHtml(str) {
   return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
 
-// ========== ENHETSDETEKTERING (TV / fjärrkontroll utan klistra-in) ==========
 function isTV() {
   return /Web0S|webOS|LG Browser|Large Screen|SmartTV|Tizen|SMART-TV|HbbTV|NetCast|GoogleTV|AppleTV|Roku|Viera|BRAVIA|CrKey/i.test(navigator.userAgent);
 }
 
-// Kopiera länk till urklipp - endast meningsfullt på enheter som faktiskt
-// kan klistra in någonstans (telefon, dator). Visas inte på TV.
 function copyLinkToClipboard(url, btnEl) {
   function showCopied(ok) {
     if (!btnEl) return;
     var original = btnEl.textContent;
-    btnEl.textContent = ok ? '✅ Kopierad!' : '⚠️ Kunde inte kopiera';
+    btnEl.textContent = ok ? '✅ Kopierad!' : '⚠ Kunde inte kopiera';
     setTimeout(function() { btnEl.textContent = original; }, 2000);
   }
   if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -1275,7 +1241,7 @@ function attachChannelEvents() {
   }
 }
 
-// ========== PLAY ==========
+// ========== PLAY - FIXED FOR EXTERNAL ==========
 function play(url, name, method, referer) {
   if (window.innerWidth <= 768) document.getElementById('channel-list').classList.remove('show');
   cur = { url: url, name: name, method: method, referer: referer };
@@ -1287,7 +1253,29 @@ function play(url, name, method, referer) {
   showModeSwitcher(isDirect);
   if (isDirect) updateModeSwitcherUI();
 
-  // ----- AUDIO (direkta radio-streams: MP3, AAC, Icecast) -----
+  // ----- FIX: EXTERNAL METHOD -----
+  if (method === 'external') {
+    // Försök öppna i ny flik direkt (måste vara från user gesture)
+    var win = window.open(url, '_blank');
+    var blocked = !win || win.closed || typeof win.closed === 'undefined';
+    
+    wrap.innerHTML =
+      '<div class="extract-box">' +
+        '<div style="font-size:3rem;margin-bottom:12px">🔗</div>' +
+        '<div class="audio-only-name">' + escapeHtml(name) + '</div>' +
+        '<div style="font-size:0.85rem;opacity:0.8;margin:10px 0;max-width:420px">Denna kanal kan inte bäddas in och måste öppnas på sin egen sida (kurdtvs.net blockerar iframe).</div>' +
+        (blocked ? '<div style="background:#ff444433;border:1px solid #ff4444;padding:8px 14px;border-radius:20px;font-size:0.8rem;margin:8px 0">⚠ Popup blockerades - klicka på knappen nedan</div>' : '<div style="background:#4ecca333;border:1px solid #4ecca3;padding:8px 14px;border-radius:20px;font-size:0.8rem;margin:8px 0;color:#4ecca3">✅ Öppnad i ny flik</div>') +
+        '<div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center">' +
+          '<a href="' + escapeHtml(url) + '" target="_blank" rel="noopener" class="btn primary" style="text-decoration:none;font-size:0.95rem;padding:10px 22px;display:inline-block">▶ Öppna ' + escapeHtml(name) + ' i ny flik</a>' +
+          '<button class="btn" onclick="copyLinkToClipboard(\'' + escapeHtml(url) + '\', this)">📋 Kopiera länk</button>' +
+        '</div>' +
+        '<div class="extract-log" style="margin-top:14px">' + escapeHtml(url) + '</div>' +
+      '</div>';
+    render(curFilter, curSub);
+    return;
+  }
+
+  // ----- AUDIO -----
   if (method === 'audio') {
     if (!jsEnabled) {
       window.open(url, '_blank');
@@ -1322,9 +1310,6 @@ function play(url, name, method, referer) {
 
   // ----- IFRAME -----
   if (method === 'iframe') {
-    // Kanaler på Cloudflare-skyddade domäner (karwan.tv, speda.net, ava.news, ...)
-    // körs genom extraktorn som försöker hitta en direkt HLS-länk och spela
-    // den utan Cloudflare-verifiering, med iframe/helskärm som fallback.
     if (isCloudflareProtected(url) && jsEnabled) {
       playWithExtractor(url, name);
       render(curFilter, curSub);
@@ -1500,7 +1485,6 @@ function initClock() {
   updateDigital(); drawAnalog();
 }
 
-// ========== DATUM — säker för gamla iOS ==========
 function updateDateByCalendar() {
   var cal = document.getElementById('calendarSelect').value;
   var now = new Date();
@@ -1531,7 +1515,6 @@ function updateDateByCalendar() {
   document.getElementById('dateDisplay').innerHTML = formatted;
 }
 
-// ========== VÄDER ==========
 function fetchWeather() {
   var city = document.getElementById('cityInput').value.trim();
   var country = document.getElementById('countryInput').value.trim();
@@ -1568,7 +1551,6 @@ function fetchWeather() {
     });
 }
 
-// ========== INIT ==========
 document.addEventListener('DOMContentLoaded', function() {
   initClock();
   document.getElementById('calendarSelect').addEventListener('change', updateDateByCalendar);
