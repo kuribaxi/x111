@@ -457,7 +457,7 @@ function play(url,name,method){
     document.getElementById('vplayer').play().catch(function(){});
     render(curFilter); return;
   }
-  if(method==='iframe'){
+  if(method==='iframe'){ // FIXED: Infinity, Karwan etc öppnas direkt i iframe utan extractor
     var isSepehr = url.includes('sepehr') || url.includes('telewebion') || name.toLowerCase().includes('sepehr') || name.toLowerCase().includes('sahar') || name.toLowerCase().includes('kordestan') || name.toLowerCase().includes('mahabad');
     var sepehrBadge = isSepehr ? '<div style="position:absolute;top:10px;left:10px;background:linear-gradient(135deg,#4ecca3,#2a8a68);color:#000;padding:4px 10px;border-radius:20px;font-size:0.7rem;font-weight:800;z-index:10;">✅ Sepehr FIXED</div>' : '';
     wrap.innerHTML=sepehrBadge+'<iframe id="iframePlayer" src="'+escapeHtml(url)+'" allowfullscreen allow="autoplay; fullscreen; picture-in-picture" style="width:100%;height:100%;border:none;"></iframe><div class="iframe-overlay"><button class="btn" onclick="setPlayMode(\'audio\')">🎵 Ljud-läge</button><button class="btn newtab" onclick="openCurrentNewTab()">↗ Ny flik</button><button class="btn" onclick="reload()">🔄 Ladda om</button></div>';
@@ -692,5 +692,3 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 render(null);
 </script>
-</body>
-</html>
