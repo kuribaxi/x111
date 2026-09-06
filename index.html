@@ -253,11 +253,11 @@ var hevalRaw = [
   { name: 'Strek tv', url: 'https://karwan.tv/sterk-tv/', method:'iframe', color:'teal' },
   { name: 'Rojhelat TV', url: 'https://karwan.tv/rojhelat-tv', method:'iframe', color:'teal' },
   { name: 'Sahar', url: 'https://cdnw.telewebion.com/sahar/live/playlist.m3u8', color: 'teal' },
-  { name: 'Sahar (Sepehr)', url: 'https://sepehrtv.ir/live/sahar3/', method:'iframe', color:'teal' },
-  { name: 'Mahabad', url: 'https://sepehrtv.ir/live/mahabad', color: 'teal' },
-  { name: 'Mahabad (backup)', url: 'https://corsply-v0s4.cfcross.workers.dev/?url=https://live-aburayhan1110.telewebion.ir/ek/mahabad/live/720p/index.m3u8', color: 'teal' },
-  { name: 'Sine', url: 'https://sepehrtv.ir/live/kordestan', method:'iframe', color:'teal' },
-  { name: 'Sine (Backup)', url: 'https://corsply-v0s4.cfcross.workers.dev/?url=https://live-aburayhan1108.telewebion.ir/ek/kordestan/live/720p/index.m3u8', color:'teal' },
+  { name: 'Sahar (Sepehr)', url: 'https://sepehrtv.ir/live/sahar3/', method:'external', color:'teal' },
+  { name: 'Mahabad', url: 'https://cdnw.telewebion.com/mahabad/live/playlist.m3u8', color: 'teal' },
+  { name: 'Mahabad (backup)', url: 'https://m3u8.telewebion.com/mahabad/live/playlist.m3u8', color: 'teal' },
+  { name: 'Sine', url: 'https://cdnw.telewebion.com/kordestan/live/playlist.m3u8', color: 'teal' },
+  { name: 'Sine (Backup 2)', url: 'https://m3u8.telewebion.com/kordestan/live/playlist.m3u8', color: 'teal' },
   { name: 'Zagros', url: 'https://5a3ed7a72ed4b.streamlock.net/zagrostv/SMIL:myStream.smil/playlist.m3u8', color: 'teal' },
   { name: 'Kurdistan', url: 'https://www.kurdistan.tv/', method:'iframe', color: 'teal' },
 ];
@@ -360,9 +360,9 @@ var RadioRaw = [
   { name: 'Mihrab MP3', url: 'http://siliconvalley.servep2p.com:8000/mihrab', method:'audio', color:'cyan' },
   { name: 'Ava Radio', url: 'https://ava.holan.it.com/;?type=http&nocache=1', method:'audio', color:'cyan' },
   { name: 'Mahabad Radio', url: 'http://s0.cdn1.iranseda.ir:1935/liveedgeprovincial/radio-mahabad/playlist.m3u8', method:'audio', color:'cyan' },
-  { name: 'Mahabad Radio Live', url: 'https://sepehrtv.ir/live/radiomahabad', method:'iframe', color:'cyan' },
-  { name: 'Sine Radio', url: 'https://sepehrtv.ir/live/radiokordestan', method:'iframe', color:'cyan' },
-  { name: 'Sahar Radio', url: 'https://sepehrtv.ir/live/r-world5', method:'iframe', color:'cyan' },
+  { name: 'Mahabad Radio Live', url: 'https://ncdn.telewebion.com/mahabad/live/playlist.m3u8', color: 'teal' },
+  { name: 'Sine Radio', url: 'https://ncdn.telewebion.com/kordestan/live/playlist.m3u8', color: 'teal' },
+  { name: 'Sahar Radio', url: 'https://ncdn.telewebion.com/sahar/live/playlist.m3u8', color: 'teal' },
 ];
 
 var channels = {
@@ -800,3 +800,5 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 render(null);
 </script>
+</body>
+</html>
