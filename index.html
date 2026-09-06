@@ -199,6 +199,32 @@ video,iframe{width:100%;height:100%;object-fit:contain;border:none;background:bl
 
 <script>
 
+
+// ===== FIX: Infinity och liknande Karwan kanaler - PROXY DIREKT I PLAYER =====
+// Tidigare öppnades karwan.tv via https://cdn.karwan.tv/{slug}/index.m3u8 direkt som HLS i playern
+// Detta är den riktiga direkta länken, inte iframe
+function getKarwanDirectCDN(karwanUrl){
+  try{
+    var clean = karwanUrl.replace(/\/+$/,'').split('?')[0].split('#')[0];
+    var parts = clean.split('/').filter(function(p){return p;});
+    var slug = parts[parts.length-1].toLowerCase();
+    // Special mappings
+    var map = {
+      'ranya-city':'ranya-city',
+      'nalia-tv':'nalia-tv',
+      'znar-tv':'znar-tv',
+      'infinity-tv':'infinity-tv',
+      'barin-movies':'barin-movies',
+      'bnar-movies':'bnar-movies',
+      'red-tv':'red-tv',
+      'niroj-tv':'niroj-tv'
+    };
+    slug = map[slug] || slug;
+    return 'https://cdn.karwan.tv/' + slug + '/index.m3u8';
+  }catch(e){ return null; }
+}
+var KARWAN_CDN_CACHE = {};
+
 var hevalRaw = [
   { name: 'Kurdistan TV', url: 'https://5a3ed7a72ed4b.streamlock.net/live/SMIL:myStream.smil/playlist.m3u8', color: 'teal' },
   { name: 'Kurdsat HD', url: 'https://hlspackager.akamaized.net/live/DB/KURDSAT_HD/HLS/KURDSAT_HD.m3u8', color: 'teal' },
@@ -457,7 +483,89 @@ function play(url,name,method){
     document.getElementById('vplayer').play().catch(function(){});
     render(curFilter); return;
   }
-  if(method==='iframe'){ // FIXED: Infinity, Karwan etc öppnas direkt i iframe utan extractor
+  if(method==='iframe'){ // FIXED: Infinity och liknande - PROXY DIREKT I PLAYER via cdn.karwan.tv
+    // Om det är karwan.tv - försök spela direkt HLS i player via cdn.karwan.tv/{slug}/index.m3u8
+    if(url.indexOf('karwan.tv')!==-1){
+      var directCDN = getKarwanDirectCDN(url);
+      if(directCDN){
+        // Visa att vi försöker direkt HLS
+        wrap.innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;background:radial-gradient(ellipse at center,#0f2a35 0%,#000 100%);padding:20px;text-align:center;">'+
+          '<div class="spinner"></div><div style="margin-top:14px;color:#4ecca3;font-weight:bold;">'+escapeHtml(name)+'</div>'+
+          '<div style="font-size:0.8rem;opacity:0.7;margin-top:6px;">🔍 Hämtar direkt länk via proxy...<br><span style="font-size:0.7rem;opacity:0.6;">'+escapeHtml(directCDN)+'</span></div>'+
+          '<div style="margin-top:12px;font-size:0.7rem;opacity:0.5;">Tidigare öppnades direkt i player • Ingen iframe</div></div>';
+        // Försök spela direkt HLS
+        (function(cdn, originalUrl, channelName){
+          var vidId = 'vplayer_karwan_'+Date.now();
+          // Skapa dold video för test
+          var testWrap = document.createElement('div');
+          testWrap.style.display='none';
+          testWrap.innerHTML='<video id="'+vidId+'"></video>';
+          document.body.appendChild(testWrap);
+          var testVid = document.getElementById(vidId);
+          var played = false;
+          var timeout = setTimeout(function(){
+            if(!played){
+              // Fallback till iframe om HLS inte funkar
+              if(testWrap.parentNode) testWrap.parentNode.removeChild(testWrap);
+              wrap.innerHTML='<iframe src="'+escapeHtml(originalUrl)+'" allowfullscreen allow="autoplay; fullscreen; picture-in-picture" style="width:100%;height:100%;border:none;background:#000;"></iframe>'+
+                '<div style="position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,0.7);color:#ff8a4c;padding:4px 10px;border-radius:12px;font-size:0.7rem;">⚠️ Direkt HLS misslyckades • Visar iframe fallback</div>'+
+                '<div class="iframe-overlay"><button class="btn" onclick="setPlayMode(\'audio\')">🎵 Ljud</button><button class="btn newtab" onclick="openCurrentNewTab()">↗ Ny flik</button></div>';
+              render(curFilter);
+            }
+          }, 5000);
+          if(typeof Hls!=='undefined' && Hls.isSupported() && jsEnabled){
+            var tempHls = new Hls({enableWorker:false});
+            tempHls.loadSource(cdn);
+            tempHls.attachMedia(testVid);
+            tempHls.on(Hls.Events.MANIFEST_PARSED, function(){
+              played=true; clearTimeout(timeout);
+              if(testWrap.parentNode) testWrap.parentNode.removeChild(testWrap);
+              tempHls.destroy();
+              // Spela direkt i riktiga playern
+              wrap.innerHTML='<video id="vplayer" controls autoplay playsinline style="width:100%;height:100%;"></video>'+
+                '<div style="position:absolute;top:8px;left:8px;background:linear-gradient(135deg,#4ecca3,#2a8a68);color:#000;padding:4px 10px;border-radius:20px;font-size:0.7rem;font-weight:800;">✅ Direkt HLS via proxy • Ingen iframe • '+escapeHtml(channelName)+'</div>'+
+                '<div style="position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,0.6);padding:3px 8px;border-radius:10px;font-size:0.6rem;">'+escapeHtml(cdn)+'</div>';
+              var vid=document.getElementById('vplayer');
+              destroyPlayers();
+              if(typeof Hls!=='undefined' && Hls.isSupported() && jsEnabled){
+                hlsInst=new Hls({enableWorker:false}); hlsInst.loadSource(cdn); hlsInst.attachMedia(vid);
+                hlsInst.on(Hls.Events.MANIFEST_PARSED,function(){ vid.play().catch(function(){}); });
+              }else{ vid.src=cdn; vid.play().catch(function(){}); }
+              render(curFilter);
+            });
+            tempHls.on(Hls.Events.ERROR, function(ev,data){
+              if(data.fatal){
+                // Fallback till iframe
+                clearTimeout(timeout); played=true;
+                if(testWrap.parentNode) testWrap.parentNode.removeChild(testWrap);
+                tempHls.destroy();
+                wrap.innerHTML='<iframe src="'+escapeHtml(originalUrl)+'" allowfullscreen allow="autoplay; fullscreen; picture-in-picture" style="width:100%;height:100%;border:none;background:#000;"></iframe>'+
+                  '<div style="position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,0.7);color:#ff8a4c;padding:4px 10px;border-radius:12px;font-size:0.7rem;">⚠️ Direkt HLS error • Visar iframe fallback</div>';
+                render(curFilter);
+              }
+            });
+          }else{
+            testVid.src=cdn;
+            testVid.addEventListener('loadedmetadata', function(){
+              played=true; clearTimeout(timeout);
+              if(testWrap.parentNode) testWrap.parentNode.removeChild(testWrap);
+              wrap.innerHTML='<video id="vplayer" controls autoplay playsinline style="width:100%;height:100%;"></video>'+
+                '<div style="position:absolute;top:8px;left:8px;background:linear-gradient(135deg,#4ecca3,#2a8a68);color:#000;padding:4px 10px;border-radius:20px;font-size:0.7rem;font-weight:800;">✅ Direkt HLS via proxy</div>';
+              var vid=document.getElementById('vplayer'); destroyPlayers(); vid.src=cdn; vid.play().catch(function(){});
+              render(curFilter);
+            });
+            testVid.addEventListener('error', function(){
+              clearTimeout(timeout); played=true;
+              if(testWrap.parentNode) testWrap.parentNode.removeChild(testWrap);
+              wrap.innerHTML='<iframe src="'+escapeHtml(originalUrl)+'" allowfullscreen style="width:100%;height:100%;border:none;"></iframe>';
+              render(curFilter);
+            });
+          }
+        })(directCDN, url, name);
+        return;
+      }
+    }
+
     var isSepehr = url.includes('sepehr') || url.includes('telewebion') || name.toLowerCase().includes('sepehr') || name.toLowerCase().includes('sahar') || name.toLowerCase().includes('kordestan') || name.toLowerCase().includes('mahabad');
     var sepehrBadge = isSepehr ? '<div style="position:absolute;top:10px;left:10px;background:linear-gradient(135deg,#4ecca3,#2a8a68);color:#000;padding:4px 10px;border-radius:20px;font-size:0.7rem;font-weight:800;z-index:10;">✅ Sepehr FIXED</div>' : '';
     wrap.innerHTML=sepehrBadge+'<iframe id="iframePlayer" src="'+escapeHtml(url)+'" allowfullscreen allow="autoplay; fullscreen; picture-in-picture" style="width:100%;height:100%;border:none;"></iframe><div class="iframe-overlay"><button class="btn" onclick="setPlayMode(\'audio\')">🎵 Ljud-läge</button><button class="btn newtab" onclick="openCurrentNewTab()">↗ Ny flik</button><button class="btn" onclick="reload()">🔄 Ladda om</button></div>';
