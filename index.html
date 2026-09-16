@@ -26,12 +26,14 @@ body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:linear-gradient(1
 .curtain-handle.closed{border-radius:0 0 22px 22px; animation:handlePulse 2s ease-in-out infinite;}
 @keyframes handlePulse{0%,100%{box-shadow:0 6px 20px rgba(0,0,0,0.5),0 0 0 0 rgba(78,204,163,0.4);}50%{box-shadow:0 6px 20px rgba(0,0,0,0.5),0 0 0 6px rgba(78,204,163,0.15);}}
 
-.quran-bar{background:linear-gradient(135deg,rgba(0,40,30,0.98),rgba(15,60,45,0.98));backdrop-filter:blur(14px);border-bottom:2px solid #4ecca3;padding:20px 22px 16px;text-align:center;position:relative}
+.quran-bar{background:linear-gradient(135deg,rgba(0,40,30,0.98),rgba(15,60,45,0.98));backdrop-filter:blur(14px);border-bottom:2px solid #4ecca3;padding:20px 22px 16px;text-align:center;position:relative;display:block!important;visibility:visible!important;opacity:1!important;min-height:160px}
 .quran-bar::before{content:"﷽";position:absolute;top:4px;left:50%;transform:translateX(-50%);font-size:1.6rem;color:rgba(78,204,163,0.35)}
 .quran-arabic{font-family:'Traditional Arabic','Amiri',serif;font-size:2.2rem;line-height:1.7;color:#a8ffde;text-shadow:0 0 18px rgba(78,204,163,0.6);direction:rtl;margin:22px 0 16px;font-weight:700;cursor:pointer;display:inline-block;padding:6px 14px;border-radius:12px;transition:all 0.15s}
 .quran-arabic:hover{transform:scale(1.03);background:rgba(78,204,163,0.08)}
-.quran-translations{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:10px}
-.quran-box{flex:1 1 280px;max-width:420px;background:rgba(0,0,0,0.35);border:1px solid rgba(78,204,163,0.22);border-radius:16px;padding:14px 16px;line-height:1.6;color:#e6fff3;font-size:1.85rem;font-weight:600;cursor:pointer;transition:all 0.2s}
+.quran-arabic .allah-red{color:#ff6b6b !important;font-weight:800;text-shadow:0 0 8px rgba(255,107,107,0.6)}
+.quran-arabic .harakat-green{color:#4ecca3 !important;font-weight:600;text-shadow:0 0 6px rgba(78,204,163,0.5)}
+.quran-translations{display:flex;flex-wrap:nowrap;justify-content:stretch;gap:12px;margin-top:10px;width:100%}
+.quran-box{flex:1 1 0;max-width:none;width:50%;background:rgba(0,0,0,0.35);border:1px solid rgba(78,204,163,0.22);border-radius:16px;padding:14px 16px;line-height:1.6;color:#e6fff3;font-size:1.5rem;font-weight:600;cursor:pointer;transition:all 0.2s;display:flex;flex-direction:column;min-height:80px}
 .quran-box:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 8px 25px rgba(0,0,0,0.3)}
 .quran-box.so{border-right:4px solid #ff6b9d;direction:rtl;text-align:right}
 .quran-box.ku{border-right:4px solid #4ecca3}
@@ -61,16 +63,16 @@ body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:linear-gradient(1
 .hour-card .h-icon{font-size:1.6rem;margin:6px 0}
 .hour-card .h-temp{font-size:1rem;font-weight:800}
 .hour-card .h-wind{font-size:0.65rem;opacity:0.6;margin-top:2px}
-.info-panel{background:rgba(0,0,0,0.55);backdrop-filter:blur(12px);border-bottom:1px solid #4ecca380;padding:6px 10px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:stretch;gap:6px}
-.clock-date-section,.weather-section{gap:4px;flex:1.4;min-width:280px;justify-content:center;flex-direction:column;padding:5px 8px}
-.clock-date-section{flex:1.1;min-width:280px;justify-content:center;gap:8px;padding:6px 8px}
-.clock-date-inner{display:flex;align-items:center;gap:8px;justify-content:center;flex-wrap:wrap;width:100%}
-.clock-right{display:flex;flex-direction:column;gap:4px;align-items:center;min-width:140px}
+.info-panel{background:rgba(0,0,0,0.55);backdrop-filter:blur(12px);border-bottom:1px solid #4ecca380;padding:14px 18px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:stretch;gap:14px}
+.clock-date-section,.weather-section{gap:10px;flex:1.4;min-width:300px;justify-content:center;flex-direction:column;padding:12px 16px}
+.clock-date-section{flex:1.1;min-width:320px;justify-content:center;gap:14px;padding:14px 20px}
+.clock-date-inner{display:flex;align-items:center;gap:18px;justify-content:center;flex-wrap:wrap;width:100%}
+.clock-right{display:flex;flex-direction:column;gap:12px;align-items:center;min-width:220px}
 .weather-section{gap:10px;flex:1.6;min-width:340px;justify-content:center;flex-direction:column}
-.clock-display{font-family:'Courier New',monospace;font-weight:900;font-size:1.2rem;letter-spacing:1px;background:linear-gradient(145deg,#0f1e24,#162e36);padding:4px 8px;border-radius:8px;color:#4ecca3;text-shadow:0 0 6px #4ecca3aa,0 1px 0 #000;min-width:100px;text-align:center;border:1px solid #4ecca344}
-canvas.analog-canvas{width:66px;height:66px;background:radial-gradient(ellipse at 30% 30%,#1a3a42,#0a1e24);border-radius:50%;box-shadow:0 0 0 1px #4ecca3,0 0 0 3px #0f2a32,0 2px 8px rgba(0,0,0,0.5);display:block!important}
-.date-selector select{background:#1e2f3f;border:1px solid #4ecca3;color:white;padding:3px 8px;border-radius:14px;font-size:0.7rem;cursor:pointer;font-weight:600}
-.date-text{font-weight:700;background:linear-gradient(145deg,#0f1e24,#162e36);padding:4px 8px;border-radius:12px;font-size:0.75rem;text-align:center;line-height:1.2;border:1px solid #4ecca344;color:#e0ffef;min-width:120px}
+.clock-display{font-family:'Courier New',monospace;font-weight:900;font-size:2.4rem;letter-spacing:2px;background:linear-gradient(145deg,#0f1e24,#162e36);padding:10px 20px;border-radius:16px;color:#4ecca3;text-shadow:0 0 10px #4ecca3aa,0 2px 0 #000;min-width:190px;text-align:center;border:1px solid #4ecca344}
+canvas.analog-canvas{width:140px;height:140px;background:radial-gradient(ellipse at 30% 30%,#1a3a42,#0a1e24);border-radius:50%;box-shadow:0 0 0 2px #4ecca3,0 0 0 5px #0f2a32,0 6px 20px rgba(0,0,0,0.6);display:block!important}
+.date-selector select{background:#1e2f3f;border:1px solid #4ecca3;color:white;padding:7px 14px;border-radius:20px;font-size:0.9rem;cursor:pointer;font-weight:600}
+.date-text{font-weight:800;background:linear-gradient(145deg,#0f1e24,#162e36);padding:10px 18px;border-radius:22px;font-size:1.15rem;text-align:center;line-height:1.3;border:1px solid #4ecca344;color:#e0ffef;min-width:210px}
 .weather-input{display:flex;align-items:center;flex-wrap:wrap;gap:3px;justify-content:center}
 .weather-input input{background:#1e2f3f;border:1px solid #4ecca3;padding:3px 8px;border-radius:12px;color:white;font-size:0.7rem;width:70px}
 .weather-btn{background:#2c5f6e;border:none;padding:3px 8px;border-radius:12px;cursor:pointer;color:white;font-weight:bold;font-size:0.65rem}
@@ -85,7 +87,7 @@ canvas.analog-canvas{width:66px;height:66px;background:radial-gradient(ellipse a
 .weather-day .wd-icon{font-size:1.6rem;margin:4px 0}
 .weather-day .wd-temp{font-size:0.85rem;font-weight:800}
 .weather-day .wd-min{font-size:0.7rem;opacity:0.6}
-@media(max-width:1100px){.info-panel{background:rgba(0,0,0,0.55);backdrop-filter:blur(12px);border-bottom:1px solid #4ecca380;padding:6px 10px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:stretch;gap:6px}.clock-date-section,.weather-section{background:rgba(20,40,45,0.75);border-radius:14px;padding:6px 8px;backdrop-filter:blur(8px);box-shadow:0 2px 8px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.05);display:flex;align-items:center;flex-wrap:wrap;border:1px solid rgba(78,204,163,0.15)}}
+@media(max-width:1100px){.info-panel{background:rgba(0,0,0,0.55);backdrop-filter:blur(12px);border-bottom:1px solid #4ecca380;padding:14px 18px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:stretch;gap:14px}.clock-date-section,.weather-section{background:rgba(20,40,45,0.75);border-radius:14px;padding:6px 8px;backdrop-filter:blur(8px);box-shadow:0 2px 8px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.05);display:flex;align-items:center;flex-wrap:wrap;border:1px solid rgba(78,204,163,0.15)}}
 .nav-buttons{display:flex;justify-content:center;flex-wrap:wrap;padding:12px 16px;background:rgba(0,0,0,0.25);border-bottom:1px solid rgba(78,204,163,0.15);position:sticky;top:0;z-index:90;backdrop-filter:blur(10px)}
 .nav-btn{background:#1e2f3f;color:#e0e0e0;border:none;padding:8px 18px;border-radius:40px;cursor:pointer;font-weight:600;transition:all 0.2s ease;font-size:0.9rem;box-shadow:0 1px 3px rgba(0,0,0,0.2);white-space:nowrap;margin:4px 4px}
 .nav-btn:hover,.nav-btn.active{background:#4ecca3;color:#0a1c2a;transform:scale(1.03)}
@@ -118,8 +120,6 @@ video,iframe{width:100%;height:100%;object-fit:contain;border:none;background:bl
 .mode-btn.active{background:#4ecca3;color:#0a1c2a}
 .mode-btn:hover{background:rgba(78,204,163,0.2);color:#fff}
 .iframe-overlay{position:absolute;bottom:12px;left:12px;right:12px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;z-index:5}
-
-/* ===== RADIO PLAYER FROM OLD HTML - RESTORED ===== */
 .radio-player{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;background:radial-gradient(ellipse at center,#0f2a35 0%,#060f14 100%);padding:30px;width:100%}
 .radio-icon{font-size:4rem;animation:pulse 2s ease-in-out infinite;margin-bottom:22px;filter:drop-shadow(0 0 12px #4ecca388)}
 @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.08);opacity:0.85}}
@@ -130,8 +130,6 @@ video,iframe{width:100%;height:100%;object-fit:contain;border:none;background:bl
 .radio-bar:nth-child(1){animation-delay:0.0s}.radio-bar:nth-child(2){animation-delay:0.1s}.radio-bar:nth-child(3){animation-delay:0.2s}.radio-bar:nth-child(4){animation-delay:0.3s}.radio-bar:nth-child(5){animation-delay:0.4s}.radio-bar:nth-child(6){animation-delay:0.3s}.radio-bar:nth-child(7){animation-delay:0.2s}.radio-bar:nth-child(8){animation-delay:0.1s}
 @keyframes barAnim{from{height:6px;opacity:0.4}to{height:36px;opacity:1}}
 .radio-status{font-size:0.82rem;opacity:0.65;letter-spacing:1px}
-
-/* ===== LJUD-LÄGE (HLS -> audio only) - FROM OLD HTML ===== */
 .audio-only-player{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;background:radial-gradient(ellipse at 50% 40%,#0e2a1e 0%,#060f14 100%);padding:30px;width:100%}
 .audio-only-icon{font-size:5rem;animation:spin-slow 8s linear infinite;filter:drop-shadow(0 0 18px #4ecca388);margin-bottom:24px}
 @keyframes spin-slow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
@@ -144,7 +142,6 @@ video,iframe{width:100%;height:100%;object-fit:contain;border:none;background:bl
 .audio-vol-wrap{display:flex;align-items:center;background:#0f2a1e;padding:7px 16px;border-radius:30px;border:1px solid #4ecca344;margin:4px}
 .audio-vol-wrap input[type=range]{accent-color:#4ecca3;width:110px;cursor:pointer;margin-left:8px}
 .audio-info-badge{background:#0f2a1e;border:1px solid #4ecca344;border-radius:20px;padding:5px 14px;font-size:0.75rem;color:#4ecca3aa;letter-spacing:1px;margin:4px}
-
 .extract-box{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;background:radial-gradient(ellipse at center,#0f2a35 0%,#000 100%)}
 .extract-log{font-size:0.7rem;background:#000;padding:8px 12px;border-radius:10px;margin-top:10px;max-width:90%;word-break:break-all;opacity:0.7;border:1px solid #4ecca333}
 .spinner{display:inline-block;width:22px;height:22px;border:3px solid rgba(78,204,163,0.3);border-radius:50%;border-top-color:#4ecca3;animation:spin 0.8s linear infinite;vertical-align:middle}
@@ -417,14 +414,14 @@ function toggleCurtain(){
 }
 function initCurtain(){
   try{
-    var closed=localStorage.getItem('curtain_closed');
-    if(closed==='true'){
-      document.getElementById('topWrapper').classList.add('curtain-closed');
-      document.getElementById('curtainHandle').classList.add('closed');
-      document.getElementById('handleText').textContent='▼ Visa Quran · Klocka · Datum · Väder';
-      document.getElementById('handleIcon').textContent='▼';
-    }
-  }catch(e){}
+    document.getElementById('topWrapper').classList.remove('curtain-closed');
+    document.getElementById('curtainHandle').classList.remove('closed');
+    document.getElementById('handleText').textContent='▲ Dölj Quran · Klocka · Datum · Väder';
+    document.getElementById('handleIcon').textContent='▲';
+    localStorage.setItem('curtain_closed','false');
+  }catch(e){
+    try{ document.getElementById('topWrapper').classList.remove('curtain-closed'); }catch(e2){}
+  }
 }
 function destroyPlayers(){ if(hlsInst){ try{hlsInst.destroy();}catch(e){} hlsInst=null; } }
 function reload(){ if(cur) play(cur.url,cur.name,cur.method,''); }
@@ -467,7 +464,6 @@ function row(ch,hideSub){
 function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 function attachChannelEvents(){ var items=document.querySelectorAll('.channel-item'); for(var i=0;i<items.length;i++){ items[i].addEventListener('click', function(){ play(this.dataset.url,this.dataset.name,this.dataset.method,''); }); } }
 
-// ===== RADIO PLAYER - OLD STYLE RESTORED =====
 function renderRadioPlayer(url, name){
   var wrap=document.getElementById('vwrap');
   wrap.innerHTML=
@@ -487,7 +483,6 @@ function renderRadioPlayer(url, name){
   aud.play().catch(function(){ var rs=wrap.querySelector('.radio-status'); if(rs) rs.textContent='Tryck Play för att starta'; });
 }
 
-// ===== AUDIO-ONLY PLAYER - OLD STYLE RESTORED =====
 function renderAudioOnlyPlayer(url, name){
   var wrap=document.getElementById('vwrap');
   wrap.innerHTML=
@@ -529,7 +524,6 @@ function play(url,name,method){
   var wrap=document.getElementById('vwrap');
   updateModeSwitcherUI();
 
-  // === AUDIO MODE HANDLING - FOR ALL CHANNELS ===
   if(playMode==='audio'){
     if(method==='audio'){
       renderRadioPlayer(url,name);
@@ -555,7 +549,6 @@ function play(url,name,method){
     }
   }
 
-  // === NORMAL TV MODE ===
   if(method==='external'){
     wrap.innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:20px;text-align:center;"><div style="font-size:2.5rem">🔗</div><div style="color:#4ecca3;font-weight:bold;margin:10px 0;">'+escapeHtml(name)+'</div><div style="background:#4ecca333;border:1px solid #4ecca3;padding:8px 14px;border-radius:20px;font-size:0.8rem;color:#4ecca3;">✅ Öppnad i ny flik</div><div style="display:flex;gap:10px;margin-top:14px;"><a href="'+escapeHtml(url)+'" target="_blank" class="btn primary" style="text-decoration:none;padding:10px 20px;display:inline-block;">▶ Öppna igen</a><button class="btn" onclick="setPlayMode(\'audio\')">🎵 Ljud-läge</button></div></div>';
     window.open(url,'_blank');
@@ -768,36 +761,65 @@ async function loadFullQuran(){
   var statusEl=document.getElementById('quranRef');
   try{
     if(statusEl) statusEl.textContent='⏳ Laddar hela Quran (6236 ayat) - slumpmässig per tillfälle...';
-    var arabicP=fetch('https://api.alquran.cloud/v1/quran/quran-uthmani').then(r=>r.json());
-    var englishP=fetch('https://api.alquran.cloud/v1/quran/en.sahih').then(r=>r.json());
+    // Primary: alquran.cloud
+    var arabicP=fetch('https://api.alquran.cloud/v1/quran/quran-uthmani').then(r=>r.json()).catch(()=>null);
+    var englishP=fetch('https://api.alquran.cloud/v1/quran/en.sahih').then(r=>r.json()).catch(()=>null);
     var soraniUrl='https://cdn.jsdelivr.net/gh/alurini/quran-translations@main/data/ku/quran_ku.json';
     var soraniP=fetch(soraniUrl).then(r=>r.json()).catch(()=>null);
     var res=await Promise.all([arabicP, englishP, soraniP]);
     var arabicData=res[0]; var englishData=res[1]; var soraniData=res[2];
-    if(!arabicData || arabicData.code!==200) throw new Error('Kunde inte ladda arabisk Quran');
-    var allAyahs=[]; var surahsAr=arabicData.data.surahs; var surahsEn=(englishData && englishData.code===200)?englishData.data.surahs:null;
-    var soraniMap={}; if(soraniData && Array.isArray(soraniData)){ soraniData.forEach(function(v){ soraniMap[v.surah+':'+v.ayah]=v.text; }); }
-    for(var s=0;s<surahsAr.length;s++){
-      var surahAr=surahsAr[s]; var surahEn=surahsEn?surahsEn[s]:null;
-      var surahNum=surahAr.number; var surahName=surahAr.englishName||'';
-      for(var a=0;a<surahAr.ayahs.length;a++){
-        var ayahAr=surahAr.ayahs[a]; var ayahEn=surahEn && surahEn.ayahs[a] ? surahEn.ayahs[a].text : '';
-        var key=surahNum+':'+ayahAr.numberInSurah;
-        var ayahSo=soraniMap[key]||ayahEn||ayahAr.text;
-        if(surahNum===97 && ayahAr.numberInSurah===2) ayahSo='جا تۆ چی دەزانی شەوی قەدر چییە؟';
-        allAyahs.push({ar:ayahAr.text,so:ayahSo,en:ayahEn||ayahAr.text,ref:buildQuranRef(surahNum,ayahAr.numberInSurah,surahName),surah:surahNum,ayah:ayahAr.numberInSurah});
+    if(arabicData && arabicData.code===200 && arabicData.data && arabicData.data.surahs){
+      var allAyahs=[]; var surahsAr=arabicData.data.surahs; var surahsEn=(englishData && englishData.code===200 && englishData.data)?englishData.data.surahs:null;
+      var soraniMap={}; if(soraniData && Array.isArray(soraniData)){ soraniData.forEach(function(v){ if(v.surah && v.ayah) soraniMap[v.surah+':'+v.ayah]=v.text; }); }
+      for(var s=0;s<surahsAr.length;s++){
+        var surahAr=surahsAr[s]; var surahEn=surahsEn?surahsEn[s]:null;
+        var surahNum=surahAr.number; var surahName=surahAr.englishName||'';
+        for(var a=0;a<surahAr.ayahs.length;a++){
+          var ayahAr=surahAr.ayahs[a]; var ayahEn=surahEn && surahEn.ayahs[a] ? surahEn.ayahs[a].text : '';
+          var key=surahNum+':'+ayahAr.numberInSurah;
+          var ayahSo=soraniMap[key]||ayahEn||ayahAr.text;
+          if(surahNum===97 && ayahAr.numberInSurah===2) ayahSo='جا تۆ چی دەزانی شەوی قەدر چییە؟';
+          allAyahs.push({ar:ayahAr.text,so:ayahSo,en:ayahEn||ayahAr.text,ref:buildQuranRef(surahNum,ayahAr.numberInSurah,surahName),surah:surahNum,ayah:ayahAr.numberInSurah});
+        }
+      }
+      if(allAyahs.length>=6000){
+        quranAyahs=allAyahs; quranFullLoaded=true;
+        if(statusEl) statusEl.textContent='✅ Hela Quran laddad: '+allAyahs.length+' ayat · Slumpmässig per tillfälle · Soranî Kurdsat + Mushaf färg';
+        quranIndex=Math.floor(Math.random()*allAyahs.length);
+        showQuranAyah(quranIndex);
+        return;
       }
     }
-    if(allAyahs.length>=6000){
-      quranAyahs=allAyahs; quranFullLoaded=true;
-      if(statusEl) statusEl.textContent='✅ Hela Quran laddad: '+allAyahs.length+' ayat · Slumpmässig per tillfälle · Soranî Kurdsat + Mushaf färg';
-      quranIndex=Math.floor(Math.random()*allAyahs.length);
-      showQuranAyah(quranIndex);
-    }
+    // Fallback CDN
+    throw new Error('Primary failed, trying CDN');
   }catch(err){
-    console.warn('Full Quran load failed', err);
-    if(statusEl) statusEl.textContent='⚠ Fel: '+err.message+' · Visar fallback '+quranAyahs.length+' ayat - försöker igen om 5s';
-    setTimeout(loadFullQuran,5000);
+    console.warn('Primary Quran load failed, trying CDN', err);
+    var statusEl2=document.getElementById('quranRef');
+    if(statusEl2) statusEl2.textContent='⏳ Försöker alternativ källa (CDN)...';
+    try{
+      var arRes=await fetch('https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/ara-quranuthmanihaf.json').then(r=>r.json()).catch(()=>null);
+      var enRes=await fetch('https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/eng-sahihinternational.json').then(r=>r.json()).catch(()=>null);
+      if(arRes && arRes.quran && enRes && enRes.quran && arRes.quran.length>6000){
+        var all=[];
+        for(var i=0;i<arRes.quran.length;i++){
+          var itemAr=arRes.quran[i]; var itemEn=enRes.quran[i]||{};
+          var soTxt=itemEn.text||''; 
+          // Use Sorani map if available from previous fetch attempt
+          all.push({ar:itemAr.text||'',so:soTxt||itemEn.text||'',en:itemEn.text||'',ref:(itemAr.chapter||'')+':'+(itemAr.verse||''),surah:itemAr.chapter||0,ayah:itemAr.verse||0});
+        }
+        if(all.length>6000){
+          quranAyahs=all; quranFullLoaded=true;
+          quranIndex=Math.floor(Math.random()*all.length);
+          showQuranAyah(quranIndex);
+          if(statusEl2) statusEl2.textContent='✅ Hela Quran via CDN: '+all.length+' ayat · Slumpmässig';
+          return;
+        }
+      }
+    }catch(e2){ console.warn('CDN fallback failed', e2); }
+    // Final fallback: keep 8 ayat but randomize
+    if(statusEl2) statusEl2.textContent='⚠ Kunde inte ladda hela Quran, visar '+quranAyahs.length+' ayat - slump per tillfälle fungerar ändå';
+    quranIndex=Math.floor(Math.random()*quranAyahs.length);
+    showQuranAyah(quranIndex);
   }
 }
 async function loadFullQuranViaCDN(){
