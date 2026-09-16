@@ -235,6 +235,23 @@ video,iframe{width:100%;height:100%;object-fit:contain;border:none;background:bl
 </div>
 
 <script>
+/* ============================================================
+   PROXY-KONFIGURATION
+   ------------------------------------------------------------
+   Ändra PROXY_BASE till adressen där din proxy-server körs.
+   Exempel:
+     - Kör lokalt:        const PROXY_BASE = 'http://localhost:8787';
+     - Kör på din server: const PROXY_BASE = 'https://proxy.dindomän.se';
+   Lämna tom sträng '' för att INTE använda proxy.
+   ============================================================ */
+const PROXY_BASE = 'http://localhost:8787';
+
+/* Bygger en proxy-URL för Kurdmax (och andra Referer-skyddade HLS) */
+function proxify(url){
+  if(!PROXY_BASE) return url;
+  return PROXY_BASE + '/proxy?url=' + encodeURIComponent(url);
+}
+
 function getKarwanDirectCDN(karwanUrl){
   try{
     var clean = karwanUrl.replace(/\/+$/,'').split('?')[0].split('#')[0];
@@ -321,9 +338,12 @@ var filmRaw = [
   { name: 'RED Tv', url: 'https://karwan.tv/red-tv/', method:'iframe', color:'purple' },
   { name: 'Niroj tv', url: 'https://karwan.tv/niroj-tv/', method:'iframe', color:'purple' },
   { name: 'MMN Documentary', url: 'http://mmn.mypsx.net:1935/live/mmnhddocumentary/playlist.m3u8', color: 'purple' },
-  { name: 'Kurdmax Sorani TV', url: 'https://www.kurdmax.tv/live-stream', color: 'purple' },
-  { name: 'Kurdmax Kurmanji TV', url: 'https://www.kurdmax.tv/live-stream?lang=ku', color: 'purple' },
-  
+  /* ---- Kurdmax via PROXY (Referer-skyddade) ---- */
+  { name: 'Kurdmax Sorani TV',   url: 'https://stream.kurdmax.tv/app/kurdmax-sorani1/ts:playlist.m3u8',          method:'hls', proxied:true, color: 'purple' },
+  { name: 'Kurdmax Kurmanji TV', url: 'https://stream.kurdmax.tv/app/kurdmax-kurmanji1/ts:playlist.m3u8',       method:'hls', proxied:true, color: 'purple' },
+  { name: 'Kurdmax Show',        url: 'https://stream.kurdmax.tv/app/kurdmax-show1/ts:playlist.m3u8',           method:'hls', proxied:true, color: 'purple' },
+  { name: 'Kurdmax Music',       url: 'https://stream.kurdmax.tv/app/kurdmax-music1/ts:playlist.m3u8',          method:'hls', proxied:true, color: 'purple' },
+  { name: 'Kurdmax (extern)',    url: 'https://www.kurdmax.tv/live-stream',                                     method:'external', color: 'purple' },
 ];
 var diniRaw = [
   { name: 'Amozhgary', url: 'https://app-live.org/live/3268334b/index.m3u8', color: 'blue' },
@@ -459,12 +479,12 @@ function render(filter){
 function row(ch,hideSub){
   var m=ch.method||'hls'; var active=(cur&&cur.url===ch.url)?'active':'';
   var isFav=favs.some(function(f){ return f.url===ch.url; }); var star=isFav?'★':'☆';
-  var tag=''; if(!hideSub){ if(m==='iframe') tag=' <span style="font-size:0.6rem;opacity:0.7;background:#0006;padding:1px 5px;border-radius:10px;">live</span>'; else if(m==='audio') tag=' <span style="font-size:0.6rem;opacity:0.7;background:#0006;padding:1px 5px;border-radius:10px;">radio</span>'; else if(m==='external') tag=' <span style="font-size:0.6rem;opacity:0.7;background:#0006;padding:1px 5px;border-radius:10px;">extern</span>'; }
+  var tag=''; if(!hideSub){ if(ch.proxied) tag=' <span style="font-size:0.6rem;opacity:0.9;background:#4ecca333;color:#4ecca3;padding:1px 5px;border-radius:10px;">proxy</span>'; else if(m==='iframe') tag=' <span style="font-size:0.6rem;opacity:0.7;background:#0006;padding:1px 5px;border-radius:10px;">live</span>'; else if(m==='audio') tag=' <span style="font-size:0.6rem;opacity:0.7;background:#0006;padding:1px 5px;border-radius:10px;">radio</span>'; else if(m==='external') tag=' <span style="font-size:0.6rem;opacity:0.7;background:#0006;padding:1px 5px;border-radius:10px;">extern</span>'; }
   var extra=''; if(ch.name.toLowerCase().includes('sepehr') || ch.name.toLowerCase().includes('kordestan') || ch.name.toLowerCase().includes('mahabad') || ch.name.toLowerCase().includes('sahar')) extra=' ✅';
-  return '<div class="channel-item '+ch.color+' '+active+'" data-url="'+escapeHtml(ch.url)+'" data-name="'+escapeHtml(ch.name)+'" data-method="'+m+'"><span>'+escapeHtml(ch.name)+extra+tag+'</span><button class="fav-btn '+(isFav?'is-fav':'')+'" onclick="event.stopPropagation();fav(\''+escapeHtml(ch.url)+'\',\''+escapeHtml(ch.name)+'\')">'+star+'</button></div>';
+  return '<div class="channel-item '+ch.color+' '+active+'" data-url="'+escapeHtml(ch.url)+'" data-name="'+escapeHtml(ch.name)+'" data-method="'+m+'" data-proxied="'+(ch.proxied?'1':'0')+'"><span>'+escapeHtml(ch.name)+extra+tag+'</span><button class="fav-btn '+(isFav?'is-fav':'')+'" onclick="event.stopPropagation();fav(\''+escapeHtml(ch.url)+'\',\''+escapeHtml(ch.name)+'\')">'+star+'</button></div>';
 }
 function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
-function attachChannelEvents(){ var items=document.querySelectorAll('.channel-item'); for(var i=0;i<items.length;i++){ items[i].addEventListener('click', function(){ play(this.dataset.url,this.dataset.name,this.dataset.method,''); }); } }
+function attachChannelEvents(){ var items=document.querySelectorAll('.channel-item'); for(var i=0;i<items.length;i++){ items[i].addEventListener('click', function(){ play(this.dataset.url,this.dataset.name,this.dataset.method,this.dataset.proxied==='1'); }); } }
 
 function renderRadioPlayer(url, name){
   var wrap=document.getElementById('vwrap');
@@ -520,19 +540,22 @@ function renderAudioOnlyPlayer(url, name){
   }
 }
 
-function play(url,name,method){
+function play(url,name,method,proxied){
   if(window.innerWidth<=768) document.getElementById('channel-list').classList.remove('show');
-  cur={url:url,name:name,method:method}; document.getElementById('ch-title').textContent=name; destroyPlayers();
+  cur={url:url,name:name,method:method,proxied:!!proxied}; document.getElementById('ch-title').textContent=name; destroyPlayers();
   var wrap=document.getElementById('vwrap');
   updateModeSwitcherUI();
 
+  /* Bygg den faktiska uppspelnings-URL:en (proxy om markerad) */
+  var playUrl = proxied ? proxify(url) : url;
+
   if(playMode==='audio'){
     if(method==='audio'){
-      renderRadioPlayer(url,name);
+      renderRadioPlayer(playUrl,name);
       render(curFilter); return;
     }
     if(!method || method==='hls'){
-      renderAudioOnlyPlayer(url,name);
+      renderAudioOnlyPlayer(playUrl,name);
       render(curFilter); return;
     }
     if(method==='iframe' || method==='external'){
@@ -557,7 +580,7 @@ function play(url,name,method){
     render(curFilter); return;
   }
   if(method==='audio'){
-    renderRadioPlayer(url,name);
+    renderRadioPlayer(playUrl,name);
     render(curFilter); return;
   }
   if(method==='iframe'){
@@ -599,8 +622,32 @@ function play(url,name,method){
     wrap.innerHTML=sepehrBadge+'<iframe id="iframePlayer" src="'+escapeHtml(url)+'" allowfullscreen allow="autoplay; fullscreen; picture-in-picture" style="width:100%;height:100%;border:none;"></iframe>';
     render(curFilter); return;
   }
-  wrap.innerHTML='<video id="vplayer" controls autoplay playsinline style="width:100%;height:100%;"></video>';
-  var vid=document.getElementById('vplayer'); if(typeof Hls!=='undefined'&&Hls.isSupported()&&jsEnabled){ hlsInst=new Hls({enableWorker:false}); hlsInst.loadSource(url); hlsInst.attachMedia(vid); hlsInst.on(Hls.Events.MANIFEST_PARSED,function(){ vid.play().catch(function(){}); }); } else { vid.src=url; vid.play().catch(function(){}); }
+
+  /* HLS-läge (inkl. proxied Kurdmax) */
+  wrap.innerHTML='<video id="vplayer" controls autoplay playsinline style="width:100%;height:100%;"></video>'+
+    (proxied ? '<div style="position:absolute;top:8px;left:8px;background:linear-gradient(135deg,#4ecca3,#2a8a68);color:#000;padding:4px 10px;border-radius:20px;font-size:0.7rem;font-weight:800;">🛰 Proxy aktiv</div>' : '');
+  var vid=document.getElementById('vplayer');
+  if(typeof Hls!=='undefined' && Hls.isSupported() && jsEnabled){
+    hlsInst=new Hls({
+      enableWorker:false,
+      /* Skicka UA-vidarebefordran till proxyn (proxy hanterar Referer) */
+      xhrSetup: function(xhr){
+        if(currentUA) try{ xhr.setRequestHeader('X-Forwarded-User-Agent', currentUA); }catch(e){}
+      }
+    });
+    hlsInst.loadSource(playUrl);
+    hlsInst.attachMedia(vid);
+    hlsInst.on(Hls.Events.MANIFEST_PARSED,function(){ vid.play().catch(function(){}); });
+    hlsInst.on(Hls.Events.ERROR, function(ev,d){
+      if(d.fatal){
+        console.warn('HLS fatal error:', d);
+        if(d.type===Hls.ErrorTypes.NETWORK_ERROR){ setTimeout(function(){ if(hlsInst) hlsInst.startLoad(); },2000); }
+        else { destroyPlayers(); }
+      }
+    });
+  } else {
+    vid.src=playUrl; vid.play().catch(function(){});
+  }
   render(curFilter);
 }
 function setAllBtnsInactive(){ var btns=document.querySelectorAll('.nav-btn'); for(var i=0;i<btns.length;i++) btns[i].classList.remove('active'); }
@@ -762,7 +809,6 @@ async function loadFullQuran(){
   var statusEl=document.getElementById('quranRef');
   try{
     if(statusEl) statusEl.textContent='⏳ Laddar hela Quran (6236 ayat) - slumpmässig per tillfälle...';
-    // Primary: alquran.cloud
     var arabicP=fetch('https://api.alquran.cloud/v1/quran/quran-uthmani').then(r=>r.json()).catch(()=>null);
     var englishP=fetch('https://api.alquran.cloud/v1/quran/en.sahih').then(r=>r.json()).catch(()=>null);
     var soraniUrl='https://cdn.jsdelivr.net/gh/alurini/quran-translations@main/data/ku/quran_ku.json';
@@ -791,7 +837,6 @@ async function loadFullQuran(){
         return;
       }
     }
-    // Fallback CDN
     throw new Error('Primary failed, trying CDN');
   }catch(err){
     console.warn('Primary Quran load failed, trying CDN', err);
@@ -816,7 +861,6 @@ async function loadFullQuran(){
         }
       }
     }catch(e2){ console.warn('CDN fallback failed', e2); }
-    // Final fallback: keep 8 ayat but randomize
     if(statusEl2) statusEl2.textContent='⚠ Kunde inte ladda hela Quran, visar '+quranAyahs.length+' ayat - slump per tillfälle fungerar ändå';
     quranIndex=Math.floor(Math.random()*quranAyahs.length);
     showQuranAyah(quranIndex);
