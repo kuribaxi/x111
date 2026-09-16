@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Heval · Karwan · Radio - Gardin Edition - Radio + TV/Ljud</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script src="https://cdn.dashjs.org/latest/dash.all.min.js"></script>
 <style>
@@ -28,14 +29,13 @@ body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:linear-gradient(1
 
 .quran-bar{background:linear-gradient(135deg,rgba(0,40,30,0.98),rgba(15,60,45,0.98));backdrop-filter:blur(14px);border-bottom:2px solid #4ecca3;padding:20px 22px 16px;text-align:center;position:relative;display:block!important;visibility:visible!important;opacity:1!important;min-height:160px}
 .quran-bar::before{content:"﷽";position:absolute;top:4px;left:50%;transform:translateX(-50%);font-size:1.6rem;color:rgba(78,204,163,0.35)}
-.quran-arabic{font-family:'Traditional Arabic','Amiri',serif;font-size:2.2rem;line-height:1.7;color:#a8ffde;text-shadow:0 0 18px rgba(78,204,163,0.6);direction:rtl;margin:22px 0 16px;font-weight:700;cursor:pointer;display:inline-block;padding:6px 14px;border-radius:12px;transition:all 0.15s}
+.quran-arabic{font-family:'Amiri Quran','Amiri','Traditional Arabic','Scheherazade New',serif;font-size:2.2rem;line-height:1.9;color:#a8ffde;text-shadow:0 0 18px rgba(78,204,163,0.6);direction:rtl;unicode-bidi:isolate;margin:22px 0 16px;font-weight:700;cursor:pointer;display:inline-block;padding:6px 14px;border-radius:12px;transition:all 0.15s}
 .quran-arabic:hover{transform:scale(1.03);background:rgba(78,204,163,0.08)}
 .quran-arabic .allah-red{color:#ff6b6b !important;font-weight:800;text-shadow:0 0 8px rgba(255,107,107,0.6)}
-.quran-arabic .harakat-green{color:#4ecca3 !important;font-weight:600;text-shadow:0 0 6px rgba(78,204,163,0.5)}
 .quran-translations{display:flex;flex-wrap:nowrap;justify-content:stretch;gap:12px;margin-top:10px;width:100%}
 .quran-box{flex:1 1 0;max-width:none;width:50%;background:rgba(0,0,0,0.35);border:1px solid rgba(78,204,163,0.22);border-radius:16px;padding:14px 16px;line-height:1.6;color:#e6fff3;font-size:1.5rem;font-weight:600;cursor:pointer;transition:all 0.2s;display:flex;flex-direction:column;min-height:80px}
 .quran-box:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 8px 25px rgba(0,0,0,0.3)}
-.quran-box.so{border-right:4px solid #ff6b9d;direction:rtl;text-align:right}
+.quran-box.so{border-right:4px solid #ff6b9d;direction:rtl;text-align:right;font-family:'Amiri','Noto Naskh Arabic','Noto Kufi Arabic',Tahoma,sans-serif;unicode-bidi:isolate}
 .quran-box.ku{border-right:4px solid #4ecca3}
 .quran-box.en{border-right:4px solid #5dade2;text-align:left}
 .quran-box b{display:block;font-size:0.7rem;letter-spacing:1.5px;padding:3px 10px;border-radius:20px;margin-bottom:8px;font-weight:800;text-align:center}
@@ -53,9 +53,9 @@ body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:linear-gradient(1
 .modal-lang.ku{background:#4ecca333;color:#4ecca3;border:1px solid #4ecca355}
 .modal-lang.so{background:#ff6b9d33;color:#ff8fb0;border:1px solid #ff6b9d55}
 .modal-lang.en{background:#5dade233;color:#85c1e9;border:1px solid #5dade255}
-.modal-ar{font-family:'Traditional Arabic','Amiri',serif;font-size:2rem;color:#a8ffde;direction:rtl;margin-bottom:18px;line-height:1.7;text-align:center}
+.modal-ar{font-family:'Amiri Quran','Amiri','Traditional Arabic',serif;font-size:2rem;color:#a8ffde;direction:rtl;unicode-bidi:isolate;margin-bottom:18px;line-height:1.9;text-align:center}
 .modal-text{font-size:2rem;line-height:1.7;color:#eafff5;font-weight:600;text-align:center}
-.modal-text.so{direction:rtl}
+.modal-text.so{direction:rtl;font-family:'Amiri','Noto Naskh Arabic',Tahoma,sans-serif;unicode-bidi:isolate}
 .modal-ref{margin-top:18px;font-size:0.8rem;opacity:0.6;color:#4ecca3;text-align:center}
 .hourly-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:10px;margin-top:16px}
 .hour-card{background:rgba(0,0,0,0.35);border:1px solid rgba(78,204,163,0.18);border-radius:16px;padding:10px 8px;text-align:center}
@@ -656,7 +656,6 @@ function colorizeMushafArabic(text){
   if(!text) return '';
   var esc=text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   esc=esc.replace(/(اللَّه|اللّٰه|الله|لِلَّه|لِلّهِ|بِاللَّه|فَاللَّه|اللَّهِ|اللَّهُ)/g,'<span class="allah-red">$1</span>');
-  esc=esc.replace(/([\u064B-\u065F\u0670]+)/g,'<span class="harakat-green">$1</span>');
   return esc;
 }
 function getShortPart(text, maxWords){
@@ -696,7 +695,7 @@ function showQuranAyah(idx){
     if(quranMode==='short' && arDisplay.isLong){
       soText=getTranslationShort(soText,12); enText=getTranslationShort(enText,15);
     }
-    if(soEl) soEl.innerHTML='<b>سۆرانی - Kurdsat Style</b><br><span style="font-family:\'Noto Naskh Arabic\',\'Noto Kufi Arabic\',\'Rudaw\',\'NRT Reg\',\'Unikurd Web\',\'Speda\',Tahoma,sans-serif">'+soText+'</span>';
+    if(soEl) soEl.innerHTML='<b>سۆرانی - Kurdsat Style</b><br><span style="font-family:\'Amiri\',\'Noto Naskh Arabic\',\'Noto Kufi Arabic\',\'Rudaw\',\'NRT Reg\',\'Unikurd Web\',\'Speda\',Tahoma,sans-serif">'+soText+'</span>';
     if(enEl) enEl.innerHTML='<b>ENGLISH</b><br>'+enText;
     if(refEl) refEl.innerText=ayah.ref + (arDisplay.isLong ? (quranMode==='short'?' · Kort del':' · Hela') : '') + ' · '+quranAyahs.length+' ayat totalt - slump från hela Quran';
     if(bar) bar.style.opacity='1';
@@ -725,7 +724,7 @@ function openTranslationModal(type){
   arEl.style.fontFamily="'Amiri Quran','Amiri','Scheherazade New',serif"; arEl.style.fontSize='2.4rem'; arEl.style.color='#a8ffde'; arEl.style.background='rgba(0,40,30,0.95)'; arEl.style.padding='16px'; arEl.style.borderRadius='12px';
   refEl.innerText=currentAyah.ref;
   if(type==='so'){
-    langEl.className='modal-lang so'; langEl.innerText='سۆرانی - Kurdsat Style'; textEl.className='modal-text so'; textEl.style.fontFamily="'Noto Naskh Arabic','Noto Kufi Arabic','Rudaw','NRT Reg','Unikurd Web','Speda',Tahoma,sans-serif"; textEl.innerText=currentAyah.so;
+    langEl.className='modal-lang so'; langEl.innerText='سۆرانی - Kurdsat Style'; textEl.className='modal-text so'; textEl.style.fontFamily="'Amiri','Noto Naskh Arabic','Noto Kufi Arabic','Rudaw','NRT Reg','Unikurd Web','Speda',Tahoma,sans-serif"; textEl.innerText=currentAyah.so;
   } else {
     langEl.className='modal-lang en'; langEl.innerText='ENGLISH'; textEl.className='modal-text'; textEl.style.fontFamily="'Segoe UI',sans-serif"; textEl.innerText=currentAyah.en;
   }
@@ -804,7 +803,6 @@ async function loadFullQuran(){
         for(var i=0;i<arRes.quran.length;i++){
           var itemAr=arRes.quran[i]; var itemEn=enRes.quran[i]||{};
           var soTxt=itemEn.text||''; 
-          // Use Sorani map if available from previous fetch attempt
           all.push({ar:itemAr.text||'',so:soTxt||itemEn.text||'',en:itemEn.text||'',ref:(itemAr.chapter||'')+':'+(itemAr.verse||''),surah:itemAr.chapter||0,ayah:itemAr.verse||0});
         }
         if(all.length>6000){
