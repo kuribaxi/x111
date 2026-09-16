@@ -61,30 +61,31 @@ body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:linear-gradient(1
 .hour-card .h-icon{font-size:1.6rem;margin:6px 0}
 .hour-card .h-temp{font-size:1rem;font-weight:800}
 .hour-card .h-wind{font-size:0.65rem;opacity:0.6;margin-top:2px}
-.info-panel{background:rgba(0,0,0,0.55);backdrop-filter:blur(12px);border-bottom:1px solid #4ecca380;padding:18px 22px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:stretch;gap:18px}
-.clock-section,.date-section,.weather-section{background:rgba(20,40,45,0.75);border-radius:32px;padding:14px 22px;backdrop-filter:blur(8px);box-shadow:0 4px 18px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.05);display:flex;align-items:center;flex-wrap:wrap;border:1px solid rgba(78,204,163,0.15)}
-.clock-section{gap:22px;flex:1.2;min-width:340px;justify-content:center}
-.date-section{gap:14px;flex:1;min-width:260px;justify-content:center}
+.info-panel{background:rgba(0,0,0,0.55);backdrop-filter:blur(12px);border-bottom:1px solid #4ecca380;padding:6px 10px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:stretch;gap:6px}
+.clock-date-section,.weather-section{gap:4px;flex:1.4;min-width:280px;justify-content:center;flex-direction:column;padding:5px 8px}
+.clock-date-section{flex:1.1;min-width:280px;justify-content:center;gap:8px;padding:6px 8px}
+.clock-date-inner{display:flex;align-items:center;gap:8px;justify-content:center;flex-wrap:wrap;width:100%}
+.clock-right{display:flex;flex-direction:column;gap:4px;align-items:center;min-width:140px}
 .weather-section{gap:10px;flex:1.6;min-width:340px;justify-content:center;flex-direction:column}
-.clock-display{font-family:'Courier New',monospace;font-weight:900;font-size:2.6rem;letter-spacing:3px;background:linear-gradient(145deg,#0f1e24,#162e36);padding:10px 22px;border-radius:18px;color:#4ecca3;text-shadow:0 0 12px #4ecca3aa,0 2px 0 #000;min-width:200px;text-align:center;border:1px solid #4ecca344}
-canvas.analog-canvas{width:150px;height:150px;background:radial-gradient(ellipse at 30% 30%,#1a3a42,#0a1e24);border-radius:50%;box-shadow:0 0 0 3px #4ecca3,0 0 0 6px #0f2a32,0 8px 25px rgba(0,0,0,0.6);display:block!important}
-.date-selector select{background:#1e2f3f;border:1px solid #4ecca3;color:white;padding:8px 16px;border-radius:28px;font-size:0.95rem;cursor:pointer;font-weight:600}
-.date-text{font-weight:800;background:linear-gradient(145deg,#0f1e24,#162e36);padding:12px 20px;border-radius:30px;font-size:1.25rem;text-align:center;line-height:1.3;border:1px solid #4ecca344;color:#e0ffef;min-width:220px}
-.weather-input{display:flex;align-items:center;flex-wrap:wrap;gap:6px;justify-content:center}
-.weather-input input{background:#1e2f3f;border:1px solid #4ecca3;padding:8px 14px;border-radius:28px;color:white;font-size:0.95rem;width:130px}
-.weather-btn{background:#2c5f6e;border:none;padding:8px 14px;border-radius:28px;cursor:pointer;color:white;font-weight:bold;font-size:0.9rem}
+.clock-display{font-family:'Courier New',monospace;font-weight:900;font-size:1.2rem;letter-spacing:1px;background:linear-gradient(145deg,#0f1e24,#162e36);padding:4px 8px;border-radius:8px;color:#4ecca3;text-shadow:0 0 6px #4ecca3aa,0 1px 0 #000;min-width:100px;text-align:center;border:1px solid #4ecca344}
+canvas.analog-canvas{width:66px;height:66px;background:radial-gradient(ellipse at 30% 30%,#1a3a42,#0a1e24);border-radius:50%;box-shadow:0 0 0 1px #4ecca3,0 0 0 3px #0f2a32,0 2px 8px rgba(0,0,0,0.5);display:block!important}
+.date-selector select{background:#1e2f3f;border:1px solid #4ecca3;color:white;padding:3px 8px;border-radius:14px;font-size:0.7rem;cursor:pointer;font-weight:600}
+.date-text{font-weight:700;background:linear-gradient(145deg,#0f1e24,#162e36);padding:4px 8px;border-radius:12px;font-size:0.75rem;text-align:center;line-height:1.2;border:1px solid #4ecca344;color:#e0ffef;min-width:120px}
+.weather-input{display:flex;align-items:center;flex-wrap:wrap;gap:3px;justify-content:center}
+.weather-input input{background:#1e2f3f;border:1px solid #4ecca3;padding:3px 8px;border-radius:12px;color:white;font-size:0.7rem;width:70px}
+.weather-btn{background:#2c5f6e;border:none;padding:3px 8px;border-radius:12px;cursor:pointer;color:white;font-weight:bold;font-size:0.65rem}
 .weather-btn:hover{background:#4ecca3;color:#0a1c2a}
 .weather-btn.gps{background:linear-gradient(135deg,#4ecca3,#2a8a68);color:#02120d}
-.weather-info{font-size:1.15rem;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#0f1e24b3,#162e36b3);padding:10px 18px;border-radius:40px;font-weight:700;border:1px solid #4ecca333;text-align:center;min-height:48px}
-.weather-week{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px;width:100%}
-.weather-day{background:rgba(0,0,0,0.32);border:1px solid rgba(78,204,163,0.2);border-radius:18px;padding:8px 10px;min-width:72px;text-align:center;flex:1 1 72px;max-width:95px;cursor:pointer;transition:all 0.2s}
+.weather-info{font-size:0.8rem;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#0f1e24b3,#162e36b3);padding:6px 10px;border-radius:20px;font-weight:700;border:1px solid #4ecca333;text-align:center;min-height:32px}
+.weather-week{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;margin-top:4px;width:100%}
+.weather-day{background:rgba(0,0,0,0.32);border:1px solid rgba(78,204,163,0.2);border-radius:12px;padding:4px 6px;min-width:52px;text-align:center;flex:1 1 52px;max-width:70px;cursor:pointer;transition:all 0.2s}
 .weather-day:hover{transform:translateY(-3px) scale(1.05);border-color:#4ecca3}
 .weather-day.today{border-color:#4ecca3;box-shadow:0 0 0 1px #4ecca3,0 0 12px rgba(78,204,163,0.3);background:rgba(78,204,163,0.15)}
 .weather-day .wd-name{font-size:0.7rem;opacity:0.8;font-weight:700;text-transform:uppercase}
 .weather-day .wd-icon{font-size:1.6rem;margin:4px 0}
 .weather-day .wd-temp{font-size:0.85rem;font-weight:800}
 .weather-day .wd-min{font-size:0.7rem;opacity:0.6}
-@media(max-width:1100px){.info-panel{flex-direction:column}.clock-section,.date-section,.weather-section{width:100%}}
+@media(max-width:1100px){.info-panel{background:rgba(0,0,0,0.55);backdrop-filter:blur(12px);border-bottom:1px solid #4ecca380;padding:6px 10px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:stretch;gap:6px}.clock-date-section,.weather-section{background:rgba(20,40,45,0.75);border-radius:14px;padding:6px 8px;backdrop-filter:blur(8px);box-shadow:0 2px 8px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.05);display:flex;align-items:center;flex-wrap:wrap;border:1px solid rgba(78,204,163,0.15)}}
 .nav-buttons{display:flex;justify-content:center;flex-wrap:wrap;padding:12px 16px;background:rgba(0,0,0,0.25);border-bottom:1px solid rgba(78,204,163,0.15);position:sticky;top:0;z-index:90;backdrop-filter:blur(10px)}
 .nav-btn{background:#1e2f3f;color:#e0e0e0;border:none;padding:8px 18px;border-radius:40px;cursor:pointer;font-weight:600;transition:all 0.2s ease;font-size:0.9rem;box-shadow:0 1px 3px rgba(0,0,0,0.2);white-space:nowrap;margin:4px 4px}
 .nav-btn:hover,.nav-btn.active{background:#4ecca3;color:#0a1c2a;transform:scale(1.03)}
@@ -164,8 +165,16 @@ video,iframe{width:100%;height:100%;object-fit:contain;border:none;background:bl
       <div class="quran-hint">👆 Arabic = next ayah | Translation = big window</div>
     </div>
     <div class="info-panel">
-      <div class="clock-section"><canvas id="analogCanvas" class="analog-canvas" width="300" height="300"></canvas><div id="digitalClockDisplay" class="clock-display">--:--:--</div></div>
-      <div class="date-section"><div class="date-selector"><select id="calendarSelect"><option value="gregorian">Gregoriansk</option><option value="islamic">Islamisk (Hijri)</option><option value="iranian">Iransk (Jalali)</option></select></div><div id="dateDisplay" class="date-text">Laddar datum...</div></div>
+      <div class="clock-date-section">
+        <div class="clock-date-inner">
+          <canvas id="analogCanvas" class="analog-canvas" width="200" height="200"></canvas>
+          <div class="clock-right">
+            <div id="digitalClockDisplay" class="clock-display">--:--:--</div>
+            <div class="date-selector"><select id="calendarSelect"><option value="gregorian">Gregoriansk</option><option value="islamic">Islamisk (Hijri)</option><option value="iranian">Iransk (Jalali)</option></select></div>
+            <div id="dateDisplay" class="date-text">Laddar datum...</div>
+          </div>
+        </div>
+      </div>
       <div class="weather-section">
         <div class="weather-input">
           <input type="text" id="cityInput" placeholder="Stad" value="Stockholm">
