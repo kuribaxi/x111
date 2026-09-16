@@ -7,8 +7,6 @@
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script src="https://cdn.dashjs.org/latest/dash.all.min.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Noto+Kufi+Arabic:wght@400;500;600&display=swap');
-
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);color:#fff;min-height:100vh}
 .header{display:none!important}
@@ -33,19 +31,13 @@ body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:linear-gradient(1
 .quran-arabic{font-family:'Traditional Arabic','Amiri',serif;font-size:2.2rem;line-height:1.7;color:#a8ffde;text-shadow:0 0 18px rgba(78,204,163,0.6);direction:rtl;margin:22px 0 16px;font-weight:700;cursor:pointer;display:inline-block;padding:6px 14px;border-radius:12px;transition:all 0.15s}
 .quran-arabic:hover{transform:scale(1.03);background:rgba(78,204,163,0.08)}
 .quran-translations{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:10px}
-.quran-box{flex:1 1 320px;max-width:480px;background:rgba(0,0,0,0.35);border:1px solid rgba(78,204,163,0.22);border-radius:16px;padding:16px 18px;line-height:1.8;color:#e6fff3;font-size:1.75rem;font-weight:600;cursor:pointer;transition:all 0.2s}
+.quran-box{flex:1 1 280px;max-width:420px;background:rgba(0,0,0,0.35);border:1px solid rgba(78,204,163,0.22);border-radius:16px;padding:14px 16px;line-height:1.6;color:#e6fff3;font-size:1.85rem;font-weight:600;cursor:pointer;transition:all 0.2s}
 .quran-box:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 8px 25px rgba(0,0,0,0.3)}
 .quran-box.so{border-right:4px solid #ff6b9d;direction:rtl;text-align:right}
-/* Kurdsat.tv style font - same as https://www.kurdsat.tv/ckb - clean Naskh/Noto style */
-.kurdsat-font, .quran-box.so{
-  font-family:'Noto Naskh Arabic','Noto Kufi Arabic','Rudaw','NRT Reg','Unikurd Web','Speda','Segoe UI',Tahoma,sans-serif !important;
-  font-weight:500;
-  line-height:2.0;
-  letter-spacing:0.2px;
-}
-.quran-box.en{border-right:4px solid #5dade2;text-align:left;font-family:'Segoe UI',Roboto,sans-serif}
-.quran-box b{display:block;font-size:0.7rem;letter-spacing:1.5px;padding:3px 10px;border-radius:20px;margin-bottom:10px;font-weight:800;text-align:center}
-.quran-box.so b{background:#ff6b9d33;color:#ff8fb0;font-family:'Segoe UI',sans-serif}.quran-box.en b{background:#5dade233;color:#85c1e9}
+.quran-box.ku{border-right:4px solid #4ecca3}
+.quran-box.en{border-right:4px solid #5dade2;text-align:left}
+.quran-box b{display:block;font-size:0.7rem;letter-spacing:1.5px;padding:3px 10px;border-radius:20px;margin-bottom:8px;font-weight:800;text-align:center}
+.quran-box.ku b{background:#4ecca333;color:#4ecca3}.quran-box.so b{background:#ff6b9d33;color:#ff8fb0}.quran-box.en b{background:#5dade233;color:#85c1e9}
 .quran-ref{margin-top:10px;font-size:0.75rem;opacity:0.7;color:#4ecca3}
 .quran-hint{margin-top:6px;font-size:0.68rem;opacity:0.5}
 @media(max-width:800px){.quran-arabic{font-size:1.75rem}.quran-box{font-size:1.35rem;max-width:100%}}
@@ -165,11 +157,11 @@ video,iframe{width:100%;height:100%;object-fit:contain;border:none;background:bl
     <div class="quran-bar" id="quranBar">
       <div class="quran-arabic" id="quranArabic" title="Tryck för nästa ayah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
       <div class="quran-translations">
-        <div class="quran-box so kurdsat-font" id="quranSo"><b>سۆرانی - Kurdsat Style</b><br>چاوەڕوان بە...</div>
+        <div class="quran-box so" id="quranSo"><b>SORANÎ / سۆرانی</b><br>چاوەڕوان بە...</div>
         <div class="quran-box en" id="quranEn"><b>ENGLISH</b><br>Loading...</div>
       </div>
       <div class="quran-ref" id="quranRef"></div>
-      <div class="quran-hint">👆 Arabic = slumpmässig ayah från hela Quran (6236) | Klicka översättning = stor ruta</div>
+      <div class="quran-hint">👆 Arabic = next ayah | Translation = big window</div>
     </div>
     <div class="info-panel">
       <div class="clock-section"><canvas id="analogCanvas" class="analog-canvas" width="300" height="300"></canvas><div id="digitalClockDisplay" class="clock-display">--:--:--</div></div>
@@ -194,7 +186,7 @@ video,iframe{width:100%;height:100%;object-fit:contain;border:none;background:bl
   </div>
 </div>
 
-<div id="quranModalOverlay" class="modal-overlay"><div class="modal"><button class="modal-close" id="quranModalClose">✕</button><div id="quranModalLang" class="modal-lang ku">KURMANCÎ</div><div id="quranModalAr" class="modal-ar"></div><div id="quranModalText" class="modal-text"></div><div id="quranModalRef" class="modal-ref"></div></div></div>
+<div id="quranModalOverlay" class="modal-overlay"><div class="modal"><button class="modal-close" id="quranModalClose">✕</button><div id="quranModalLang" class="modal-lang so">سۆرانی</div><div id="quranModalAr" class="modal-ar"></div><div id="quranModalText" class="modal-text"></div><div id="quranModalRef" class="modal-ref"></div></div></div>
 <div id="weatherModalOverlay" class="modal-overlay"><div class="modal" style="max-width:800px"><button class="modal-close" id="weatherModalClose">✕</button><div style="text-align:center"><div id="weatherModalTitle" style="font-size:1.2rem;font-weight:800;color:#4ecca3;margin-bottom:4px;">24h Prognos</div><div id="weatherModalSub" style="font-size:0.8rem;opacity:0.7;margin-bottom:12px;"></div><div id="weatherModalHourly" class="hourly-grid"></div></div></div></div>
 
 <div class="nav-buttons">
@@ -648,32 +640,75 @@ var quranAyahs=[
   {ar:"أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ",so:"ئاگاداربن، بە یادی خوا دڵەکان ئارام دەبن.",en:"Verily, in the remembrance of Allah do hearts find rest.",ref:"Ar-Ra'd 13:28",surah:13,ayah:28},
   {ar:"لَا تَحْزَنْ إِنَّ اللَّهَ مَعَنَا",so:"خەم مەخۆ، بێگومان خوا لەگەڵمانە.",en:"Do not grieve; indeed Allah is with us.",ref:"At-Tawbah 9:40",surah:9,ayah:40},
   {ar:"وَهُوَ مَعَكُمْ أَيْنَ مَا كُنتُمْ",so:"ئەو لە هەر شوێنێک بن لەگەڵتانە.",en:"And He is with you wherever you are.",ref:"Al-Hadid 57:4",surah:57,ayah:4},
-  {ar:"وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ",so:"هەرکەس پشت بە خوا ببەستێت، خوا بەسیەتی.",en:"And whoever relies upon Allah - then He is sufficient for him.",ref:"At-Talaq 65:3",surah:65,ayah:3},
-  {ar:"قُلْ هُوَ اللَّهُ أَحَدٌ",so:"بڵێ: ئەو خوا تاک و تەنیایە.",en:"Say, He is Allah, [who is] One.",ref:"Al-Ikhlas 112:1",surah:112,ayah:1}
+  {ar:"قُلْ هُوَ اللَّهُ أَحَدٌ",so:"بڵێ: ئەو خوا تاک و تەنیایە.",en:"Say, He is Allah, [who is] One.",ref:"Al-Ikhlas 112:1",surah:112,ayah:1},
+  {ar:"وَاتَّقُوا اللَّهَ الَّذِي تَسَاءَلُونَ بِهِ وَالْأَرْحَامَ",so:"لە خوا بترسن ئەوەی پرسیاری پێ دەکەن و لە پچڕانی خزمایەتی.",en:"And fear Allah, through whom you ask one another, and the wombs.",ref:"An-Nisa 4:1",surah:4,ayah:1}
 ];
 var quranFullLoaded=false;
+var quranMode='short';
+var LONG_AYAH_THRESHOLD=80;
+
 function buildQuranRef(surahNum, ayahNum, surahName){
   return (surahName? surahName+' ': '') + surahNum + ':' + ayahNum;
+}
+function colorizeMushafArabic(text){
+  if(!text) return '';
+  var esc=text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  esc=esc.replace(/(اللَّه|اللّٰه|الله|لِلَّه|لِلّهِ|بِاللَّه|فَاللَّه|اللَّهِ|اللَّهُ)/g,'<span class="allah-red">$1</span>');
+  esc=esc.replace(/([\u064B-\u065F\u0670]+)/g,'<span class="harakat-green">$1</span>');
+  return esc;
+}
+function getShortPart(text, maxWords){
+  if(!text) return ''; maxWords=maxWords||10;
+  var words=text.trim().split(/\s+/); if(words.length<=maxWords) return text;
+  return words.slice(0,maxWords).join(' ')+' ...';
+}
+function getAyahDisplayText(ayah, mode){
+  var fullAr=ayah.ar||''; var isLong=fullAr.length>LONG_AYAH_THRESHOLD || fullAr.split(/\s+/).length>12;
+  if(mode==='short' && isLong){ return {text:getShortPart(fullAr,10),isShort:true,isLong:true,full:fullAr}; }
+  return {text:fullAr,isShort:false,isLong:isLong,full:fullAr};
+}
+function getTranslationShort(text, maxWords){
+  if(!text) return ''; maxWords=maxWords||12;
+  var words=text.trim().split(/\s+/); if(words.length<=maxWords) return text;
+  return words.slice(0,maxWords).join(' ')+' ...';
 }
 var quranIndex=0; var currentAyah=null;
 function showQuranAyah(idx){
   if(!quranAyahs || quranAyahs.length===0) return;
   var ayah=quranAyahs[idx%quranAyahs.length]; currentAyah=ayah;
-  var bar=document.getElementById('quranBar'); 
-  if(bar) bar.style.opacity='0';
+  var bar=document.getElementById('quranBar'); if(bar) bar.style.opacity='0';
   setTimeout(function(){
     var arEl=document.getElementById('quranArabic');
     var soEl=document.getElementById('quranSo');
     var enEl=document.getElementById('quranEn');
     var refEl=document.getElementById('quranRef');
-    if(arEl) arEl.innerText=ayah.ar;
-    // Sorani with Kurdsat font - same as https://www.kurdsat.tv/ckb
-    if(soEl) soEl.innerHTML='<b>سۆرانی - Kurdsat Style</b><br><span style="font-family:\'Noto Naskh Arabic\',\'Noto Kufi Arabic\',\'Rudaw\',\'NRT Reg\',\'Unikurd Web\',\'Speda\',Tahoma,sans-serif">'+ (ayah.so || '') +'</span>';
-    if(enEl) enEl.innerHTML='<b>ENGLISH</b><br>'+ (ayah.en || '');
-    if(refEl) refEl.innerText=ayah.ref;
+    var arDisplay=getAyahDisplayText(ayah, quranMode);
+    if(arEl){
+      if(arDisplay.isShort){
+        arEl.innerHTML=colorizeMushafArabic(arDisplay.text)+'<br><span style="font-size:0.5em;color:#ff6b6b;opacity:0.9;font-family:sans-serif">📖 Kort del - klicka för hela ('+arDisplay.full.length+' tkn)</span>';
+      } else {
+        arEl.innerHTML=colorizeMushafArabic(arDisplay.text);
+      }
+    }
+    var soText=ayah.so||''; var enText=ayah.en||'';
+    if(quranMode==='short' && arDisplay.isLong){
+      soText=getTranslationShort(soText,12); enText=getTranslationShort(enText,15);
+    }
+    if(soEl) soEl.innerHTML='<b>سۆرانی - Kurdsat Style</b><br><span style="font-family:\'Noto Naskh Arabic\',\'Noto Kufi Arabic\',\'Rudaw\',\'NRT Reg\',\'Unikurd Web\',\'Speda\',Tahoma,sans-serif">'+soText+'</span>';
+    if(enEl) enEl.innerHTML='<b>ENGLISH</b><br>'+enText;
+    if(refEl) refEl.innerText=ayah.ref + (arDisplay.isLong ? (quranMode==='short'?' · Kort del':' · Hela') : '') + ' · '+quranAyahs.length+' ayat totalt - slump från hela Quran';
     if(bar) bar.style.opacity='1';
   },150);
   try{localStorage.setItem('quran_idx',idx.toString());}catch(e){}
+}
+function setAyahMode(mode){ quranMode=mode; showQuranAyah(quranIndex); try{localStorage.setItem('quran_mode',mode);}catch(e){} }
+function nextRandomAyah(){
+  if(quranAyahs.length>0){
+    var newIdx;
+    do{ newIdx=Math.floor(Math.random()*quranAyahs.length); } while(quranAyahs.length>1 && newIdx===quranIndex);
+    quranIndex=newIdx;
+    showQuranAyah(quranIndex);
+  }
 }
 function openTranslationModal(type){
   if(!currentAyah) return;
@@ -682,99 +717,78 @@ function openTranslationModal(type){
   var arEl=document.getElementById('quranModalAr');
   var textEl=document.getElementById('quranModalText');
   var refEl=document.getElementById('quranModalRef');
-  arEl.innerText=currentAyah.ar; refEl.innerText=currentAyah.ref;
+  var arDisplay=getAyahDisplayText(currentAyah, quranMode);
+  var fullText=quranMode==='short' && arDisplay.isLong ? currentAyah.ar : arDisplay.text;
+  arEl.innerHTML=colorizeMushafArabic(fullText);
+  arEl.style.fontFamily="'Amiri Quran','Amiri','Scheherazade New',serif"; arEl.style.fontSize='2.4rem'; arEl.style.color='#a8ffde'; arEl.style.background='rgba(0,40,30,0.95)'; arEl.style.padding='16px'; arEl.style.borderRadius='12px';
+  refEl.innerText=currentAyah.ref;
   if(type==='so'){
-    langEl.className='modal-lang so';
-    langEl.innerText='سۆرانی - Kurdsat Style';
-    textEl.className='modal-text so';
-    textEl.style.fontFamily="'Noto Naskh Arabic','Noto Kufi Arabic','Rudaw','NRT Reg','Unikurd Web','Speda',Tahoma,sans-serif";
-    textEl.innerText=currentAyah.so;
+    langEl.className='modal-lang so'; langEl.innerText='سۆرانی - Kurdsat Style'; textEl.className='modal-text so'; textEl.style.fontFamily="'Noto Naskh Arabic','Noto Kufi Arabic','Rudaw','NRT Reg','Unikurd Web','Speda',Tahoma,sans-serif"; textEl.innerText=currentAyah.so;
   } else {
-    langEl.className='modal-lang en';
-    langEl.innerText='ENGLISH';
-    textEl.className='modal-text';
-    textEl.style.fontFamily="'Segoe UI',sans-serif";
-    textEl.innerText=currentAyah.en;
+    langEl.className='modal-lang en'; langEl.innerText='ENGLISH'; textEl.className='modal-text'; textEl.style.fontFamily="'Segoe UI',sans-serif"; textEl.innerText=currentAyah.en;
   }
   overlay.classList.add('show'); document.body.style.overflow='hidden';
 }
 function closeTranslationModal(){ document.getElementById('quranModalOverlay').classList.remove('show'); document.body.style.overflow=''; }
 function initQuran(){
-  try{ var savedIdx=parseInt(localStorage.getItem('quran_idx')||'0'); quranIndex=savedIdx%quranAyahs.length; }catch(e){ quranIndex=0; }
+  try{
+    var savedIdx=parseInt(localStorage.getItem('quran_idx')||'0'); quranIndex=savedIdx%quranAyahs.length;
+    var savedMode=localStorage.getItem('quran_mode'); if(savedMode) quranMode=savedMode;
+  }catch(e){ quranIndex=0; }
+  quranIndex=Math.floor(Math.random()*quranAyahs.length);
   showQuranAyah(quranIndex);
   document.getElementById('quranArabic').addEventListener('click', function(e){
     e.stopPropagation();
-    if(quranFullLoaded && quranAyahs.length>100){
-      quranIndex=Math.floor(Math.random()*quranAyahs.length);
+    var arDisplay=getAyahDisplayText(currentAyah, quranMode);
+    if(arDisplay.isLong && quranMode==='short'){
+      quranMode='full'; showQuranAyah(quranIndex);
+    } else if(arDisplay.isLong && quranMode==='full'){
+      quranMode='short'; showQuranAyah(quranIndex);
     } else {
-      quranIndex=(quranIndex+1)%quranAyahs.length;
+      nextRandomAyah();
     }
-    showQuranAyah(quranIndex);
   });
-  var soEl=document.getElementById('quranSo');
-  if(soEl) soEl.addEventListener('click', function(e){ e.stopPropagation(); openTranslationModal('so'); });
-  var enEl=document.getElementById('quranEn');
-  if(enEl) enEl.addEventListener('click', function(e){ e.stopPropagation(); openTranslationModal('en'); });
-  document.getElementById('quranModalClose').addEventListener('click', closeTranslationModal);
-  document.getElementById('quranModalOverlay').addEventListener('click', function(e){ if(e.target===this) closeTranslationModal(); });
-  // Load full Quran
-  setTimeout(function(){ if(!quranFullLoaded) loadFullQuran(); },1000);
+  document.getElementById('quranBar').addEventListener('dblclick', function(e){ e.stopPropagation(); nextRandomAyah(); });
+  var soEl=document.getElementById('quranSo'); if(soEl) soEl.addEventListener('click', function(e){ e.stopPropagation(); openTranslationModal('so'); });
+  var enEl=document.getElementById('quranEn'); if(enEl) enEl.addEventListener('click', function(e){ e.stopPropagation(); openTranslationModal('en'); });
+  var closeBtn=document.getElementById('quranModalClose'); if(closeBtn) closeBtn.addEventListener('click', closeTranslationModal);
+  var overlay=document.getElementById('quranModalOverlay'); if(overlay) overlay.addEventListener('click', function(e){ if(e.target===this) closeTranslationModal(); });
+  setTimeout(function(){ if(!quranFullLoaded) loadFullQuran(); },800);
 }
 async function loadFullQuran(){
   var statusEl=document.getElementById('quranRef');
   try{
-    if(statusEl) statusEl.textContent='⏳ Laddar hela Quran (6236 ayat) - سۆرانی...';
-    var arabicP = fetch('https://api.alquran.cloud/v1/quran/quran-uthmani').then(r=>r.json());
-    var englishP = fetch('https://api.alquran.cloud/v1/quran/en.sahih').then(r=>r.json());
-    var soraniUrl = 'https://cdn.jsdelivr.net/gh/alurini/quran-translations@main/data/ku/quran_ku.json';
-    var soraniP = fetch(soraniUrl).then(r=>r.json()).catch(()=>null);
-    var res = await Promise.all([arabicP, englishP, soraniP]);
-    var arabicData=res[0];
-    var englishData=res[1];
-    var soraniData=res[2];
+    if(statusEl) statusEl.textContent='⏳ Laddar hela Quran (6236 ayat) - slumpmässig per tillfälle...';
+    var arabicP=fetch('https://api.alquran.cloud/v1/quran/quran-uthmani').then(r=>r.json());
+    var englishP=fetch('https://api.alquran.cloud/v1/quran/en.sahih').then(r=>r.json());
+    var soraniUrl='https://cdn.jsdelivr.net/gh/alurini/quran-translations@main/data/ku/quran_ku.json';
+    var soraniP=fetch(soraniUrl).then(r=>r.json()).catch(()=>null);
+    var res=await Promise.all([arabicP, englishP, soraniP]);
+    var arabicData=res[0]; var englishData=res[1]; var soraniData=res[2];
     if(!arabicData || arabicData.code!==200) throw new Error('Kunde inte ladda arabisk Quran');
-    var allAyahs=[];
-    var surahsAr=arabicData.data.surahs;
-    var surahsEn=(englishData && englishData.code===200) ? englishData.data.surahs : null;
-    var soraniMap={};
-    if(soraniData && Array.isArray(soraniData)){
-      soraniData.forEach(function(v){ soraniMap[v.surah+':'+v.ayah]=v.text; });
-    }
+    var allAyahs=[]; var surahsAr=arabicData.data.surahs; var surahsEn=(englishData && englishData.code===200)?englishData.data.surahs:null;
+    var soraniMap={}; if(soraniData && Array.isArray(soraniData)){ soraniData.forEach(function(v){ soraniMap[v.surah+':'+v.ayah]=v.text; }); }
     for(var s=0;s<surahsAr.length;s++){
-      var surahAr=surahsAr[s];
-      var surahEn=surahsEn ? surahsEn[s] : null;
-      var surahNum=surahAr.number;
-      var surahName=surahAr.englishName || '';
+      var surahAr=surahsAr[s]; var surahEn=surahsEn?surahsEn[s]:null;
+      var surahNum=surahAr.number; var surahName=surahAr.englishName||'';
       for(var a=0;a<surahAr.ayahs.length;a++){
-        var ayahAr=surahAr.ayahs[a];
-        var ayahEn=surahEn && surahEn.ayahs[a] ? surahEn.ayahs[a].text : '';
+        var ayahAr=surahAr.ayahs[a]; var ayahEn=surahEn && surahEn.ayahs[a] ? surahEn.ayahs[a].text : '';
         var key=surahNum+':'+ayahAr.numberInSurah;
-        var ayahSo=soraniMap[key] || ayahEn || ayahAr.text;
-        if(surahNum===97 && ayahAr.numberInSurah===2){
-          ayahSo='جا تۆ چی دەزانی شەوی قەدر چییە؟';
-        }
-        allAyahs.push({
-          ar: ayahAr.text,
-          so: ayahSo,
-          en: ayahEn || ayahAr.text,
-          ref: buildQuranRef(surahNum, ayahAr.numberInSurah, surahName),
-          surah: surahNum,
-          ayah: ayahAr.numberInSurah
-        });
+        var ayahSo=soraniMap[key]||ayahEn||ayahAr.text;
+        if(surahNum===97 && ayahAr.numberInSurah===2) ayahSo='جا تۆ چی دەزانی شەوی قەدر چییە؟';
+        allAyahs.push({ar:ayahAr.text,so:ayahSo,en:ayahEn||ayahAr.text,ref:buildQuranRef(surahNum,ayahAr.numberInSurah,surahName),surah:surahNum,ayah:ayahAr.numberInSurah});
       }
     }
     if(allAyahs.length>=6000){
-      quranAyahs=allAyahs;
-      quranFullLoaded=true;
-      if(statusEl) statusEl.textContent='✅ Hela Quran laddad: '+allAyahs.length+' ayat · سۆرانی Kurdsat font';
-      var randIdx=Math.floor(Math.random()*allAyahs.length);
-      quranIndex=randIdx;
+      quranAyahs=allAyahs; quranFullLoaded=true;
+      if(statusEl) statusEl.textContent='✅ Hela Quran laddad: '+allAyahs.length+' ayat · Slumpmässig per tillfälle · Soranî Kurdsat + Mushaf färg';
+      quranIndex=Math.floor(Math.random()*allAyahs.length);
       showQuranAyah(quranIndex);
     }
   }catch(err){
     console.warn('Full Quran load failed', err);
-    if(statusEl) statusEl.textContent='⚠ Fel: '+err.message;
-    if(quranAyahs.length>0) showQuranAyah(quranIndex);
+    if(statusEl) statusEl.textContent='⚠ Fel: '+err.message+' · Visar fallback '+quranAyahs.length+' ayat - försöker igen om 5s';
+    setTimeout(loadFullQuran,5000);
   }
 }
 async function loadFullQuranViaCDN(){
@@ -786,8 +800,7 @@ async function loadFullQuranViaCDN(){
     if(arRes && arRes.quran && enRes && enRes.quran){
       var all=[];
       for(var i=0;i<arRes.quran.length;i++){
-        var itemAr=arRes.quran[i];
-        var itemEn=enRes.quran[i] || {};
+        var itemAr=arRes.quran[i]; var itemEn=enRes.quran[i]||{};
         all.push({ar:itemAr.text||'',so:itemEn.text||'',en:itemEn.text||'',ref:(itemAr.chapter||'')+':'+(itemAr.verse||''),surah:itemAr.chapter||0,ayah:itemAr.verse||0});
       }
       if(all.length>6000){ quranAyahs=all; quranFullLoaded=true; quranIndex=Math.floor(Math.random()*all.length); showQuranAyah(quranIndex); return; }
@@ -795,6 +808,7 @@ async function loadFullQuranViaCDN(){
   }catch(e){}
   if(statusEl) statusEl.textContent='Använder fallback ayat';
 }
+
 var lastWeatherData=null; var lastLocation=null;
 function weatherCodeToIcon(code){
   if(code===0) return {icon:'☀', text:'Klart'};
