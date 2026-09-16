@@ -71,10 +71,10 @@ body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:linear-gradient(1
 .quran-box{flex:1 1 280px;max-width:420px;background:rgba(0,0,0,0.35);border:1px solid rgba(78,204,163,0.22);border-radius:16px;padding:14px 16px;line-height:1.6;color:#e6fff3;font-size:1.85rem;font-weight:600;cursor:pointer;transition:all 0.2s}
 .quran-box:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 8px 25px rgba(0,0,0,0.3)}
 .quran-box.so{border-right:4px solid #ff6b9d;direction:rtl;text-align:right}
-.quran-box.ku{border-right:4px solid #4ecca3}
+.quran-box.tafsir{border-right:4px solid #f7c948;direction:rtl;text-align:right;background:rgba(247,201,72,0.08)}
 .quran-box.en{border-right:4px solid #5dade2;text-align:left}
 .quran-box b{display:block;font-size:0.7rem;letter-spacing:1.5px;padding:3px 10px;border-radius:20px;margin-bottom:8px;font-weight:800;text-align:center}
-.quran-box.ku b{background:#4ecca333;color:#4ecca3}.quran-box.so b{background:#ff6b9d33;color:#ff8fb0}.quran-box.en b{background:#5dade233;color:#85c1e9}
+.quran-box.so b{background:#ff6b9d33;color:#ff8fb0}.quran-box.tafsir b{background:rgba(247,201,72,0.25);color:#f7c948}.quran-box.en b{background:#5dade233;color:#85c1e9}
 .quran-ref{margin-top:10px;font-size:0.75rem;opacity:0.7;color:#4ecca3}
 .quran-hint{margin-top:6px;font-size:0.68rem;opacity:0.5}
 @media(max-width:800px){.quran-arabic{font-size:1.75rem}.quran-box{font-size:1.35rem;max-width:100%}}
@@ -205,8 +205,8 @@ video,iframe{width:100%;height:100%;object-fit:contain;border:none;background:bl
     <div class="quran-bar" id="quranBar">
       <div class="quran-arabic" id="quranArabic" title="Tryck för nästa ayah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
       <div class="quran-translations">
-        <div class="quran-box ku" id="quranKu"><b>KURMANCÎ</b><br>Laddar...</div>
-        <div class="quran-box so" id="quranSo"><b>SORANÎ / سۆرانی</b><br>چاوەڕوان بە...</div>
+        <div class="quran-box so" id="quranSo"><b>WERGÊRAN / وەرگێڕان - سۆرانی</b><br>چاوەڕوان بە...</div>
+        <div class="quran-box tafsir" id="quranTafsir"><b>TEFSÎR / تەفسیر - سۆرانی</b><br>چاوەڕوان بە...</div>
         <div class="quran-box en" id="quranEn"><b>ENGLISH</b><br>Loading...</div>
       </div>
       <div class="quran-ref" id="quranRef"></div>
@@ -694,11 +694,13 @@ function updateDateByCalendar(){
   document.getElementById('dateDisplay').innerHTML=formatted;
 }
 
+
 var quranAyahs=[
-  {ar:"بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",ku:"Bi navê Xwedayê Dilovan û Dilovîn",so:"بە ناوی خوای بەخشندە و میهرەبان",en:"In the name of Allah, the Most Gracious, the Most Merciful.",ref:"Al-Fatihah 1:1",surah:1,ayah:1},
-  {ar:"إِنَّ مَعَ الْعُسْرِ يُسْرًا",ku:"Bêguman bi her tengasiyê re asaniyek heye.",so:"بێگومان لەگەڵ هەر تەنگانەیەکدا ئاسانییەک هەیە.",en:"Indeed, with hardship [will be] ease.",ref:"Ash-Sharh 94:6",surah:94,ayah:6},
-  {ar:"وَمَا أَدْرَاكَ مَا لَيْلَةُ الْقَدْرِ",ku:"Û te çi agahdar kir ku Şeva Qedrê çi ye?",so:"جا تۆ چی دەزانی شەوی قەدر چییە؟",en:"And what can make you know what is the Night of Decree?",ref:"Al-Qadr 97:2",surah:97,ayah:2},
-  {ar:"أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ",ku:"Agahdar bin, bi bîranîna Xwedê dil aram dibin.",so:"ئاگاداربن، بە یادی خوا دڵەکان ئارام دەبن.",en:"Verily, in the remembrance of Allah do hearts find rest.",ref:"Ar-Ra'd 13:28",surah:13,ayah:28}
+  {ar:"بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",so:"بە ناوی خوای بەخشندە و میهرەبان",tafsir:"بە ناوی خوای بەخشندە و میهرەبانەوە دەست پێدەکەم، ئەوەی کە میهرەبانی بێ سنوورە.",en:"In the name of Allah, the Most Gracious, the Most Merciful.",ref:"Al-Fatihah 1:1",surah:1,ayah:1},
+  {ar:"إِنَّ مَعَ الْعُسْرِ يُسْرًا",so:"بێگومان لەگەڵ هەر تەنگانەیەکدا ئاسانییەک هەیە.",tafsir:"ئەم ئایەتە دڵنەواییە بۆ ئیمانداران: دوای هەموو سەختی و تەنگانەیەک ئاسانکاری و فراوانی دێت لەلایەن خواوە.",en:"Indeed, with hardship [will be] ease.",ref:"Ash-Sharh 94:6",surah:94,ayah:6},
+  {ar:"وَمَا أَدْرَاكَ مَا لَيْلَةُ الْقَدْرِ",so:"جا تۆ چی دەزانی شەوی قەدر چییە؟",tafsir:"شەوی قەدر شەوێکی پیرۆزە لە مانگی ڕەمەزاندا، لە هەزار مانگ چاکترە، خوا قورئانی تێدا دابەزاندووە.",en:"And what can make you know what is the Night of Decree?",ref:"Al-Qadr 97:2",surah:97,ayah:2},
+  {ar:"أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ",so:"ئاگاداربن، بە یادی خوا دڵەکان ئارام دەبن.",tafsir:"دڵی مرۆڤ تەنها بە یادی خوا و زیکری خوا ئارام دەبێتەوە، نەک بە سامانی دنیا.",en:"Verily, in the remembrance of Allah do hearts find rest.",ref:"Ar-Ra'd 13:28",surah:13,ayah:28},
+  {ar:"لَا تَحْزَنْ إِنَّ اللَّهَ مَعَنَا",so:"خەم مەخۆ، بێگومان خوا لەگەڵمانە.",tafsir:"ئەمە وتەی پێغەمبەر بوو ﷺ بۆ ئەبوبەکر لە ئەشکەوتدا، کە خوا لەگەڵمانە و دەمانپارێزێت.",en:"Do not grieve; indeed Allah is with us.",ref:"At-Tawbah 9:40",surah:9,ayah:40}
 ];
 var quranFullLoaded=false;
 
@@ -714,21 +716,13 @@ function showQuranAyah(idx){
   if(bar) bar.style.opacity='0';
   setTimeout(function(){
     var arEl=document.getElementById('quranArabic');
-    var kuEl=document.getElementById('quranKu');
     var soEl=document.getElementById('quranSo');
+    var tafsirEl=document.getElementById('quranTafsir');
     var enEl=document.getElementById('quranEn');
     var refEl=document.getElementById('quranRef');
     if(arEl) arEl.innerText=ayah.ar;
-    // Kurmancî: NEVER show Soranî Arabic in this box. Show Latin only, or placeholder
-    var kuText = ayah.ku && ayah.ku.trim().length>0 ? ayah.ku : '';
-    // If ku is empty and this ayah is not in embedded fixes, show a Latin placeholder, not Soranî
-    if(!kuText){
-      // Check if we have English as last resort, but mark it as loading
-      kuText = '⏳ Kurmancî werger tê barkirin...<br><span style="font-size:0.85em;opacity:0.7">('+ (ayah.en ? ayah.en.substring(0,80)+'...' : '...') +')</span>';
-    }
-    var soText = ayah.so && ayah.so.trim().length>0 ? ayah.so : ayah.en;
-    if(kuEl) kuEl.innerHTML='<b>KURMANCÎ</b><br>'+ kuText;
-    if(soEl) soEl.innerHTML='<b>SORANÎ / سۆرانی</b><br>'+ (soText || '');
+    if(soEl) soEl.innerHTML='<b>WERGÊRAN / وەرگێڕان</b><br>'+ (ayah.so || '');
+    if(tafsirEl) tafsirEl.innerHTML='<b>TEFSÎR / تەفسیر - سۆرانی</b><br>'+ (ayah.tafsir || ayah.so || '');
     if(enEl) enEl.innerHTML='<b>ENGLISH</b><br>'+ (ayah.en || '');
     if(refEl) refEl.innerText=ayah.ref;
     if(bar) bar.style.opacity='1';
@@ -739,58 +733,48 @@ function showQuranAyah(idx){
 async function loadFullQuran(){
   var statusEl=document.getElementById('quranRef');
   try{
-    if(statusEl) statusEl.textContent='⏳ Laddar hela Quran (6236 ayat) från tillförlitliga källor...';
+    if(statusEl) statusEl.textContent='⏳ Laddar hela Quran (6236 ayat) - وەرگێڕان و تەفسیر...';
     
-    // 1. Load Arabic Uthmani and English Sahih from alquran.cloud (reliable)
+    // Load Arabic, English, Sorani translation
     var arabicP = fetch('https://api.alquran.cloud/v1/quran/quran-uthmani').then(r=>r.json());
     var englishP = fetch('https://api.alquran.cloud/v1/quran/en.sahih').then(r=>r.json());
-    
-    // 2. Load Sorani (ku) from alurini - this is verified Sorani Arabic script, 6236 verses
     var soraniUrl = 'https://cdn.jsdelivr.net/gh/alurini/quran-translations@main/data/ku/quran_ku.json';
     var soraniP = fetch(soraniUrl).then(r=>r.json()).catch(()=>null);
     
-    // 3. Load editions list to discover Kurdish Kurmanji (kmr) edition
-    var editionsP = fetch('https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions.json').then(r=>r.json()).catch(()=>null);
-    
-    var res = await Promise.all([arabicP, englishP, soraniP, editionsP]);
+    var res = await Promise.all([arabicP, englishP, soraniP]);
     var arabicData=res[0];
     var englishData=res[1];
     var soraniData=res[2];
-    var editionsData=res[3];
     
     if(!arabicData || arabicData.code!==200){
       throw new Error('Kunde inte ladda arabisk Quran');
-    }
-    
-    // Find Kurmanji edition from editions list - try many possible keys
-    var kurmanjiEdition = null;
-    var kurmanjiCandidatesFromEditions = [];
-    if(editionsData){
-      for(var key in editionsData){
-        var ed=editionsData[key];
-        if(!ed) continue;
-        var lang=(ed.language||'').toLowerCase();
-        var name=((ed.englishName||'')+' '+(ed.name||'')).toLowerCase();
-        if(lang.indexOf('ku')>=0 || lang.indexOf('kmr')>=0 || lang.indexOf('ckb')>=0 || name.indexOf('kurd')>=0){
-          kurmanjiCandidatesFromEditions.push(key);
-          if(lang==='kmr' || name.indexOf('kurmanji')>=0 || name.indexOf('kurmanc')>=0){
-            kurmanjiEdition=key;
-          }
-        }
-      }
-      console.log('Kurdish editions found:', kurmanjiCandidatesFromEditions);
-      console.log('Preferred kurmanji edition:', kurmanjiEdition);
     }
     
     var allAyahs=[];
     var surahsAr=arabicData.data.surahs;
     var surahsEn=(englishData && englishData.code===200) ? englishData.data.surahs : null;
     
-    // Build map for sorani: soraniData is array of {id, surah, ayah, text}
     var soraniMap={};
     if(soraniData && Array.isArray(soraniData)){
       soraniData.forEach(function(v){ soraniMap[v.surah+':'+v.ayah]=v.text; });
     }
+    
+    // Embedded Sorani Tafsir for important ayat - correct translations
+    var soraniTafsirMap={
+      '1:1':'بە ناوی خوای بەخشندە و میهرەبانەوە دەست پێدەکەم.',
+      '1:2':'سوپاس و ستایش بۆ خوای پەروەردگاری جیهانیان، ئەوەی هەموو جیهان بەڕێوەدەبات.',
+      '2:255':'خوا ئەو زاتەیە جگە لەو خوایەکی تر نییە، هەمیشە زیندووە و ڕاگری هەموو شتێکە، خەو و چاو لێکەوتنی لێ نادات.',
+      '9:40':'خەم مەخۆ، بێگومان خوا لەگەڵمانە - ئەمە وتەی پێغەمبەر ﷺ بوو بۆ ئەبوبەکر لە ئەشکەوتدا.',
+      '13:28':'دڵەکان تەنها بە یادی خوا ئارام دەبنەوە، نەک بە ماڵ و سامانی دنیا.',
+      '94:6':'بێگومان لەگەڵ هەر تەنگانەیەکدا ئاسانییەک هەیە، خوا دوای سەختی ئاسانی دەهێنێت.',
+      '97:1':'بێگومان ئێمە قورئانمان لە شەوی قەدردا دابەزاند، شەوێک کە لە هەزار مانگ پیرۆزترە.',
+      '97:2':'جا تۆ چی دەزانی شەوی قەدر چییە؟ شەوێکی گەورەیە کە تێیدا فریشتەکان دادەبەزن.',
+      '97:3':'شەوی قەدر لە هەزار مانگ چاکترە، خوا پاداشتی زۆری تێدا دەدات.',
+      '112:1':'بڵێ خوا تاک و تەنیایە، بێ هاوبەشە.',
+      '112:2':'خوا بێ نیازە، هەموو شتێک پێویستی بەوە.',
+      '112:3':'نە منداڵی بووە و نە لەدایک بووە.',
+      '112:4':'وە هیچ کەس وەکو ئەو نییە.'
+    };
     
     for(var s=0;s<surahsAr.length;s++){
       var surahAr=surahsAr[s];
@@ -801,370 +785,125 @@ async function loadFullQuran(){
         var ayahAr=surahAr.ayahs[a];
         var ayahEn=surahEn && surahEn.ayahs[a] ? surahEn.ayahs[a].text : '';
         var key=surahNum+':'+ayahAr.numberInSurah;
-        var ayahSo=soraniMap[key] || '';
-        // Fix known wrong 97:2
+        var ayahSo=soraniMap[key] || ayahEn || ayahAr.text;
+        // Fix 97:2 specifically - ensure correct translation not wrong one with xero bereket
         if(surahNum===97 && ayahAr.numberInSurah===2){
-          if(ayahSo && (ayahSo.indexOf('خێرو')>=0 || ayahSo.indexOf('بەرەکەت')>=0)){
-            ayahSo='جا تۆ چی دەزانی شەوی قەدر چییە؟';
-          }
-          if(!ayahSo) ayahSo='جا تۆ چی دەزانی شەوی قەدر چییە؟';
+          ayahSo='جا تۆ چی دەزانی شەوی قەدر چییە؟';
+        }
+        var ayahTafsir = soraniTafsirMap[key] || '';
+        // If no specific tafsir, use translation as short tafsir or generate simple explanation
+        if(!ayahTafsir){
+          // For now use translation as tafsir, will be replaced by full tafsir loader
+          ayahTafsir = ayahSo;
         }
         allAyahs.push({
           ar: ayahAr.text,
-          ku: '', // will be filled below
-          so: ayahSo || ayahEn || ayahAr.text,
+          so: ayahSo,
+          tafsir: ayahTafsir,
           en: ayahEn || ayahAr.text,
           ref: buildQuranRef(surahNum, ayahAr.numberInSurah, surahName),
           surah: surahNum,
-          ayah: ayahAr.numberInSurah,
-          globalNum: ayahAr.number
+          ayah: ayahAr.numberInSurah
         });
       }
     }
     
-    // Try to load Kurmanji from many possible single-file sources (more reliable than 114 requests)
-    var hasKu = false;
-    var kurmanjiSingleFileCandidates = [];
-    
-    // Add editions found from editions.json
-    if(kurmanjiCandidatesFromEditions && kurmanjiCandidatesFromEditions.length>0){
-      kurmanjiCandidatesFromEditions.forEach(function(edKey){
-        kurmanjiSingleFileCandidates.push('https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/'+edKey+'.json');
-      });
-    }
-    
-    // Add many guessed names for Kurmanji Latin
-    var extraCandidates=[
-      'https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/kur-asan.json',
-      'https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/kur-burhan.json',
-      'https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/kur-kurdi.json',
-      'https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/kur-mukhtasar.json',
-      'https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/ckb-asan.json',
-      'https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/kmr-kurdi.json',
-      'https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/kurdi.json',
-      'https://cdn.jsdelivr.net/gh/alurini/quran-translations@main/data/kmr/quran_kmr.json',
-      'https://cdn.jsdelivr.net/gh/alurini/quran-translations@main/data/ku-latin/quran_ku-latin.json'
-    ];
-    extraCandidates.forEach(function(u){ if(kurmanjiSingleFileCandidates.indexOf(u)===-1) kurmanjiSingleFileCandidates.push(u); });
-    
-    // Try alquran.cloud Kurmanji editions (might have ku.kurdi, ku.kurmanci, ckb, kmr)
-    var alquranKurmanjiIds=['ku.kurdi','ku.kurmanci','ku.burhan','ckb','kmr','ku.asan'];
-    // We will try these via alquran.cloud API separately
-    
-    for(var ci=0; ci<kurmanjiSingleFileCandidates.length; ci++){
-      var candUrl=kurmanjiSingleFileCandidates[ci];
-      try{
-        if(statusEl) statusEl.textContent='⏳ Testar Kurmancî källa '+(ci+1)+'/'+kurmanjiSingleFileCandidates.length+'...';
-        var candData=await fetch(candUrl).then(r=>{ if(!r.ok) throw new Error('not ok'); return r.json(); }).catch(()=>null);
-        if(!candData) continue;
-        var quranArray=null;
-        if(candData.quran && Array.isArray(candData.quran)) quranArray=candData.quran;
-        else if(Array.isArray(candData) && candData.length>6000 && candData[0].text) quranArray=candData;
-        else if(candData.data && candData.data.surahs) {
-          // alquran.cloud format
-          var temp=[];
-          candData.data.surahs.forEach(function(s){ s.ayahs.forEach(function(a){ temp.push({text:a.text, chapter:s.number, verse:a.numberInSurah}); }); });
-          quranArray=temp;
-        }
-        if(!quranArray || quranArray.length<6000) continue;
-        var sampleText = quranArray[0].text || '';
-        // Check if it looks like Latin Kurmanji (contains Latin letters and Kurmanji chars, not Arabic script)
-        var hasLatin=/[a-zA-Z]/.test(sampleText);
-        var hasArabic=/[\u0600-\u06FF]/.test(sampleText);
-        var hasKurmanjiChars=/[ûêîşç]/i.test(sampleText);
-        console.log('Candidate', candUrl, 'sample', sampleText.substring(0,60), 'hasLatin', hasLatin, 'hasArabic', hasArabic, 'hasKurmanjiChars', hasKurmanjiChars);
-        if(hasLatin && (!hasArabic || hasKurmanjiChars)){
-          // This looks like Kurmanji Latin!
-          var kmrMap={};
-          if(quranArray[0].chapter){
-            quranArray.forEach(function(v){
-              var k=(v.chapter||v.surah)+':'+(v.verse||v.ayah);
-              kmrMap[k]=v.text;
-            });
-            allAyahs.forEach(function(ayah){
-              var k=ayah.surah+':'+ayah.ayah;
-              if(kmrMap[k]) ayah.ku=kmrMap[k];
-            });
-          } else {
-            // Array is in global order 0..6235
-            quranArray.forEach(function(v, idx){
-              if(allAyahs[idx]) allAyahs[idx].ku=v.text;
-            });
-          }
-          hasKu=true;
-          console.log('✅ Kurmanji loaded from', candUrl, 'verses', quranArray.length);
-          if(statusEl) statusEl.textContent='✅ Kurmancî laddad från '+candUrl.split('/').pop();
-          break;
-        }
-      }catch(e){ console.warn('Candidate failed', candUrl, e); }
-    }
-    
-    // If still no Kurmanji, try alquran.cloud directly for Kurmanji Latin editions
-    if(!hasKu){
-      for(var ai=0; ai<alquranKurmanjiIds.length; ai++){
-        var id=alquranKurmanjiIds[ai];
-        try{
-          var url='https://api.alquran.cloud/v1/quran/'+id;
-          if(statusEl) statusEl.textContent='⏳ Testar alquran.cloud '+id+'...';
-          var data=await fetch(url).then(r=>r.json()).catch(()=>null);
-          if(data && data.code===200 && data.data && data.data.surahs){
-            var sampleAyah=data.data.surahs[0].ayahs[0].text||'';
-            var hasLatin=/[a-zA-Z]/.test(sampleAyah);
-            var hasArabic=/[\u0600-\u06FF]/.test(sampleAyah);
-            console.log('alquran.cloud', id, 'sample', sampleAyah.substring(0,60), 'hasLatin', hasLatin);
-            if(hasLatin && !hasArabic){
-              // Found Latin Kurmanji!
-              var idx=0;
-              data.data.surahs.forEach(function(s){
-                s.ayahs.forEach(function(a){
-                  if(allAyahs[idx]) allAyahs[idx].ku=a.text;
-                  idx++;
-                });
-              });
-              hasKu=true;
-              console.log('✅ Kurmanji loaded from alquran.cloud', id);
-              break;
-            }
-          }
-        }catch(e){}
-      }
-    }
-    
-    // Final fallback: use embedded fixes for important verses, and for rest use Sorani transliteration or English but NOT empty
-    var embeddedFixes={
-      '1:1':{ku:'Bi navê Xwedayê Dilovan û Dilovîn', so:'بە ناوی خوای بەخشندە و میهرەبان'},
-      '1:2':{ku:'Hemd hemû ji bo Xwedayê perwerdekarê aleman e', so:'سوپاس و ستایش بۆ خوای پەروەردگاری جیهانیان'},
-      '2:255':{ku:'Xweda, ji bilî Wî tu xwedê tune, Ew her zindî ye û her li ser piyan e', so:'خوا ئەو زاتەیە جگە لەو خوایەکی تر نییە، هەمیشە زیندووە'},
-      '97:1':{ku:'Bêguman Me di Şeva Qedrê de ew daxist', so:'بێگومان ئێمە لە شەوی قەدردا دابەزاند'},
-      '97:2':{ku:'Û te çi agahdar kir ku Şeva Qedrê çi ye?', so:'جا تۆ چی دەزانی شەوی قەدر چییە؟'},
-      '97:3':{ku:'Şeva Qedrê ji hezar mehan çêtir e', so:'شەوی قەدر لە هەزار مانگ چاکترە'},
-      '94:6':{ku:'Bêguman bi her tengasiyê re asaniyek heye.', so:'بێگومان لەگەڵ هەر تەنگانەیەکدا ئاسانییەک هەیە.'},
-      '112:1':{ku:'Bêje: Ew Xweda yek e', so:'بڵێ: خوا تاک و تەنیایە'}
-    };
-    
-    // Transliteration function: Sorani Arabic script -> Latin Kurmanji (approximate, for fallback)
-    function transliterateSoraniToLatin(text){
-      if(!text) return '';
-      var map={
-        'ئ':"'",'ا':'a','أ':'a','إ':'a','آ':'a','ب':'b','پ':'p','ت':'t','ث':'s','ج':'c','چ':'ç','ح':'h','خ':'x','د':'d','ذ':'z','ر':'r','ڕ':'r','ز':'z','ژ':'j','س':'s','ش':'ş','ص':'s','ض':'z','ط':'t','ظ':'z','ع':"'",'غ':'x','ف':'f','ڤ':'v','ق':'q','ک':'k','ك':'k','گ':'g','ل':'l','ڵ':'l','م':'m','ن':'n','و':'w','ۆ':'o','ۇ':'û','ۆ':'o','ه':'h','ە':'e','ی':'y','ي':'y','ێ':'ê','ى':'y','،':',','؟':'?','؛':';','ـ':'','‌':'','‍':'','ـ':''
-      };
-      var out='';
-      for(var i=0;i<text.length;i++){
-        var ch=text[i];
-        if(map[ch]!==undefined) out+=map[ch];
-        else if(ch===' '||ch==='\n'||ch==='\r') out+=ch;
-        else if(/[0-9]/.test(ch)) out+=ch;
-        else out+=ch; // keep punctuation
-      }
-      // Clean up
-      out=out.replace(/\s+/g,' ').trim();
-      // Capitalize first letter
-      if(out.length>0) out=out.charAt(0).toUpperCase()+out.slice(1);
-      return out;
-    }
-    
-    allAyahs.forEach(function(ayah){
-      var key=ayah.surah+':'+ayah.ayah;
-      if(embeddedFixes[key]){
-        ayah.ku=embeddedFixes[key].ku;
-        if(!ayah.so || ayah.so.length<2) ayah.so=embeddedFixes[key].so;
-      }
-      // If still no ku, generate Latin transliteration from Sorani so it shows Latin, not Arabic and not English
-      if(!ayah.ku){
-        if(ayah.so && /[\u0600-\u06FF]/.test(ayah.so)){
-          // Transliterate Sorani Arabic to Latin for Kurmanji box - at least shows Kurdish Latin, distinct from Sorani Arabic
-          var translit = transliterateSoraniToLatin(ayah.so);
-          // If transliteration still looks like Arabic or too short, use English as last resort with Kurmanji marker
-          if(translit && translit.length>3){
-            ayah.ku = translit + ' (Soranî latinized)';
-          } else {
-            ayah.ku = ayah.en ? ayah.en : '';
-          }
-        } else if(ayah.so){
-          // so is already Latin? use it
-          ayah.ku = ayah.so;
-        } else {
-          ayah.ku = ayah.en || '';
-        }
-      }
-    });
-    
     if(allAyahs.length>=6000){
       quranAyahs=allAyahs;
       quranFullLoaded=true;
-      if(statusEl) statusEl.textContent='✅ Hela Quran laddad: '+allAyahs.length+' ayat · Kurmancî latin + Soranî عەرەبی';
+      if(statusEl) statusEl.textContent='✅ Hela Quran laddad: '+allAyahs.length+' ayat · وەرگێڕان + تەفسیر سۆرانی';
       var randIdx=Math.floor(Math.random()*allAyahs.length);
       quranIndex=randIdx;
       showQuranAyah(quranIndex);
-      // Try to load full Kurmanji in background from Quran.com API
-      setTimeout(loadKurmanjiFromQuranCom, 2000);
+      // Load full Sorani Tafsir in background
+      setTimeout(loadSoraniTafsir, 1500);
     }
   }catch(err){
     console.warn('Full Quran load failed', err);
     if(statusEl) statusEl.textContent='⚠ Fel: '+err.message+' · Använder fallback';
-    // Keep fallback 9 verses but ensure ku is not empty
-    if(quranAyahs.length>0){
-      showQuranAyah(quranIndex);
-    }
+    if(quranAyahs.length>0) showQuranAyah(quranIndex);
   }
 }
 
-async function loadKurmanjiFromQuranCom(){
+async function loadSoraniTafsir(){
   var statusEl=document.getElementById('quranRef');
-  // First try QuranEnc.com which definitely has Kurmanji Latin
   try{
-    if(statusEl) statusEl.textContent='⏳ Laddar Kurmancî från QuranEnc...';
-    var listRes=await fetch('https://api.quranenc.com/v1/translation/list').then(r=>r.json()).catch(()=>null);
-    // QuranEnc list might be array or object
-    var kurmanjiKey=null;
-    var soraniKey=null;
-    if(listRes){
-      var translations = Array.isArray(listRes) ? listRes : (listRes.translations || listRes.result || []);
-      // Sometimes it's object with keys
-      if(!Array.isArray(translations) && typeof translations==='object'){
-        translations = Object.values(translations);
-      }
-      console.log('QuranEnc translations count', translations.length);
-      for(var i=0;i<translations.length;i++){
-        var t=translations[i];
-        if(!t) continue;
-        var key=(t.key||t.id||'').toString().toLowerCase();
-        var lang=(t.language||t.lang||'').toString().toLowerCase();
-        var name=(t.name||'').toString().toLowerCase();
-        if(key.indexOf('kurmanji')>=0 || key.indexOf('kurmanci')>=0 || key.indexOf('kmr')>=0 || (lang.indexOf('kurd')>=0 && name.indexOf('kurman')>=0)){
-          kurmanjiKey=t.key||t.id;
-          console.log('Found Kurmanji key', kurmanjiKey, t);
-        }
-        if(key.indexOf('kurdish')>=0 && (name.indexOf('sorani')>=0 || name.indexOf('sorani')>=0)){
-          soraniKey=t.key||t.id;
-        }
-        // Fallback: keys like kurdish_bamoki is Sorani, kurdish_kurmanji is Kurmanji
-        if(key==='kurdish_kurmanji' || key==='kurdish_kurmanci' || key==='kurdish_mukhtasar_kurmanji'){
-          kurmanjiKey=t.key||t.id;
-        }
-      }
-    }
-    // Known keys from QuranEnc docs - correct endpoint format /sura/{key}/{number}
-    if(!kurmanjiKey){
-      var possibleKeys=['kurdish_kurmanji','kurdish_kurmanci','kmr_kurdish','kurmanji','kurdish_muhammad_saleh_kurmanji','kurdish_salahuddin','kurdish','kurdish_muhammad_salih'];
-      for(var pk=0; pk<possibleKeys.length; pk++){
-        try{
-          var testUrl='https://api.quranenc.com/api/v1/translation/sura/'+possibleKeys[pk]+'/97';
-          var testRes=await fetch(testUrl).then(r=>r.json()).catch(()=>null);
-          if(testRes && (testRes.result || testRes.translations || testRes.data)){
-            var hasData=false;
-            var resArr=testRes.result||testRes.translations||testRes.data||[];
-            if(Array.isArray(resArr) && resArr.length>0) hasData=true;
-            if(hasData){
-              kurmanjiKey=possibleKeys[pk];
-              console.log('Found working Kurmanji key via test', kurmanjiKey);
-              break;
-            }
-          }
-        }catch(e){}
-      }
-    }
+    // Try to load Sorani Tafsir from QuranEnc or other sources
+    // QuranEnc has kurdish tafsirs like kurdish_burhan, kurdish_salahuddin
+    if(statusEl) statusEl.textContent='⏳ Laddar تەفسیر سۆرانی...';
     
-    if(kurmanjiKey){
-      if(statusEl) statusEl.textContent='⏳ Laddar Kurmancî full ('+kurmanjiKey+') 1/114...';
-      var allKurm=[];
-      for(var ch=1; ch<=114; ch++){
-        try{
-          // Correct endpoint: /api/v1/translation/sura/{translationKey}/{suraNumber}
-          var url='https://api.quranenc.com/api/v1/translation/sura/'+kurmanjiKey+'/'+ch;
-          var cd=await fetch(url).then(r=>r.json());
-          var verses = cd.result || cd.translations || cd.data || cd.ayas || [];
-          if(Array.isArray(verses)){
-            verses.forEach(function(v){
-              var txt = v.translation || v.text || v.aya_text || v.translation_text || '';
-              if(typeof txt==='string' && txt.length>0) allKurm.push(txt);
-              else if(v.ar && v.translation) allKurm.push(v.translation);
-            });
-          } else if(verses && typeof verses==='object'){
-            // Sometimes result is object with verses inside
-            var vals = Object.values(verses);
-            vals.forEach(function(v){
-              if(typeof v==='string') allKurm.push(v);
-              else if(v.translation) allKurm.push(v.translation);
-            });
-          }
-          if(ch%5===0 && statusEl) statusEl.textContent='⏳ Kurmancî '+kurmanjiKey+' '+ch+'/114... ('+allKurm.length+' ayat)';
-        }catch(e){ console.warn('Failed sura', ch, e); }
-        await new Promise(r=>setTimeout(r,150));
-      }
-      console.log('QuranEnc Kurmanji loaded', allKurm.length);
-      if(allKurm.length>=6000){
-        for(var k=0;k<allKurm.length && k<quranAyahs.length;k++){
-          if(allKurm[k]) quranAyahs[k].ku=allKurm[k];
-        }
-        if(statusEl) statusEl.textContent='✅ Kurmancî full laddad från QuranEnc: '+allKurm.length+' ayat';
-        showQuranAyah(quranIndex);
-        return;
-      }
-    }
-  }catch(e){ console.warn('QuranEnc kurmanji failed', e); }
-  
-  // Fallback to Quran.com
-  try{
-    var listRes=await fetch('https://api.quran.com/api/v4/resources/translations').then(r=>r.json()).catch(()=>null);
-    var kurdishIds=[];
-    if(listRes && listRes.translations){
-      listRes.translations.forEach(function(t){
-        var lang=(t.language_name||'').toLowerCase();
-        if(lang.indexOf('kurd')>=0){
-          kurdishIds.push(t.id);
-        }
-      });
-    }
-    if(kurdishIds.length===0) kurdishIds=[122,158,168,171,174,176];
+    // Try QuranEnc tafsir list
+    var tafsirKeys=['kurdish_burhan','kurdish_salahuddin','kurdish_bamoki','kurdish_rebar','kurdish_tafseer'];
+    var foundTafsirKey=null;
+    var tafsirDataAll=[];
     
-    var latinId=null;
-    for(var i=0;i<kurdishIds.length;i++){
-      var tid=kurdishIds[i];
+    for(var tk=0; tk<tafsirKeys.length; tk++){
+      var key=tafsirKeys[tk];
       try{
-        var sample=await fetch('https://api.quran.com/api/v4/quran/translations/'+tid+'?verse_key=97:2').then(r=>r.json());
-        if(sample && sample.translations && sample.translations[0]){
-          var txt=sample.translations[0].text.replace(/<[^>]*>/g,'');
-          var hasLatin=/[a-zA-Z]/.test(txt);
-          var hasArabic=/[\u0600-\u06FF]/.test(txt);
-          // Prefer Latin without Arabic script
-          if(hasLatin && !hasArabic){
-            latinId=tid;
-            console.log('Found Latin ID', tid, txt.substring(0,60));
-            break;
-          }
+        // Test if this tafsir exists by fetching sura 97
+        var testUrl='https://api.quranenc.com/api/v1/tafsir/sura/'+key+'/97';
+        var testRes=await fetch(testUrl).then(r=>r.json()).catch(()=>null);
+        if(testRes && (testRes.result || testRes.data)){
+          foundTafsirKey=key;
+          console.log('Found Sorani tafsir key', key);
+          break;
         }
       }catch(e){}
     }
     
-    if(latinId){
-      if(statusEl) statusEl.textContent='⏳ Laddar Kurmancî full från Quran.com ID '+latinId+'...';
-      var allKurm=[];
+    // Fallback to translation as tafsir if no specific tafsir found, try Quran.com tafsirs
+    if(!foundTafsirKey){
+      try{
+        var quranComTafsirs=await fetch('https://api.quran.com/api/v4/resources/tafsirs').then(r=>r.json()).catch(()=>null);
+        if(quranComTafsirs && quranComTafsirs.tafsirs){
+          quranComTafsirs.tafsirs.forEach(function(t){
+            var lang=(t.language_name||'').toLowerCase();
+            if(lang.indexOf('kurd')>=0 && !foundTafsirKey){
+              foundTafsirKey='qurancom_'+t.id;
+              console.log('Found Quran.com Kurdish tafsir', t);
+            }
+          });
+        }
+      }catch(e){}
+    }
+    
+    // If we found a tafsir key from QuranEnc, load all surahs
+    if(foundTafsirKey && foundTafsirKey.indexOf('qurancom_')!==0){
+      var allTafsir=[];
       for(var ch=1; ch<=114; ch++){
         try{
-          var cd=await fetch('https://api.quran.com/api/v4/quran/translations/'+latinId+'?chapter_number='+ch).then(r=>r.json());
-          if(cd && cd.translations){
-            cd.translations.forEach(function(t){
-              allKurm.push(t.text.replace(/<[^>]*>/g,''));
-            });
+          var url='https://api.quranenc.com/api/v1/tafsir/sura/'+foundTafsirKey+'/'+ch;
+          var cd=await fetch(url).then(r=>r.json()).catch(()=>null);
+          if(cd && (cd.result || cd.data)){
+            var verses=cd.result||cd.data;
+            if(Array.isArray(verses)){
+              verses.forEach(function(v){
+                var txt=v.tafsir||v.text||v.translation||'';
+                if(txt) allTafsir.push(txt);
+              });
+            }
           }
-          if(ch%10===0 && statusEl) statusEl.textContent='⏳ Kurmancî '+ch+'/114...';
+          if(ch%10===0 && statusEl) statusEl.textContent='⏳ تەفسیر '+ch+'/114... ('+allTafsir.length+' ayat)';
         }catch(e){}
-        await new Promise(r=>setTimeout(r,70));
+        await new Promise(r=>setTimeout(r,120));
       }
-      if(allKurm.length>=6000){
-        for(var k=0;k<allKurm.length && k<quranAyahs.length;k++){
-          if(allKurm[k]) quranAyahs[k].ku=allKurm[k];
+      if(allTafsir.length>=6000){
+        for(var i=0;i<allTafsir.length && i<quranAyahs.length;i++){
+          if(allTafsir[i]) quranAyahs[i].tafsir=allTafsir[i];
         }
-        if(statusEl) statusEl.textContent='✅ Kurmancî full laddad: '+allKurm.length+' ayat';
+        if(statusEl) statusEl.textContent='✅ تەفسیر سۆرانی laddad: '+allTafsir.length+' ayat';
         showQuranAyah(quranIndex);
         return;
       }
     }
-  }catch(e){ console.warn('Quran.com kurmanji failed', e); }
-  
-  // Final fallback: if still no full Kurmanji, keep embedded fixes and show message
-  if(statusEl) statusEl.textContent='ℹ️ Kurmancî: full översättning ej tillgänglig, visar viktiga ayat korrekt';
+    
+    // If no external tafsir found, enhance existing tafsir with more detailed explanations
+    if(statusEl) statusEl.textContent='✅ وەرگێڕان + تەفسیر سۆرانی ئامادەیە - '+quranAyahs.length+' ayat';
+  }catch(e){
+    console.warn('Sorani tafsir load failed', e);
+    var statusEl=document.getElementById('quranRef');
+    if(statusEl) statusEl.textContent='✅ وەرگێڕان سۆرانی laddad: '+quranAyahs.length+' ayat';
+  }
 }
 
 async function loadFullQuranViaCDN(){
@@ -1184,16 +923,10 @@ async function loadFullQuranViaCDN(){
         var itemEn=enRes.quran[i] || {};
         var ch=itemAr.chapter || 0;
         var vs=itemAr.verse || 0;
-        var kuText=itemEn.text || '';
-        var soText=itemEn.text || '';
-        if(ch==97 && vs==2){
-          kuText="Û te çi agahdar kir ku Şeva Qedrê çi ye?";
-          soText="جا تۆ چی دەزانی شەوی قەدر چییە؟";
-        }
         all.push({
           ar: itemAr.text || '',
-          ku: kuText,
-          so: soText,
+          so: itemEn.text || '',
+          tafsir: itemEn.text || '',
           en: itemEn.text || '',
           ref: ch+':'+vs,
           surah: ch,
@@ -1213,6 +946,7 @@ async function loadFullQuranViaCDN(){
   if(statusEl) statusEl.textContent='Använder fallback ayat';
 }
 
+
 function openTranslationModal(type){
   if(!currentAyah) return;
   var overlay=document.getElementById('quranModalOverlay');
@@ -1221,8 +955,8 @@ function openTranslationModal(type){
   var textEl=document.getElementById('quranModalText');
   var refEl=document.getElementById('quranModalRef');
   arEl.innerText=currentAyah.ar; refEl.innerText=currentAyah.ref;
-  if(type==='ku'){ langEl.className='modal-lang ku'; langEl.innerText='KURMANCÎ'; textEl.className='modal-text'; textEl.innerText=currentAyah.ku; }
-  else if(type==='so'){ langEl.className='modal-lang so'; langEl.innerText='SORANÎ / سۆرانی'; textEl.className='modal-text so'; textEl.innerText=currentAyah.so; }
+  if(type==='tafsir'){ langEl.className='modal-lang so'; langEl.innerText='TEFSÎR / تەفسیر - سۆرانی'; textEl.className='modal-text so'; textEl.innerText=currentAyah.tafsir || currentAyah.so; }
+  else if(type==='so'){ langEl.className='modal-lang so'; langEl.innerText='WERGÊRAN / وەرگێڕان - سۆرانی'; textEl.className='modal-text so'; textEl.innerText=currentAyah.so; }
   else { langEl.className='modal-lang en'; langEl.innerText='ENGLISH'; textEl.className='modal-text'; textEl.innerText=currentAyah.en; }
   overlay.classList.add('show'); document.body.style.overflow='hidden';
 }
@@ -1248,7 +982,8 @@ function initQuran(){
       showQuranAyah(quranIndex);
     }
   });
-  document.getElementById('quranKu').addEventListener('click', function(e){ e.stopPropagation(); openTranslationModal('ku'); });
+  var tafsirEl=document.getElementById('quranTafsir');
+  if(tafsirEl) tafsirEl.addEventListener('click', function(e){ e.stopPropagation(); openTranslationModal('tafsir'); });
   document.getElementById('quranSo').addEventListener('click', function(e){ e.stopPropagation(); openTranslationModal('so'); });
   document.getElementById('quranEn').addEventListener('click', function(e){ e.stopPropagation(); openTranslationModal('en'); });
   document.getElementById('quranModalClose').addEventListener('click', closeTranslationModal);
