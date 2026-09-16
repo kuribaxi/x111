@@ -11,54 +11,41 @@
 body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);color:#fff;min-height:100vh}
 .header{display:none!important}
 
-/* ===== FIXED DIGITAL CLOCK - ALLTID SYNLIG VÄ ÖVRE HÖRN ===== */
+/* ===== FIXED TOP BADGES - ALLTID SYNLIGA OAVSETT SCROLL ===== */
 .fixed-clock-badge{
-  position:fixed;
-  top:12px;
-  left:12px;
-  z-index:99999;
-  background:rgba(18,27,46,0.92);
-  border:1px solid rgba(78,204,163,0.35);
-  border-radius:14px;
-  padding:9px 14px 8px;
-  backdrop-filter:blur(12px);
+  position:fixed;top:12px;left:12px;z-index:99999;
+  background:rgba(18,27,46,0.92);border:1px solid rgba(78,204,163,0.35);
+  border-radius:14px;padding:9px 14px 8px;backdrop-filter:blur(12px);
   box-shadow:0 8px 24px rgba(0,0,0,0.4),0 0 0 1px rgba(78,204,163,0.1) inset,0 0 15px rgba(78,204,163,0.15);
-  pointer-events:none;
-  text-align:left;
-  min-width:132px;
+  pointer-events:none;text-align:left;min-width:132px;
 }
 .fixed-clock-time{
-  font-family:'Courier New','JetBrains Mono',monospace;
-  font-size:1.05rem;
-  font-weight:900;
-  color:#4ecca3;
-  line-height:1;
-  letter-spacing:1.5px;
-  text-shadow:0 0 8px #4ecca388;
-  display:flex;
-  align-items:center;
-  gap:7px;
+  font-family:'Courier New','JetBrains Mono',monospace;font-size:1.05rem;font-weight:900;color:#4ecca3;
+  line-height:1;letter-spacing:1.5px;text-shadow:0 0 8px #4ecca388;display:flex;align-items:center;gap:7px;
 }
-.fixed-clock-dot{
-  width:7px;height:7px;border-radius:50%;
-  background:#4ecca3;display:inline-block;
-  box-shadow:0 0 8px #4ecca3;
-  animation:blinkDot 1.4s infinite;
-}
+.fixed-clock-dot{width:7px;height:7px;border-radius:50%;background:#4ecca3;display:inline-block;box-shadow:0 0 8px #4ecca3;animation:blinkDot 1.4s infinite}
 @keyframes blinkDot{0%,100%{opacity:1}50%{opacity:0.35}}
-.fixed-clock-date{
-  font-family:'Manrope','Segoe UI',sans-serif;
-  font-size:0.68rem;
-  color:#a9c9bb;
-  margin-top:4px;
-  text-transform:capitalize;
-  line-height:1.2;
-  opacity:0.85;
+.fixed-clock-date{font-family:'Manrope','Segoe UI',sans-serif;font-size:0.68rem;color:#a9c9bb;margin-top:4px;text-transform:capitalize;line-height:1.2;opacity:0.85}
+
+.fixed-weather-badge{
+  position:fixed;top:12px;right:12px;z-index:99999;
+  background:rgba(18,27,46,0.92);border:1px solid rgba(78,204,163,0.35);
+  border-radius:14px;padding:9px 14px 8px;backdrop-filter:blur(12px);
+  box-shadow:0 8px 24px rgba(0,0,0,0.4),0 0 0 1px rgba(78,204,163,0.1) inset,0 0 15px rgba(78,204,163,0.15);
+  pointer-events:auto;text-align:right;min-width:145px;cursor:pointer;transition:all 0.2s;
 }
-@media(max-width:600px){
-  .fixed-clock-badge{top:10px;left:10px;padding:7px 11px;min-width:110px}
-  .fixed-clock-time{font-size:0.92rem}
-  .fixed-clock-date{font-size:0.62rem}
+.fixed-weather-badge:hover{transform:scale(1.03);border-color:#4ecca3;box-shadow:0 10px 28px rgba(0,0,0,0.5),0 0 18px rgba(78,204,163,0.25)}
+.fixed-weather-main{font-size:1.05rem;font-weight:900;color:#4ecca3;display:flex;align-items:center;gap:6px;justify-content:flex-end;line-height:1}
+.fixed-weather-icon{font-size:1.2rem;filter:drop-shadow(0 0 6px #4ecca388)}
+.fixed-weather-sub{font-size:0.68rem;color:#a9c9bb;margin-top:4px;opacity:0.85;line-height:1.2}
+
+@media(max-width:700px){
+  .fixed-clock-badge{top:8px;left:8px;padding:6px 10px;min-width:110px}
+  .fixed-clock-time{font-size:0.88rem}
+  .fixed-clock-date{font-size:0.6rem}
+  .fixed-weather-badge{top:8px;right:8px;padding:6px 10px;min-width:115px}
+  .fixed-weather-main{font-size:0.88rem}
+  .fixed-weather-sub{font-size:0.6rem}
 }
 
 /* ===== GARDIN / CURTAIN ===== */
@@ -202,10 +189,15 @@ video,iframe{width:100%;height:100%;object-fit:contain;border:none;background:bl
 </head>
 <body>
 
-<!-- FIXED CLOCK - ALLTID SYNLIG VÄ ÖVRE HÖRN SOM I KURIBAXI HTML -->
+<!-- FIXED BADGES - ALLTID SYNLIGA VÄ & HÖ ÖVRE HÖRN -->
 <div class="fixed-clock-badge" id="fixedClockBadge">
   <div class="fixed-clock-time"><span class="fixed-clock-dot"></span><span id="fixedClockTime">--:--:--</span></div>
   <div class="fixed-clock-date" id="fixedClockDate">laddar...</div>
+</div>
+
+<div class="fixed-weather-badge" id="fixedWeatherBadge" onclick="document.getElementById('topWrapper').classList.contains('curtain-closed') ? toggleCurtain() : document.getElementById('weatherWeek').scrollIntoView({behavior:'smooth'})" title="Klicka för att visa väderdetaljer">
+  <div class="fixed-weather-main"><span class="fixed-weather-icon" id="fixedWeatherIcon">⛅</span><span id="fixedWeatherTemp">--°C</span></div>
+  <div class="fixed-weather-sub" id="fixedWeatherSub">Hämtar väder...</div>
 </div>
 
 <div class="curtain-wrapper" id="curtainWrapper">
@@ -218,7 +210,7 @@ video,iframe{width:100%;height:100%;object-fit:contain;border:none;background:bl
         <div class="quran-box en" id="quranEn"><b>ENGLISH</b><br>Loading...</div>
       </div>
       <div class="quran-ref" id="quranRef"></div>
-      <div class="quran-hint">👆 Arabic = next ayah | Translation = big window</div>
+      <div class="quran-hint">👆 Arabic = slumpmässig ayah från hela Quran (6236) | Dubbelklick = ny slump | Translation = stor ruta</div>
     </div>
     <div class="info-panel">
       <div class="clock-section"><canvas id="analogCanvas" class="analog-canvas" width="300" height="300"></canvas><div id="digitalClockDisplay" class="clock-display">--:--:--</div></div>
@@ -662,18 +654,17 @@ function showFavs(btn){ setAllBtnsInactive(); btn.classList.add('active'); rende
 function filterDirect(btn,cat){ setAllBtnsInactive(); btn.classList.add('active'); render(cat); }
 function initClock(){
   var digitalDiv=document.getElementById('digitalClockDisplay'); var canvas=document.getElementById('analogCanvas'); var ctx=canvas.getContext('2d');
-  // Fixed clock elements (alltid synlig vä övre hörn)
+  // Fixed top badges
   var fixedTimeEl=document.getElementById('fixedClockTime');
   var fixedDateEl=document.getElementById('fixedClockDate');
   function updateFixedClock(){
     var now=new Date();
     var timeStr=now.toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-    var dateStr=now.toLocaleDateString('sv-SE',{weekday:'long',day:'numeric',month:'short'});
+    var dateStr=now.toLocaleDateString('sv-SE',{weekday:'short',day:'numeric',month:'short'});
     if(fixedTimeEl) fixedTimeEl.textContent=timeStr;
     if(fixedDateEl) fixedDateEl.textContent=dateStr;
   }
-  updateFixedClock();
-  setInterval(updateFixedClock,1000);
+  updateFixedClock(); setInterval(updateFixedClock,1000);
   function drawClock(){
     var size=300; canvas.width=size; canvas.height=size; var cx=size/2, cy=size/2; var radius=132; ctx.clearRect(0,0,size,size);
     ctx.beginPath(); ctx.arc(cx,cy,radius+8,0,Math.PI*2); ctx.fillStyle='rgba(0,0,0,0.3)'; ctx.fill();
@@ -712,6 +703,120 @@ var quranAyahs=[
   {ar:"قُلْ هُوَ اللَّهُ أَحَدٌ",ku:"Bêje: Ew Xwedê yek e.",so:"بڵێ: ئەو خوا تاک و تەنیایە.",en:"Say, He is Allah, [who is] One.",ref:"Al-Ikhlas 112:1"},
   {ar:"إِنَّ اللَّهَ مَعَ الصَّابِرِينَ",ku:"Xwedê bi sebirkeran re ye.",so:"خوا لەگەڵ ئارامگراندایە.",en:"Indeed, Allah is with the patient.",ref:"Al-Baqarah 2:153"}
 ];
+var quranFullLoaded=false;
+var quranFallbackMode=false;
+
+function buildQuranRef(surahNum, ayahNum, surahName){
+  return (surahName? surahName+' ': '') + surahNum + ':' + ayahNum;
+}
+
+async function loadFullQuran(){
+  var statusEl=document.getElementById('quranRef');
+  try{
+    if(statusEl) statusEl.textContent='⏳ Laddar hela Quran (6236 ayat)...';
+    // Fetch Arabic and English in parallel
+    var arabicP=fetch('https://api.alquran.cloud/v1/quran/quran-uthmani').then(r=>r.json());
+    var englishP=fetch('https://api.alquran.cloud/v1/quran/en.sahih').then(r=>r.json());
+    // Try Kurdish editions - multiple possible IDs
+    var kurdishP=fetch('https://api.alquran.cloud/v1/quran/ku.asan').then(r=>r.json()).catch(function(){ return null; });
+    
+    var results=await Promise.all([arabicP, englishP, kurdishP]);
+    var arabicData=results[0];
+    var englishData=results[1];
+    var kurdishData=results[2];
+
+    if(!arabicData || arabicData.code!==200 || !arabicData.data || !arabicData.data.surahs){
+      throw new Error('Kunde inte ladda arabisk Quran');
+    }
+    
+    var allAyahs=[];
+    var surahsAr=arabicData.data.surahs;
+    var surahsEn=(englishData && englishData.code===200 && englishData.data) ? englishData.data.surahs : null;
+    var surahsKu=(kurdishData && kurdishData.code===200 && kurdishData.data) ? kurdishData.data.surahs : null;
+
+    for(var s=0;s<surahsAr.length;s++){
+      var surahAr=surahsAr[s];
+      var surahEn=surahsEn ? surahsEn[s] : null;
+      var surahKu=surahsKu ? surahsKu[s] : null;
+      var surahNum=surahAr.number;
+      var surahName=surahAr.englishName || '';
+      for(var a=0;a<surahAr.ayahs.length;a++){
+        var ayahAr=surahAr.ayahs[a];
+        var ayahEn=surahEn && surahEn.ayahs[a] ? surahEn.ayahs[a].text : '';
+        var ayahKu=surahKu && surahKu.ayahs[a] ? surahKu.ayahs[a].text : '';
+        // Build entry - now covers ALL ayahs regardless of length
+        allAyahs.push({
+          ar: ayahAr.text,
+          ku: ayahKu || ayahEn || ayahAr.text, // fallback chain
+          so: ayahKu || ayahEn || ayahAr.text, // Sorani same source, fallback
+          en: ayahEn || ayahAr.text,
+          ref: buildQuranRef(surahNum, ayahAr.numberInSurah, surahName),
+          surah: surahNum,
+          ayah: ayahAr.numberInSurah,
+          surahName: surahName
+        });
+      }
+    }
+
+    if(allAyahs.length>6000){
+      quranAyahs=allAyahs;
+      quranFullLoaded=true;
+      quranFallbackMode=false;
+      if(statusEl) statusEl.textContent='✅ Hela Quran laddad: '+allAyahs.length+' ayat · Klicka arabiska för nästa slumpmässig ayah';
+      try{ localStorage.setItem('quran_full_loaded','true'); }catch(e){}
+      console.log('Full Quran loaded:', allAyahs.length);
+      // Immediately show a random ayah from full set
+      var randIdx=Math.floor(Math.random()*quranAyahs.length);
+      quranIndex=randIdx;
+      showQuranAyah(quranIndex);
+    }
+  }catch(err){
+    console.warn('Full Quran load failed, using fallback', err);
+    if(statusEl) statusEl.textContent='⚠ Kunde inte ladda hela Quran, använder 8 favorit-ayat · Försöker igen... ('+err.message+')';
+    // Retry once after 5s via alternate CDN (fawazahmed0)
+    setTimeout(loadFullQuranViaCDN, 5000);
+  }
+}
+
+async function loadFullQuranViaCDN(){
+  var statusEl=document.getElementById('quranRef');
+  try{
+    if(statusEl) statusEl.textContent='⏳ Försöker alternativ källa...';
+    // Try fawazahmed0 API - arabic uthmani haf
+    var urls=[
+      'https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/ara-quranuthmanihaf.json',
+      'https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/eng-sahihinternational.json'
+    ];
+    var arRes=await fetch(urls[0]).then(r=>r.json()).catch(()=>null);
+    var enRes=await fetch(urls[1]).then(r=>r.json()).catch(()=>null);
+    if(arRes && arRes.quran && enRes && enRes.quran){
+      var all=[];
+      for(var i=0;i<arRes.quran.length;i++){
+        var itemAr=arRes.quran[i];
+        var itemEn=enRes.quran[i] || {};
+        all.push({
+          ar: itemAr.text || itemAr.verse || '',
+          ku: itemEn.text || itemEn.verse || itemAr.text,
+          so: itemEn.text || itemEn.verse || itemAr.text,
+          en: itemEn.text || itemEn.verse || '',
+          ref: (itemAr.chapter? itemAr.chapter+':'+itemAr.verse : (itemAr.surah? itemAr.surah+':'+itemAr.ayah : (i+1))),
+          surah: itemAr.chapter || 0,
+          ayah: itemAr.verse || 0
+        });
+      }
+      if(all.length>6000){
+        quranAyahs=all;
+        quranFullLoaded=true;
+        if(statusEl) statusEl.textContent='✅ Hela Quran laddad via CDN: '+all.length+' ayat';
+        quranIndex=Math.floor(Math.random()*all.length);
+        showQuranAyah(quranIndex);
+        return;
+      }
+    }
+  }catch(e){ console.warn('CDN load failed', e); }
+  if(statusEl) statusEl.textContent='Använder 8 favorit-ayat · Full Quran ej tillgänglig offline';
+}
+
 var quranIndex=0; var currentAyah=null;
 function showQuranAyah(idx){
   var ayah=quranAyahs[idx%quranAyahs.length]; currentAyah=ayah;
@@ -741,14 +846,36 @@ function openTranslationModal(type){
 }
 function closeTranslationModal(){ document.getElementById('quranModalOverlay').classList.remove('show'); document.body.style.overflow=''; }
 function initQuran(){
-  try{ var savedIdx=parseInt(localStorage.getItem('quran_idx')||'0'); quranIndex=savedIdx%quranAyahs.length; }catch(e){ quranIndex=0; }
+  try{ var savedIdx=parseInt(localStorage.getItem('quran_idx')||'0'); quranIndex=savedIdx%quranAyahs.length; }catch(e){ quranIndex=Math.floor(Math.random()*quranAyahs.length); }
   showQuranAyah(quranIndex);
-  document.getElementById('quranArabic').addEventListener('click', function(e){ e.stopPropagation(); quranIndex=(quranIndex+1)%quranAyahs.length; showQuranAyah(quranIndex); });
+  // Klick på arabiska = nästa slumpmässig ayah från HELA Quran (6236 st) om full laddad, annars nästa
+  document.getElementById('quranArabic').addEventListener('click', function(e){ 
+    e.stopPropagation(); 
+    if(quranFullLoaded && quranAyahs.length>100){
+      // Slumpmässig från hela Quran oavsett längd
+      quranIndex=Math.floor(Math.random()*quranAyahs.length);
+    } else {
+      quranIndex=(quranIndex+1)%quranAyahs.length; 
+    }
+    showQuranAyah(quranIndex); 
+  });
+  // Lägg till knapp för att blanda: dubbelklick på quran-bar ger slumpmässig
+  document.getElementById('quranBar').addEventListener('dblclick', function(e){
+    if(quranFullLoaded){
+      quranIndex=Math.floor(Math.random()*quranAyahs.length);
+      showQuranAyah(quranIndex);
+    }
+  });
   document.getElementById('quranKu').addEventListener('click', function(e){ e.stopPropagation(); openTranslationModal('ku'); });
   document.getElementById('quranSo').addEventListener('click', function(e){ e.stopPropagation(); openTranslationModal('so'); });
   document.getElementById('quranEn').addEventListener('click', function(e){ e.stopPropagation(); openTranslationModal('en'); });
   document.getElementById('quranModalClose').addEventListener('click', closeTranslationModal);
   document.getElementById('quranModalOverlay').addEventListener('click', function(e){ if(e.target===this) closeTranslationModal(); });
+  
+  // Ladda hela Quran automatiskt efter 1 sekund
+  setTimeout(function(){
+    if(!quranFullLoaded) loadFullQuran();
+  }, 1000);
 }
 var lastWeatherData=null; var lastLocation=null;
 function weatherCodeToIcon(code){
@@ -766,6 +893,16 @@ function weatherCodeToIcon(code){
   if(code>=95) return {icon:'⛈', text:'Åska'};
   return {icon:'☀', text:'Klart'};
 }
+function updateFixedWeatherBadge(temp, iconText, cityName, wind){
+  var tempEl=document.getElementById('fixedWeatherTemp');
+  var subEl=document.getElementById('fixedWeatherSub');
+  var iconEl=document.getElementById('fixedWeatherIcon');
+  if(!tempEl) return;
+  tempEl.textContent=Math.round(temp)+'°C';
+  if(iconEl) iconEl.textContent=iconText || '⛅';
+  if(subEl) subEl.textContent=(cityName? cityName+' ' : '')+'💨 '+Math.round(wind)+' m/s';
+}
+
 function fetchWeather(){
   var city=document.getElementById('cityInput').value.trim();
   var country=document.getElementById('countryInput').value.trim();
@@ -784,6 +921,7 @@ function fetchWeather(){
     if(wData.current_weather){
       var cur=wData.current_weather; var curIcon=weatherCodeToIcon(cur.weathercode);
       document.getElementById('weatherInfo').innerHTML=curIcon.icon+' '+cur.temperature+'°C '+curIcon.text+'<br><span style="font-size:0.8em;opacity:0.7;">Vind '+cur.windspeed+' m/s · '+loc.name+', '+loc.country+'</span>';
+      updateFixedWeatherBadge(cur.temperature, curIcon.icon, loc.name, cur.windspeed);
     }
     if(wData.daily){
       var days=['Sön','Mån','Tis','Ons','Tor','Fre','Lör'];
@@ -847,6 +985,7 @@ function detectLocationGPS(){
         if(wData.current_weather){
           var cur=wData.current_weather; var curIcon=weatherCodeToIcon(cur.weathercode);
           document.getElementById('weatherInfo').innerHTML=curIcon.icon+' '+cur.temperature+'°C '+curIcon.text+'<br><span style="font-size:0.8em;opacity:0.7;">Vind '+cur.windspeed+' m/s · '+city+', '+country+'</span>';
+          updateFixedWeatherBadge(cur.temperature, curIcon.icon, city, cur.windspeed);
         }
         if(wData.daily){
           var days=['Sön','Mån','Tis','Ons','Tor','Fre','Lör']; var weekHtml='';
