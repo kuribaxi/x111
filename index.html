@@ -265,10 +265,11 @@ body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:linear-gradient(1
 .fixed-weather-corner.hidden-by-user{display:none !important}
 
 /* ===== GARDIN / CURTAIN ===== */
-.curtain-wrapper{position:sticky;top:0;z-index:100;}
+/* FIX: curtain-wrapper under nav-buttons (z-index 80 < 200) */
+.curtain-wrapper{position:relative;z-index:80;}
 .top-wrapper{background:linear-gradient(180deg,rgba(0,0,0,0.6),rgba(0,0,0,0.3));backdrop-filter:blur(4px);transition:transform 0.65s cubic-bezier(0.4,0,0.2,1),opacity 0.45s ease,max-height 0.65s cubic-bezier(0.4,0,0.2,1);overflow:hidden;max-height:2000px;transform:translateY(0);opacity:1;}
 .top-wrapper.curtain-closed{transform:translateY(-100%);opacity:0;max-height:0;pointer-events:none;}
-.curtain-handle{background:linear-gradient(135deg,#1a3a42,#0f2a32);border:1px solid #4ecca3;border-top:none;border-radius:0 0 22px 22px;padding:10px 28px 12px;text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;box-shadow:0 6px 20px rgba(0,0,0,0.5),0 2px 0 #4ecca3 inset; margin:0 auto; width:fit-content; min-width:300px; transition:all 0.3s cubic-bezier(0.4,0,0.2,1); position:relative; z-index:101;}
+.curtain-handle{background:linear-gradient(135deg,#1a3a42,#0f2a32);border:1px solid #4ecca3;border-top:none;border-radius:0 0 22px 22px;padding:10px 28px 12px;text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;box-shadow:0 6px 20px rgba(0,0,0,0.5),0 2px 0 #4ecca3 inset; margin:0 auto; width:fit-content; min-width:300px; transition:all 0.3s cubic-bezier(0.4,0,0.2,1); position:relative; z-index:81;}
 .curtain-handle:hover{background:linear-gradient(135deg,#2a5a62,#1a3a42);transform:translateY(2px) scale(1.02);box-shadow:0 8px 25px rgba(78,204,163,0.3);}
 .curtain-handle:active{transform:translateY(4px) scale(0.98);}
 .handle-bar{width:70px;height:6px;background:linear-gradient(90deg,#4ecca3,#a8ffde);border-radius:10px;opacity:0.9;box-shadow:0 0 8px rgba(78,204,163,0.6);transition:all 0.3s;}
@@ -342,7 +343,8 @@ canvas.analog-canvas{width:140px;height:140px;background:radial-gradient(ellipse
 @media(max-width:1100px){.info-panel{background:rgba(0,0,0,0.55);backdrop-filter:blur(12px);border-bottom:1px solid #4ecca380;padding:14px 18px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:stretch;gap:14px}.clock-date-section,.weather-section{background:rgba(20,40,45,0.75);border-radius:14px;padding:6px 8px;backdrop-filter:blur(8px);box-shadow:0 2px 8px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.05);display:flex;align-items:center;flex-wrap:wrap;border:1px solid rgba(78,204,163,0.15)}}
 
 /* ===== ÄNDRING 1: NAV-BUTTONS MED TRANSITION ===== */
-.nav-buttons{display:flex;justify-content:center;flex-wrap:wrap;padding:12px 16px;background:rgba(0,0,0,0.25);border-bottom:1px solid rgba(78,204,163,0.15);position:sticky;top:0;z-index:90;backdrop-filter:blur(10px);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1),opacity 0.35s ease}
+/* FIX: nav-buttons z-index 200 (över curtain-wrapper) */
+.nav-buttons{display:flex;justify-content:center;flex-wrap:wrap;padding:12px 16px;background:rgba(0,0,0,0.25);border-bottom:1px solid rgba(78,204,163,0.15);position:sticky;top:0;z-index:200;backdrop-filter:blur(10px);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1),opacity 0.35s ease}
 .nav-buttons.scroll-hidden{transform:translateY(-120%);opacity:0;pointer-events:none}
 
 .nav-btn{background:#1e2f3f;color:#e0e0e0;border:none;padding:8px 18px;border-radius:40px;cursor:pointer;font-weight:600;transition:all 0.2s ease;font-size:0.9rem;box-shadow:0 1px 3px rgba(0,0,0,0.2);white-space:nowrap;margin:4px 4px}
@@ -582,6 +584,7 @@ var hevalRaw = [
   { name: 'Zagros24 TV', url: 'https://hlspackager.akamaized.net/live/DB/ZAGROS_24/HLS/ZAGROS_24.m3u8', method:'iframe', color:'teal' },
   { name: 'Ronahi', url: 'https://hlspackager.akamaized.net/live/DB/RONAHI_TV/HLS/RONAHI_TV.m3u8', color: 'teal' },
   { name: 'Payam TV', url: 'https://media2.streambrothers.com:1936/8218/8218/chunklist_w1239498607.m3u8', color: 'teal' },
+  { name: 'Speda Drama', url: 'https://speda1.site/upload/images/spedahd.m3u8', method:'external', color: 'purple' },
   { name: 'Kurdistan24', url: 'https://www.kurdistan24.net/en/live', method:'iframe', color: 'teal' },
   { name: 'Kurdistan24 (external)', url: 'https://kurdtvs.net/channels.php?slug=kurdistan24-tv', method:'external', color: 'teal' },
   { name: 'Kurdistan24 (ParsaTV sida)', url: 'https://www.parsatv.com/name=Kurdistan-24#kurdish', method:'iframe', color: 'teal' },
@@ -620,7 +623,7 @@ var minalRaw = [
   { name: 'One Kids', url: 'https://karwan.tv/one-kids/', method:'iframe', color:'blue' },
 ];
 var filmRaw = [
-  { name: 'Speda Drama', url: 'https://speda2.site/upload/images/spedadrama.m3u8', method:'iframe', color: 'purple' },
+  { name: 'Speda Drama', url: 'https://speda2.site/upload/images/spedadrama.m3u8', method:'external', color: 'purple' },
   { name: 'Infinity TV', url: 'https://karwan.tv/infinity-tv/', method:'iframe', color:'purple' },
   { name: 'Befrin TV', url: 'https://cdn.karwan.tv/befrin-tv/index.m3u8', color: 'purple' },
   { name: 'MixKurdy', url: 'https://avr.host247.net/live/Mix-kurdy/tracks-v1a1/mono.m3u8', color: 'purple' },
@@ -648,6 +651,7 @@ var diniRaw = [
   { name: 'Eman TV', url: 'https://avr.host247.net/live/emantv/tracks-v1a1/mono.m3u8', color: 'blue' },
   { name: 'Dang Quran', url: 'https://live20.bozztv.com/giatv/giatv-Quran/Quran/playlist.m3u8', color: 'blue' },
   { name: 'Amozhgary academy', url: 'https://karwan.tv/amozhgary-academy/', method:'iframe', color:'blue' },
+  { name: 'Gewher tv', url: 'https://karwan.tv/gewher-tv/', method:'iframe', color:'grey' },
   { name: 'Spi Quran', url: 'https://live20.bozztv.com/giatv/giatv-spi_quran_hd/spi_quran_hd/chunks.m3u8', color:'blue' },
   { name: 'Spi TV', url: 'https://karwan.tv/spi-tv/', method:'iframe', color:'blue' },
   { name: 'Ashna Quran TV', url: 'https://karwan.tv/ashna-quran/', method:'iframe', color:'blue' },
@@ -680,7 +684,6 @@ var karwanRaw = [
   { name: 'Ronahi tv', url: 'https://karwan.tv/ronahi-tv/', method:'iframe', color:'grey' },
   { name: 'Hormzyar tv', url: 'https://karwan.tv/hormzyar-tv/', method:'iframe', color:'grey' },
   { name: 'Halabja TV', url: 'https://karwan.tv/halabja-tv', method:'iframe', color:'grey' },
-  { name: 'Gewher tv', url: 'https://karwan.tv/gewher-tv/', method:'iframe', color:'grey' },
   { name: 'Zed TV Plus', url: 'https://karwan.tv/zed-tv-plus', method:'iframe', color:'grey' },
   { name: 'Shna TV', url: 'https://karwan.tv/shna-tv', method:'iframe', color:'grey' },
   { name: 'TV Kurdi deng', url: 'https://karwan.tv/tv-kurdi/', method:'iframe', color:'grey' },
