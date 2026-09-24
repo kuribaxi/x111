@@ -340,7 +340,11 @@ canvas.analog-canvas{width:140px;height:140px;background:radial-gradient(ellipse
 .weather-day .wd-temp{font-size:0.85rem;font-weight:800}
 .weather-day .wd-min{font-size:0.7rem;opacity:0.6}
 @media(max-width:1100px){.info-panel{background:rgba(0,0,0,0.55);backdrop-filter:blur(12px);border-bottom:1px solid #4ecca380;padding:14px 18px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:stretch;gap:14px}.clock-date-section,.weather-section{background:rgba(20,40,45,0.75);border-radius:14px;padding:6px 8px;backdrop-filter:blur(8px);box-shadow:0 2px 8px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.05);display:flex;align-items:center;flex-wrap:wrap;border:1px solid rgba(78,204,163,0.15)}}
-.nav-buttons{display:flex;justify-content:center;flex-wrap:wrap;padding:12px 16px;background:rgba(0,0,0,0.25);border-bottom:1px solid rgba(78,204,163,0.15);position:sticky;top:0;z-index:90;backdrop-filter:blur(10px)}
+
+/* ===== ÄNDRING 1: NAV-BUTTONS MED TRANSITION ===== */
+.nav-buttons{display:flex;justify-content:center;flex-wrap:wrap;padding:12px 16px;background:rgba(0,0,0,0.25);border-bottom:1px solid rgba(78,204,163,0.15);position:sticky;top:0;z-index:90;backdrop-filter:blur(10px);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1),opacity 0.35s ease}
+.nav-buttons.scroll-hidden{transform:translateY(-120%);opacity:0;pointer-events:none}
+
 .nav-btn{background:#1e2f3f;color:#e0e0e0;border:none;padding:8px 18px;border-radius:40px;cursor:pointer;font-weight:600;transition:all 0.2s ease;font-size:0.9rem;box-shadow:0 1px 3px rgba(0,0,0,0.2);white-space:nowrap;margin:4px 4px}
 .nav-btn:hover,.nav-btn.active{background:#4ecca3;color:#0a1c2a;transform:scale(1.03)}
 .container{display:flex;min-height:60vh;padding:14px;gap:14px}
@@ -366,7 +370,35 @@ video,iframe{width:100%;height:100%;object-fit:contain;border:none;background:bl
 .fav-btn.is-fav{color:#fff}
 .close-btn{display:none;position:fixed;top:18px;right:18px;z-index:1001;background:#dc3545;color:white;border:none;padding:9px 18px;border-radius:40px;cursor:pointer;font-weight:bold}
 .js-toggle-off{background:#c95a2e!important}
-@media(max-width:768px){.container{flex-direction:column}.channel-list{position:fixed;left:0;top:0;width:85%;max-width:320px;height:100%;z-index:1000;border-radius:0 22px 22px 0;padding:18px;transform:translateX(-100%);transition:transform 0.25s ease;overflow-y:auto;background:#0a1c28f2}.channel-list.show{transform:translateX(0)}.close-btn{display:block}}
+
+/* ===== ÄNDRING 2: MOBIL – VISA KANALER + PLAY DIREKT ===== */
+@media(max-width:768px){
+  .container{
+    flex-direction:column;
+    padding:8px;
+    gap:8px;
+    min-height:auto;
+  }
+  .video-container{ order:1; min-height:52vh; }
+  .channel-list{
+    order:2;
+    position:static !important;
+    transform:none !important;
+    width:100% !important;
+    max-width:100% !important;
+    height:auto !important;
+    max-height:42vh;
+    border-radius:16px;
+    padding:10px;
+    overflow-y:auto;
+    background:rgba(0,0,0,0.45);
+    top:auto !important;
+  }
+  .channel-list.show{ transform:none !important; }
+  .close-btn{ display:none !important; }
+  .video-wrapper{ min-height:44vh; }
+}
+
 .mode-switcher{display:flex;align-items:center;background:rgba(0,0,0,0.4);border-radius:40px;padding:4px 6px;border:1px solid #4ecca355;margin:3px 4px}
 .mode-btn{background:transparent;border:none;color:#aaa;padding:5px 13px;border-radius:30px;cursor:pointer;font-size:0.78rem;font-weight:700;transition:all 0.2s}
 .mode-btn.active{background:#4ecca3;color:#0a1c2a}
@@ -484,7 +516,6 @@ video,iframe{width:100%;height:100%;object-fit:contain;border:none;background:bl
 </div>
 
 <div class="container">
-  <aside class="channel-list" id="channel-list"><button class="close-btn" onclick="toggleList()">Stäng</button><div id="ch-container"></div></aside>
   <main class="video-container">
     <div class="video-header">
       <div>
@@ -507,6 +538,7 @@ video,iframe{width:100%;height:100%;object-fit:contain;border:none;background:bl
     </div>
     <div class="video-wrapper" id="vwrap"><div class="error-msg"><h3>Välj en kanal - Gardin + Radio Edition</h3><p>Sepehr FIXED • Video/Audio för ALLA • Radio med visualizer • Gardin • Quran EN</p></div></div>
   </main>
+  <aside class="channel-list" id="channel-list"><button class="close-btn" onclick="toggleList()">Stäng</button><div id="ch-container"></div></aside>
 </div>
 
 <script>
@@ -1405,6 +1437,29 @@ function initWeatherToggle(){
     }
   }catch(err){}
 }
+
+/* ============================================================
+   ÄNDRING 1: GÖM NAV-BUTTONS VID SCROLL UPP
+   ============================================================ */
+(function(){
+  var navBar = document.querySelector('.nav-buttons');
+  if(!navBar) return;
+  var lastY = window.pageYOffset;
+  var threshold = 8;
+  window.addEventListener('scroll', function(){
+    var y = window.pageYOffset;
+    var diff = y - lastY;
+    if(Math.abs(diff) < threshold) return;
+    if(diff > 0 && y > 60){
+      /* scrollar ner -> visa */
+      navBar.classList.remove('scroll-hidden');
+    } else if(diff < 0){
+      /* scrollar upp -> göm */
+      navBar.classList.add('scroll-hidden');
+    }
+    lastY = y;
+  }, {passive:true});
+})();
 
 document.addEventListener('DOMContentLoaded',function(){
   initClock();
