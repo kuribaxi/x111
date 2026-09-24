@@ -59,8 +59,7 @@ body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:linear-gradient(1
   visibility:hidden;
 }
 .fixed-clock-box{
-  min-height: 48px; /* 50% högre */
-  /* LITEN */
+  min-height: 48px;
   background:rgba(0,0,0,0.82);
   backdrop-filter:blur(10px);
   border:1px solid #4ecca355;
@@ -96,7 +95,7 @@ body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:linear-gradient(1
   line-height:1.2;
 }
 .fixed-weather-box{
-  min-height: 48px; /* 50% högre */
+  min-height: 48px;
   background:rgba(0,0,0,0.82);
   backdrop-filter:blur(10px);
   border:1px solid #4ecca355;
@@ -176,13 +175,10 @@ body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:linear-gradient(1
 .fixed-info-corner.hidden .fixed-hide-btn{background:#4ecca3;color:#000}
 @media(max-width:900px){
   .fixed-info-corner{top:8px;right:8px;left:auto;max-width:340px;gap:6px}
-  .fixed-clock-box{
-  min-height: 48px; /* 50% högre */
-  /* LITEN */padding:10px 16px;gap:10px;border-radius:16px}
+  .fixed-clock-box{padding:10px 16px;gap:10px;border-radius:16px}
   .fixed-clock-display{font-size:1.5rem}
   .fixed-date-text{font-size:0.85rem}
-  .fixed-weather-box{
-  min-height: 48px; /* 50% högre */font-size:1rem;padding:8px 14px;gap:10px;border-radius:16px}
+  .fixed-weather-box{font-size:1rem;padding:8px 14px;gap:10px;border-radius:16px}
   .fixed-weather-icon{font-size:1.8rem}
   .fixed-weather-temp{font-size:1.35rem}
   .fixed-weather-city{font-size:0.85rem;max-width:140px}
@@ -193,6 +189,80 @@ body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:linear-gradient(1
   .fixed-weather-details .fw-day .fwd-name{font-size:0.7rem}
   .fixed-clock-corner .fixed-hide-btn, .fixed-weather-corner .fixed-hide-btn, .fixed-info-corner .fixed-hide-btn{width:26px;height:26px;font-size:0.8rem}
 }
+
+/* ===== MOBIL: KLOCKA UPPE HÖGER, VÄDER NER MED GÖM-KNAPP ===== */
+@media(max-width:600px){
+  .fixed-weather-corner{
+    top:auto !important;
+    bottom:8px;
+    left:8px;
+    right:auto;
+    max-width:calc(100vw - 16px);
+  }
+  .fixed-clock-corner{
+    top:8px;
+    right:8px;
+    left:auto;
+  }
+  .fixed-weather-box,
+  .fixed-clock-box{
+    padding:6px 10px;
+    min-height:40px;
+  }
+  .fixed-clock-display{font-size:1rem}
+  .fixed-date-text{font-size:0.65rem}
+  .fixed-weather-temp{font-size:0.9rem}
+  .fixed-weather-city{font-size:0.68rem;max-width:90px}
+}
+
+/* Göm-knapp för väder (liten ✕) */
+.weather-hide-btn{
+  position:absolute;
+  top:-8px;
+  right:-8px;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:#ff4d6d;
+  color:#fff;
+  border:2px solid #0a1e26;
+  font-size:0.7rem;
+  font-weight:800;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:10;
+  line-height:1;
+  padding:0;
+  box-shadow:0 2px 8px rgba(0,0,0,0.5);
+}
+.weather-hide-btn:hover{background:#ff2a4d;transform:scale(1.1)}
+
+/* När vädret är gömt – visa en liten "visa"-knapp */
+.weather-show-btn{
+  position:fixed;
+  bottom:8px;
+  left:8px;
+  z-index:9997;
+  background:rgba(0,0,0,0.82);
+  backdrop-filter:blur(10px);
+  border:1px solid #4ecca355;
+  border-radius:14px;
+  padding:6px 12px;
+  color:#4ecca3;
+  font-size:0.8rem;
+  font-weight:700;
+  cursor:pointer;
+  display:none;
+  align-items:center;
+  gap:6px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.5);
+  transition:all 0.2s;
+}
+.weather-show-btn:hover{border-color:#4ecca3;box-shadow:0 8px 24px rgba(78,204,163,0.35)}
+.weather-show-btn.show{display:flex}
+.fixed-weather-corner.hidden-by-user{display:none !important}
 
 /* ===== GARDIN / CURTAIN ===== */
 .curtain-wrapper{position:sticky;top:0;z-index:100;}
@@ -332,7 +402,7 @@ video,iframe{width:100%;height:100%;object-fit:contain;border:none;background:bl
 </head>
 <body>
 
-<!-- FIXED KLOCKA - HÖGER HORN - LITEN - ENDAST NÄR KANALER VISAS -->
+<!-- FIXED KLOCKA - HÖGER HORN - ENDAST NÄR KANALER VISAS -->
 <div class="fixed-clock-corner hidden-by-curtain" id="fixedClockCorner">
   <div class="fixed-clock-box" id="fixedClockBox" title="Klicka för att byta kalender">
     <div class="fixed-clock-display" id="fixedClockDisplay">--:--:--</div>
@@ -340,18 +410,20 @@ video,iframe{width:100%;height:100%;object-fit:contain;border:none;background:bl
   </div>
 </div>
 
-<!-- FIXED VÄDER - VÄNSTER HORN - LITEN - ENDAST NÄR KANALER VISAS -->
+<!-- FIXED VÄDER - VÄNSTER HORN - MED GÖM-KNAPP -->
 <div class="fixed-weather-corner hidden-by-curtain" id="fixedWeatherCorner">
-  <div class="fixed-weather-box" id="fixedWeatherBox" title="Klicka för att visa detaljer">
+  <div class="fixed-weather-box" id="fixedWeatherBox" title="Klicka för att visa detaljer" style="position:relative;">
     <span class="fixed-weather-icon" id="fixedWeatherIcon">🌤</span>
     <span class="fixed-weather-temp" id="fixedWeatherTemp">--°</span>
     <span class="fixed-weather-city" id="fixedWeatherCity">Sök</span>
+    <button class="weather-hide-btn" id="weatherHideBtn" title="Göm väder">✕</button>
   </div>
   <div class="fixed-weather-details" id="fixedWeatherDetails">
     <div id="fixedWeatherDetailText" style="margin-bottom:4px;">Sök väder</div>
     <div class="fw-week" id="fixedWeatherWeek"></div>
   </div>
 </div>
+<button class="weather-show-btn" id="weatherShowBtn" title="Visa väder">🌤 Visa väder</button>
 
 <div class="curtain-wrapper" id="curtainWrapper">
   <div id="topWrapper" class="top-wrapper">
@@ -618,7 +690,6 @@ function toggleCurtain(){
     text.textContent='▲ Dölj Quran · Klocka · Datum · Väder';
     icon.textContent='▲';
     localStorage.setItem('curtain_closed','false');
-    // NÄR AYE VISAS -> DÖLJ LITEN FÖNSTER
     if(clockCorner) clockCorner.classList.add('hidden-by-curtain'); if(weatherCorner) weatherCorner.classList.add('hidden-by-curtain');
   } else {
     topWrapper.classList.add('curtain-closed');
@@ -626,7 +697,6 @@ function toggleCurtain(){
     text.textContent='▼ Visa Quran · Klocka · Datum · Väder';
     icon.textContent='▼';
     localStorage.setItem('curtain_closed','true');
-    // NÄR KANALER VISAS -> VISA LITEN FÖNSTER (höger hörn, alltid synlig vid scroll)
     if(clockCorner) clockCorner.classList.remove('hidden-by-curtain'); if(weatherCorner) weatherCorner.classList.remove('hidden-by-curtain');
   }
 }
@@ -637,7 +707,6 @@ function initCurtain(){
     var text=document.getElementById('handleText');
     var icon=document.getElementById('handleIcon');
     var clockCorner=document.getElementById('fixedClockCorner'); var weatherCorner=document.getElementById('fixedWeatherCorner');
-    // STARTA MED QURAN ÖPPEN = LITEN FÖNSTER DOLD
     topWrapper.classList.remove('curtain-closed');
     handle.classList.remove('closed');
     text.textContent='▲ Dölj Quran · Klocka · Datum · Väder';
@@ -986,17 +1055,23 @@ function openTranslationModal(type){
   }
   overlay.classList.add('show'); document.body.style.overflow='hidden';
   var clockCorner=document.getElementById('fixedClockCorner'); var weatherCorner=document.getElementById('fixedWeatherCorner');
-  if(fixedCorner) fixedCorner.classList.add('modal-hidden');
+  if(clockCorner) clockCorner.classList.add('modal-hidden');
+  if(weatherCorner) weatherCorner.classList.add('modal-hidden');
 }
 function closeTranslationModal(){ 
   document.getElementById('quranModalOverlay').classList.remove('show'); 
   document.body.style.overflow=''; 
   var clockCorner=document.getElementById('fixedClockCorner'); var weatherCorner=document.getElementById('fixedWeatherCorner');
-  // visa igen bara om gardinen är stängd (kanaler visas)
-  if(fixedCorner){
+  if(clockCorner){
     var topWrapper=document.getElementById('topWrapper');
     if(topWrapper.classList.contains('curtain-closed')){
-      fixedCorner.classList.remove('modal-hidden');
+      clockCorner.classList.remove('modal-hidden');
+    }
+  }
+  if(weatherCorner){
+    var topWrapper2=document.getElementById('topWrapper');
+    if(topWrapper2.classList.contains('curtain-closed')){
+      weatherCorner.classList.remove('modal-hidden');
     }
   }
 }
@@ -1190,16 +1265,23 @@ function openHourlyModal(dayIndex){
   document.getElementById('weatherModalOverlay').classList.add('show');
   document.body.style.overflow='hidden';
   var clockCorner=document.getElementById('fixedClockCorner'); var weatherCorner=document.getElementById('fixedWeatherCorner');
-  if(fixedCorner) fixedCorner.classList.add('modal-hidden');
+  if(clockCorner) clockCorner.classList.add('modal-hidden');
+  if(weatherCorner) weatherCorner.classList.add('modal-hidden');
 }
 function closeWeatherModal(){ 
   document.getElementById('weatherModalOverlay').classList.remove('show'); 
   document.body.style.overflow=''; 
   var clockCorner=document.getElementById('fixedClockCorner'); var weatherCorner=document.getElementById('fixedWeatherCorner');
-  if(fixedCorner){
+  if(clockCorner){
     var topWrapper=document.getElementById('topWrapper');
     if(topWrapper.classList.contains('curtain-closed')){
-      fixedCorner.classList.remove('modal-hidden');
+      clockCorner.classList.remove('modal-hidden');
+    }
+  }
+  if(weatherCorner){
+    var topWrapper2=document.getElementById('topWrapper');
+    if(topWrapper2.classList.contains('curtain-closed')){
+      weatherCorner.classList.remove('modal-hidden');
     }
   }
 }
@@ -1291,12 +1373,45 @@ function initFixedInfoToggle(){
     }
   });
 }
+function initWeatherToggle(){
+  var hideBtn = document.getElementById('weatherHideBtn');
+  var showBtn = document.getElementById('weatherShowBtn');
+  var corner = document.getElementById('fixedWeatherCorner');
+  var details = document.getElementById('fixedWeatherDetails');
+
+  if(hideBtn){
+    hideBtn.addEventListener('click', function(e){
+      e.stopPropagation();
+      corner.classList.add('hidden-by-user');
+      if(details) details.classList.remove('show');
+      showBtn.classList.add('show');
+      try{ localStorage.setItem('weather_hidden','true'); }catch(err){}
+    });
+  }
+
+  if(showBtn){
+    showBtn.addEventListener('click', function(e){
+      e.stopPropagation();
+      corner.classList.remove('hidden-by-user');
+      showBtn.classList.remove('show');
+      try{ localStorage.setItem('weather_hidden','false'); }catch(err){}
+    });
+  }
+
+  try{
+    if(localStorage.getItem('weather_hidden') === 'true'){
+      corner.classList.add('hidden-by-user');
+      showBtn.classList.add('show');
+    }
+  }catch(err){}
+}
 
 document.addEventListener('DOMContentLoaded',function(){
   initClock();
   initCurtain();
   initFixedClock();
   initFixedInfoToggle();
+  initWeatherToggle();
   document.getElementById('calendarSelect').addEventListener('change',updateDateByCalendar);
   document.getElementById('fetchWeatherBtn').addEventListener('click',fetchWeather);
   document.getElementById('gpsBtn').addEventListener('click',detectLocationGPS);
