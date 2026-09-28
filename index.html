@@ -711,6 +711,7 @@ var hevalRaw = [
   { name: 'Nuce tv', url: 'https://hlspackager.akamaized.net/live/DB/NU_TV/HLS/NU_TV.m3u8', color:'teal' },
   { name: 'Welat TV', url: 'https://stream.badinan.xyz/welat/tv/chunklist_w92683075.m3u8', color:'teal' },
   { name: 'Strek tv', url: 'https://zindi.sterk.tv/live/sterk.m3u8', color:'teal' },
+  { name: 'Cira tv', url: 'https://hlspackager.akamaized.net/live/DB/CIRA_TV/HLS/CIRA_TV.m3u8', color:'teal' },
   { name: 'Rojhelat TV', url: 'https://hlspackager.akamaized.net/live/DB/ROJHELAT/HLS/ROJHELAT-avc1_2500000=10002,mp4a_128000=20000.m3u8', color:'teal' },
   { name: 'Sahar', url: 'https://sepehrtv.ir/live/sahar3/', method:'iframe', color:'teal' },
   { name: 'Mahabad IRIB', url: 'https://sepehrtv.ir/live/mahabad/', method:'iframe', color:'teal' },
@@ -731,8 +732,6 @@ var musikRaw = [
   { name: 'RanyaCity', url: 'https://avr.host247.net/Ranya/RanyaCity/tracks-v1a1/mono.m3u8', color:'teal' },
   { name: 'Geryan tv', url: 'https://live20.bozztv.com/giatv/giatv-halabja88garyan/halabja88garyan/chunks.m3u8', color:'teal' },
   { name: '4 Kurd', url: 'https://4kuhls.persiana.live/hls/stream.m3u8', color: 'teal' },
-  { name: 'One plus', url: 'https://lbgo.bozztv.com/ssh101/ssh101/oneplus4k/chunks.m3u8', color:'blue' },
-
 
  ];
 var minalRaw = [
@@ -744,10 +743,12 @@ var minalRaw = [
   { name: 'MMN Kids', url: 'http://mmn.mypsx.net:1935/live/mmnhdkids/playlist.m3u8', color: 'blue' },
   { name: 'Spi Kids', url: 'https://live20.bozztv.com/giatv/giatv-spikids4k2025/spikids4k2025/chunks.m3u8', color:'blue' },
   { name: 'One Kids', url: 'https://lbgo.bozztv.com/ssh101/ssh101/onekids4k/chunks.m3u8', color:'blue' },
-  { name: 'Znar Kids', url: 'https://karwan.tv/znar-kids/', method:'iframe', color:'blue' },
+  { name: 'Gewher Kids', url: 'https://cdn.karwan.tv/gewher-kids/index.m3u8', color:'blue' },
 ];
 var filmRaw = [
   { name: 'Speda Drama', url: 'https://speda2.site/upload/images/spedadrama.m3u8', method:'external', color: 'purple' },
+  { name: 'One plus', url: 'https://lbgo.bozztv.com/ssh101/ssh101/oneplus4k/chunks.m3u8', color:'purple' },
+  { name: 'Shna TV', url: 'https://lbgo.bozztv.com/ssh101/ssh101/shna12345/chunks.m3u8?lb_backend_hint=7, color:'purple' },
   { name: 'Barin Family', url: 'http://baskhd.ddns.net:40/live/BarinfamilyHD/mono.m3u8', color: 'purple' },
   { name: 'Niroj tv', url: 'https://karwan.tv/niroj-tv/', method:'iframe', color:'purple' },
   { name: 'Befrin TV', url: 'https://cdn.karwan.tv/befrin-tv/index.m3u8', color: 'purple' },
@@ -755,9 +756,12 @@ var filmRaw = [
   { name: 'GK+', url: 'https://live.host247.net/gk/gkplus/playlist.m3u8', color:'purple' },
   { name: 'Avar TV', url: 'https://avr.host247.net/live/AvarTv/tracks-v1a1/mono.m3u8', color: 'purple' },
   { name: 'Khak TV', url: 'http://bblserver.ddns.net:1935/stream/khakhd/playlist.m3u8', color: 'purple' },
-  { name: 'Gewher tv', url: 'https://karwan.tv/gewher-tv/', method:'iframe', color:'blue' },
+  { name: 'Gewher tv', url: 'https://karwan.tv/gewher-tv/', method:'iframe', color:'purple' },
   { name: 'RED Tv', url: 'http://avrstream.com:1935/live/REDTV/playlist.m3u8', color:'purple' },
+  { name: 'Barin Movies', url: 'https://cdn.karwan.tv/barin-movies/index.m3u8', color:'purple' },
+  { name: 'Barin Family', url: 'http://baskhd.ddns.net:40/live/BarinfamilyHD/mono.m3u8', color:'purple' },
   { name: 'Soran Entertainment', url: 'http://avrstream.com:1935/live/SoranEntertainment/playlist.m3u8', color:'purple' },
+  { name: 'Iraqia Kurdish', url: 'https://imn-live.esite-lab.com/hls/iraqia-kurdish.m3u8', color:'purple' },
   { name: 'UTV Hawler', url: 'http://line.trxdnscloud.ru:80/live/1naebx0n1p/en1cy28eqj/324667.ts', color: 'purple' },
   { name: 'Cihan TV', url: 'https://www.cihanhd.com/', method:'iframe', color: 'purple' },
   { name: 'Cihan TV (external)', url: 'https://kurdtvs.net/channels.php?slug=cihan-tv-hd', method:'external', color: 'purple' },
@@ -767,7 +771,6 @@ var filmRaw = [
   { name: 'MMN Movies', url: 'http://mmn.mypsx.net:1935/live/mmnhdmovies/playlist.m3u8', color: 'purple' },
   { name: 'MMN Action', url: 'http://mmn.mypsx.net:1935/live/mmnhdaction/playlist.m3u8', color: 'purple' },
   { name: 'Infinity TV', url: 'https://karwan.tv/infinity-tv/', method:'iframe', color:'purple' },
-  { name: 'Barin Movies', url: 'https://karwan.tv/barin-movies/', method:'iframe', color:'purple' },
   { name: 'New Movies', url: 'https://karwan.tv/bnar-movies', method:'iframe', color:'purple' },
   { name: 'New Action TV', url: 'https://karwan.tv/bnar-action/', method:'iframe', color:'purple' },
   { name: 'New Family TV', url: 'https://cdn.karwan.tv/bnar-family/tracks-v1a1/mono.m3u8', color:'purple' },
@@ -777,7 +780,8 @@ var filmRaw = [
   
 var diniRaw = [
   { name: 'Amozhgary', url: 'https://app-live.org/live/3268334b/index.m3u8', color: 'blue' },
-  { name: 'Shar', url: 'https://live20.bozztv.com/giatv/giatv-sharqurantv/sharqurantv/chunks.m3u8', color: 'blue' },
+  { name: 'Shar Quran', url: 'https://live20.bozztv.com/giatv/giatv-sharqurantv/sharqurantv/chunks.m3u8', color: 'blue' },
+  { name: 'Shar TV HD', url: 'http://avrstream.com:1935/live/SHARTV/playlist.m3u8', color: 'blue' },
   { name: 'Spi Quran', url: 'https://live20.bozztv.com/giatv/giatv-spi_quran_hd/spi_quran_hd/chunks.m3u8', color:'blue' },
   { name: 'MMN Quran', url: 'http://mmn.mypsx.net:1935/live/mmnhdquran/playlist.m3u8', color: 'blue' },
   { name: 'Eman TV', url: 'https://avr.host247.net/live/emantv/tracks-v1a1/mono.m3u8', color: 'blue' },
@@ -785,17 +789,17 @@ var diniRaw = [
   { name: 'Peshang tv', url: 'https://stream.forcaroo.com/stream/hls/desktop.m3u8', color:'blue' },
   { name: 'Walla Quran', url: 'http://cdn.karwan.tv/WALAQURAN/index.m3u8', method:'external',color:'blue' },
   { name: 'Ashna Quran TV', url: 'https://karwan.tv/ashna-quran/', method:'iframe', color:'blue' },
-  { name: 'Ashti QuranTV', url: 'https://karwan.tv/ashti-quran/', method:'iframe', color:'blue' },
+  { name: 'Ashti QuranTV', url: 'http://avrstream.com:1935/live/AshtiTV/playlist.m3u8', color:'blue' },
   { name: 'Ashti Family', url: 'https://karwan.tv/ashti-family/', method:'iframe', color:'blue' },
-  { name: 'IMK Quran TV', url: 'https://karwan.tv/imk-quran/', method:'iframe', color:'blue' },
+  { name: 'IMK Quran TV', url: 'http://avrstream.com:1935/live/IMKQURANHD/playlist.m3u8', color:'blue' },
   { name: 'Shna Quran', url: 'https://karwan.tv/shna-quran/', method:'iframe', color:'blue' },
-  { name: 'Farmoda TV', url: 'https://karwan.tv/farmoda-tv', method:'iframe', color:'blue' },
+  { name: 'Farmoda TV', url: 'https://avr.host247.net/live/FarmodaTV/playlist.m3u8', color:'blue' },
   { name: 'Shar TV', url: 'https://karwan.tv/shar-tv/', method:'iframe', color:'blue' },
   { name: 'Naghshi media TV', url: 'https://karwan.tv/naqshi-media/', method:'iframe', color:'blue' },
   { name: 'Bask', url: 'https://karwan.tv/bask-tv/', method:'iframe', color:'blue' },
   { name: 'Kanal 21', url: 'https://karwan.tv/kanali-21', method:'iframe', color:'blue' },
   { name: 'Mihrab TV', url: 'https://karwan.tv/mihrab-tv', method:'iframe', color:'blue' },
-  { name: 'Amozhgary academy', url: 'https://karwan.tv/amozhgary-academy/', method:'iframe', color:'blue' },
+  { name: 'Amozhgary academy', url: 'https://app-live.org/live/a267c1b3/index.m3u8', color:'blue' },
  ];
 var sportRaw = [
   { name: 'MMN Sport', url: 'http://mmn.mypsx.net:1935/live/mmnhdsport/playlist.m3u8', color:'green' },
