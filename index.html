@@ -341,10 +341,73 @@ canvas.analog-canvas{width:140px;height:140px;background:radial-gradient(ellipse
 .weather-day .wd-min{font-size:0.7rem;opacity:0.6}
 @media(max-width:1100px){.info-panel{background:rgba(0,0,0,0.55);backdrop-filter:blur(12px);border-bottom:1px solid #4ecca380;padding:14px 18px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:stretch;gap:14px}.clock-date-section,.weather-section{background:rgba(20,40,45,0.75);border-radius:14px;padding:6px 8px;backdrop-filter:blur(8px);box-shadow:0 2px 8px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.05);display:flex;align-items:center;flex-wrap:wrap;border:1px solid rgba(78,204,163,0.15)}}
 
-/* ===== NAV-BUTTONS ===== */
-.nav-buttons{display:flex;justify-content:center;flex-wrap:wrap;padding:12px 16px;background:rgba(0,0,0,0.25);border-bottom:1px solid rgba(78,204,163,0.15);position:sticky;top:0;z-index:200;backdrop-filter:blur(10px);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1),opacity 0.35s ease}
-.nav-buttons.scroll-hidden{transform:translateY(-120%);opacity:0;pointer-events:none}
+/* ===== NAV-BUTTONS GÖM-KNAPP (LITEN PIL) ===== */
+.nav-buttons-wrapper{
+  position:sticky;
+  top:0;
+  z-index:200;
+  transition:transform 0.35s cubic-bezier(0.4,0,0.2,1),opacity 0.35s ease;
+}
+.nav-buttons-wrapper.scroll-hidden{
+  transform:translateY(-120%);
+  opacity:0;
+  pointer-events:none;
+}
+.nav-buttons-wrapper.nav-hidden .nav-buttons{
+  display:none;
+}
+.nav-toggle-btn{
+  position:absolute;
+  top:100%;
+  left:50%;
+  transform:translateX(-50%);
+  background:linear-gradient(135deg,#1a3a42,#0f2a32);
+  border:1px solid #4ecca3;
+  border-top:none;
+  border-radius:0 0 12px 12px;
+  color:#4ecca3;
+  width:44px;
+  height:22px;
+  padding:0;
+  font-size:0.9rem;
+  font-weight:800;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 4px 14px rgba(0,0,0,0.5),0 1px 0 #4ecca3 inset;
+  z-index:201;
+  transition:all 0.25s ease;
+  line-height:1;
+}
+.nav-toggle-btn:hover{
+  background:linear-gradient(135deg,#2a5a62,#1a3a42);
+  box-shadow:0 6px 18px rgba(78,204,163,0.4),0 1px 0 #4ecca3 inset;
+  color:#a8ffde;
+}
+.nav-toggle-btn .ntb-icon{
+  font-size:0.85rem;
+  transition:transform 0.35s ease;
+  display:inline-block;
+}
+.nav-buttons-wrapper.nav-hidden .nav-toggle-btn .ntb-icon{
+  transform:rotate(180deg);
+}
+.nav-buttons-wrapper.nav-hidden .nav-toggle-btn{
+  animation:navPulse 2s ease-in-out infinite;
+}
+@keyframes navPulse{
+  0%,100%{box-shadow:0 4px 14px rgba(0,0,0,0.5),0 0 0 0 rgba(78,204,163,0.4);}
+  50%{box-shadow:0 4px 14px rgba(0,0,0,0.5),0 0 0 5px rgba(78,204,163,0.15);}
+}
+/* Behåll gamla .nav-buttons oförändrad men ta bort sticky */
+.nav-buttons{
+  position:static !important;
+  transition:none;
+}
 
+/* ===== NAV-BUTTONS UTSEENDE ===== */
+.nav-buttons{display:flex;justify-content:center;flex-wrap:wrap;padding:12px 16px;background:rgba(0,0,0,0.25);border-bottom:1px solid rgba(78,204,163,0.15);backdrop-filter:blur(10px)}
 .nav-btn{background:#1e2f3f;color:#e0e0e0;border:none;padding:8px 18px;border-radius:40px;cursor:pointer;font-weight:600;transition:all 0.2s ease;font-size:0.9rem;box-shadow:0 1px 3px rgba(0,0,0,0.2);white-space:nowrap;margin:4px 4px}
 .nav-btn:hover,.nav-btn.active{background:#4ecca3;color:#0a1c2a;transform:scale(1.03)}
 .container{display:flex;min-height:60vh;padding:14px;gap:14px}
@@ -559,17 +622,22 @@ video,iframe{width:100%;height:100%;object-fit:contain;border:none;background:bl
 <div id="quranModalOverlay" class="modal-overlay"><div class="modal"><button class="modal-close" id="quranModalClose">✕</button><div id="quranModalLang" class="modal-lang so">سۆرانی</div><div id="quranModalAr" class="modal-ar"></div><div id="quranModalText" class="modal-text"></div><div id="quranModalRef" class="modal-ref"></div></div></div>
 <div id="weatherModalOverlay" class="modal-overlay"><div class="modal" style="max-width:800px"><button class="modal-close" id="weatherModalClose">✕</button><div style="text-align:center"><div id="weatherModalTitle" style="font-size:1.2rem;font-weight:800;color:#4ecca3;margin-bottom:4px;">24h Prognos</div><div id="weatherModalSub" style="font-size:0.8rem;opacity:0.7;margin-bottom:12px;"></div><div id="weatherModalHourly" class="hourly-grid"></div></div></div></div>
 
-<div class="nav-buttons">
-  <button class="nav-btn active" onclick="showAll(this)">Alla</button>
-  <button class="nav-btn" id="btn-favs" onclick="showFavs(this)">Favoriter</button>
-  <button class="nav-btn" id="btn-heval" onclick="filterDirect(this,'heval')">Heval</button>
-  <button class="nav-btn" id="btn-musik" onclick="filterDirect(this,'musik')">Musik</button>
-  <button class="nav-btn" id="btn-minal" onclick="filterDirect(this,'minal')">Minal</button>
-  <button class="nav-btn" id="btn-film" onclick="filterDirect(this,'film')">Film & Serie</button>
-  <button class="nav-btn" id="btn-dini" onclick="filterDirect(this,'dini')">Dini</button>
-  <button class="nav-btn" id="btn-sport" onclick="filterDirect(this,'sport')">Sport</button>
-  <button class="nav-btn" id="btn-karwan" onclick="filterDirect(this,'karwan')">Karwan TV</button>
-  <button class="nav-btn" id="btn-Radio" onclick="filterDirect(this,'Radio')">Radio</button>
+<div class="nav-buttons-wrapper" id="navWrapper">
+  <div class="nav-buttons" id="navButtons">
+    <button class="nav-btn active" onclick="showAll(this)">Alla</button>
+    <button class="nav-btn" id="btn-favs" onclick="showFavs(this)">Favoriter</button>
+    <button class="nav-btn" id="btn-heval" onclick="filterDirect(this,'heval')">Heval</button>
+    <button class="nav-btn" id="btn-musik" onclick="filterDirect(this,'musik')">Musik</button>
+    <button class="nav-btn" id="btn-minal" onclick="filterDirect(this,'minal')">Minal</button>
+    <button class="nav-btn" id="btn-film" onclick="filterDirect(this,'film')">Film & Serie</button>
+    <button class="nav-btn" id="btn-dini" onclick="filterDirect(this,'dini')">Dini</button>
+    <button class="nav-btn" id="btn-sport" onclick="filterDirect(this,'sport')">Sport</button>
+    <button class="nav-btn" id="btn-karwan" onclick="filterDirect(this,'karwan')">Karwan TV</button>
+    <button class="nav-btn" id="btn-Radio" onclick="filterDirect(this,'Radio')">Radio</button>
+  </div>
+  <button class="nav-toggle-btn" id="navToggleBtn" onclick="toggleNav()" title="Visa/Dölj kategorier">
+    <span class="ntb-icon">▼</span>
+  </button>
 </div>
 
 <div class="container">
@@ -825,7 +893,29 @@ function toggleList(){ document.getElementById('channel-list').classList.toggle(
 function setPlayMode(mode){ playMode=mode; localStorage.setItem('xom_playmode',mode); document.getElementById('mode-tv').classList.toggle('active',mode==='tv'); document.getElementById('mode-audio').classList.toggle('active',mode==='audio'); if(cur) play(cur.url,cur.name,cur.method,''); }
 function updateModeSwitcherUI(){ document.getElementById('mode-tv').classList.toggle('active',playMode==='tv'); document.getElementById('mode-audio').classList.toggle('active',playMode==='audio'); }
 
-/* ============ RENDER MED KATEGORI-TOGGLE ============ */
+/* ===== NAV-BUTTONS GÖM/VISA (LITEN PIL) ===== */
+function toggleNav(){
+  var wrapper = document.getElementById('navWrapper');
+  if(!wrapper) return;
+  var isHidden = wrapper.classList.contains('nav-hidden');
+  if(isHidden){
+    wrapper.classList.remove('nav-hidden');
+    try{ localStorage.setItem('nav_hidden','false'); }catch(e){}
+  } else {
+    wrapper.classList.add('nav-hidden');
+    try{ localStorage.setItem('nav_hidden','true'); }catch(e){}
+  }
+}
+function initNavToggle(){
+  try{
+    if(localStorage.getItem('nav_hidden') === 'true'){
+      var wrapper = document.getElementById('navWrapper');
+      if(wrapper){ wrapper.classList.add('nav-hidden'); }
+    }
+  }catch(e){}
+}
+
+/* ============ RENDER MED KATEGORI-TOGGLE (STÄNGD SOM STANDARD) ============ */
 function render(filter){
   curFilter=filter; var html='';
   if(filter==='__favs__'){
@@ -833,20 +923,23 @@ function render(filter){
     var favList=allCh.filter(function(ch){ return favs.some(function(f){ return f.url===ch.url; }); });
     if(favList.length===0) html='<div class="category-title">Favoriter</div><div class="error-msg">Inga favoriter</div>';
     else {
-      var favCollapsed = localStorage.getItem('cat_collapsed___favs__')==='1';
+      var favStored = localStorage.getItem('cat_collapsed___favs__');
+      var favCollapsed = (favStored === null) ? true : (favStored === '1');
       html='<div class="category-header'+(favCollapsed?' collapsed':'')+'" onclick="toggleCategory(\'__favs__\',this)"><span>⭐ Favoriter ('+favList.length+')</span><span class="cat-toggle">'+(favCollapsed?'+':'−')+'</span></div>';
       html+='<div class="category-group'+(favCollapsed?' collapsed':'')+'" id="cat-group___favs__">'+favList.map(function(ch){ return row(ch,true); }).join('')+'</div>';
     }
   } else if(filter&&channels[filter]){
     var nice=filter==='heval'?'Heval':filter==='karwan'?'Karwan TV':filter.charAt(0).toUpperCase()+filter.slice(1);
-    var singleCollapsed = localStorage.getItem('cat_collapsed_'+filter)==='1';
+    var singleStored = localStorage.getItem('cat_collapsed_'+filter);
+    var singleCollapsed = (singleStored === null) ? true : (singleStored === '1');
     html='<div class="category-header'+(singleCollapsed?' collapsed':'')+'" onclick="toggleCategory(\''+filter+'\',this)"><span>'+nice+' ('+channels[filter].length+')</span><span class="cat-toggle">'+(singleCollapsed?'+':'−')+'</span></div>';
     html+='<div class="category-group'+(singleCollapsed?' collapsed':'')+'" id="cat-group_'+filter+'">'+channels[filter].map(function(ch){ var hide=(filter==='heval'||filter==='karwan'); return row(ch,hide); }).join('')+'</div>';
   } else {
     Object.keys(channels).forEach(function(cat){
       var nice=cat==='heval'?'Heval':cat==='karwan'?'Karwan TV':cat.charAt(0).toUpperCase()+cat.slice(1);
       var hide=(cat==='heval'||cat==='karwan');
-      var collapsed = localStorage.getItem('cat_collapsed_'+cat)==='1';
+      var stored = localStorage.getItem('cat_collapsed_'+cat);
+      var collapsed = (stored === null) ? true : (stored === '1');
       html+='<div class="category-header'+(collapsed?' collapsed':'')+'" onclick="toggleCategory(\''+cat+'\',this)"><span>'+nice+' ('+channels[cat].length+')</span><span class="cat-toggle">'+(collapsed?'+':'−')+'</span></div>';
       html+='<div class="category-group'+(collapsed?' collapsed':'')+'" id="cat-group_'+cat+'">'+channels[cat].map(function(ch){ return row(ch,hide); }).join('')+'</div>';
     });
@@ -1532,8 +1625,8 @@ function initWeatherToggle(){
 
 /* ===== GÖM NAV-BUTTONS VID SCROLL UPP ===== */
 (function(){
-  var navBar = document.querySelector('.nav-buttons');
-  if(!navBar) return;
+  var navWrapper = document.getElementById('navWrapper');
+  if(!navWrapper) return;
   var lastY = window.pageYOffset;
   var threshold = 8;
   window.addEventListener('scroll', function(){
@@ -1541,9 +1634,9 @@ function initWeatherToggle(){
     var diff = y - lastY;
     if(Math.abs(diff) < threshold) return;
     if(diff > 0 && y > 60){
-      navBar.classList.remove('scroll-hidden');
+      navWrapper.classList.remove('scroll-hidden');
     } else if(diff < 0){
-      navBar.classList.add('scroll-hidden');
+      navWrapper.classList.add('scroll-hidden');
     }
     lastY = y;
   }, {passive:true});
@@ -1555,6 +1648,7 @@ document.addEventListener('DOMContentLoaded',function(){
   initFixedClock();
   initFixedInfoToggle();
   initWeatherToggle();
+  initNavToggle();
   document.getElementById('calendarSelect').addEventListener('change',updateDateByCalendar);
   document.getElementById('fetchWeatherBtn').addEventListener('click',fetchWeather);
   document.getElementById('gpsBtn').addEventListener('click',detectLocationGPS);
