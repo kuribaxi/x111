@@ -265,7 +265,6 @@ body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:linear-gradient(1
 .fixed-weather-corner.hidden-by-user{display:none !important}
 
 /* ===== GARDIN / CURTAIN ===== */
-/* FIX: curtain-wrapper under nav-buttons (z-index 80 < 200) */
 .curtain-wrapper{position:relative;z-index:80;}
 .top-wrapper{background:linear-gradient(180deg,rgba(0,0,0,0.6),rgba(0,0,0,0.3));backdrop-filter:blur(4px);transition:transform 0.65s cubic-bezier(0.4,0,0.2,1),opacity 0.45s ease,max-height 0.65s cubic-bezier(0.4,0,0.2,1);overflow:hidden;max-height:2000px;transform:translateY(0);opacity:1;}
 .top-wrapper.curtain-closed{transform:translateY(-100%);opacity:0;max-height:0;pointer-events:none;}
@@ -342,8 +341,7 @@ canvas.analog-canvas{width:140px;height:140px;background:radial-gradient(ellipse
 .weather-day .wd-min{font-size:0.7rem;opacity:0.6}
 @media(max-width:1100px){.info-panel{background:rgba(0,0,0,0.55);backdrop-filter:blur(12px);border-bottom:1px solid #4ecca380;padding:14px 18px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:stretch;gap:14px}.clock-date-section,.weather-section{background:rgba(20,40,45,0.75);border-radius:14px;padding:6px 8px;backdrop-filter:blur(8px);box-shadow:0 2px 8px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.05);display:flex;align-items:center;flex-wrap:wrap;border:1px solid rgba(78,204,163,0.15)}}
 
-/* ===== ÄNDRING 1: NAV-BUTTONS MED TRANSITION ===== */
-/* FIX: nav-buttons z-index 200 (över curtain-wrapper) */
+/* ===== NAV-BUTTONS ===== */
 .nav-buttons{display:flex;justify-content:center;flex-wrap:wrap;padding:12px 16px;background:rgba(0,0,0,0.25);border-bottom:1px solid rgba(78,204,163,0.15);position:sticky;top:0;z-index:200;backdrop-filter:blur(10px);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1),opacity 0.35s ease}
 .nav-buttons.scroll-hidden{transform:translateY(-120%);opacity:0;pointer-events:none}
 
@@ -373,7 +371,64 @@ video,iframe{width:100%;height:100%;object-fit:contain;border:none;background:bl
 .close-btn{display:none;position:fixed;top:18px;right:18px;z-index:1001;background:#dc3545;color:white;border:none;padding:9px 18px;border-radius:40px;cursor:pointer;font-weight:bold}
 .js-toggle-off{background:#c95a2e!important}
 
-/* ===== ÄNDRING 2: MOBIL – VISA KANALER + PLAY DIREKT ===== */
+/* ===== KATEGORI-TOGGLE (+ / −) ===== */
+.category-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 700;
+  font-size: 1.15rem;
+  padding: 12px 10px 10px;
+  color: #4ecca3;
+  border-bottom: 2px solid #4ecca3;
+  margin: 14px 0 8px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s;
+}
+.category-header:hover {
+  background: rgba(78, 204, 163, 0.08);
+  border-radius: 8px 8px 0 0;
+}
+.category-header .cat-toggle {
+  background: rgba(78, 204, 163, 0.15);
+  border: 1px solid #4ecca3;
+  color: #4ecca3;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+}
+.category-header .cat-toggle:hover {
+  background: #4ecca3;
+  color: #0a1c2a;
+  transform: scale(1.1);
+}
+.category-header.collapsed .cat-toggle {
+  background: #4ecca3;
+  color: #0a1c2a;
+}
+.category-group {
+  overflow: hidden;
+  transition: max-height 0.4s ease, opacity 0.3s ease;
+  max-height: 5000px;
+  opacity: 1;
+}
+.category-group.collapsed {
+  max-height: 0;
+  opacity: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== MOBIL – VISA KANALER + PLAY DIREKT ===== */
 @media(max-width:768px){
   .container{
     flex-direction:column;
@@ -769,25 +824,54 @@ function fav(url,name){ var i=-1; for(var j=0;j<favs.length;j++){ if(favs[j].url
 function toggleList(){ document.getElementById('channel-list').classList.toggle('show'); }
 function setPlayMode(mode){ playMode=mode; localStorage.setItem('xom_playmode',mode); document.getElementById('mode-tv').classList.toggle('active',mode==='tv'); document.getElementById('mode-audio').classList.toggle('active',mode==='audio'); if(cur) play(cur.url,cur.name,cur.method,''); }
 function updateModeSwitcherUI(){ document.getElementById('mode-tv').classList.toggle('active',playMode==='tv'); document.getElementById('mode-audio').classList.toggle('active',playMode==='audio'); }
+
+/* ============ RENDER MED KATEGORI-TOGGLE ============ */
 function render(filter){
   curFilter=filter; var html='';
   if(filter==='__favs__'){
     var allCh=[]; Object.keys(channels).forEach(function(k){ allCh=allCh.concat(channels[k]); });
     var favList=allCh.filter(function(ch){ return favs.some(function(f){ return f.url===ch.url; }); });
     if(favList.length===0) html='<div class="category-title">Favoriter</div><div class="error-msg">Inga favoriter</div>';
-    else html='<div class="category-title">Favoriter ('+favList.length+')</div>'+favList.map(function(ch){ return row(ch,true); }).join('');
+    else {
+      var favCollapsed = localStorage.getItem('cat_collapsed___favs__')==='1';
+      html='<div class="category-header'+(favCollapsed?' collapsed':'')+'" onclick="toggleCategory(\'__favs__\',this)"><span>⭐ Favoriter ('+favList.length+')</span><span class="cat-toggle">'+(favCollapsed?'+':'−')+'</span></div>';
+      html+='<div class="category-group'+(favCollapsed?' collapsed':'')+'" id="cat-group___favs__">'+favList.map(function(ch){ return row(ch,true); }).join('')+'</div>';
+    }
   } else if(filter&&channels[filter]){
     var nice=filter==='heval'?'Heval':filter==='karwan'?'Karwan TV':filter.charAt(0).toUpperCase()+filter.slice(1);
-    html='<div class="category-title">'+nice+' ('+channels[filter].length+')</div>'+channels[filter].map(function(ch){ var hide=(filter==='heval'||filter==='karwan'); return row(ch,hide); }).join('');
+    var singleCollapsed = localStorage.getItem('cat_collapsed_'+filter)==='1';
+    html='<div class="category-header'+(singleCollapsed?' collapsed':'')+'" onclick="toggleCategory(\''+filter+'\',this)"><span>'+nice+' ('+channels[filter].length+')</span><span class="cat-toggle">'+(singleCollapsed?'+':'−')+'</span></div>';
+    html+='<div class="category-group'+(singleCollapsed?' collapsed':'')+'" id="cat-group_'+filter+'">'+channels[filter].map(function(ch){ var hide=(filter==='heval'||filter==='karwan'); return row(ch,hide); }).join('')+'</div>';
   } else {
     Object.keys(channels).forEach(function(cat){
       var nice=cat==='heval'?'Heval':cat==='karwan'?'Karwan TV':cat.charAt(0).toUpperCase()+cat.slice(1);
       var hide=(cat==='heval'||cat==='karwan');
-      html+='<div class="category-title">'+nice+'</div>'+channels[cat].map(function(ch){ return row(ch,hide); }).join('');
+      var collapsed = localStorage.getItem('cat_collapsed_'+cat)==='1';
+      html+='<div class="category-header'+(collapsed?' collapsed':'')+'" onclick="toggleCategory(\''+cat+'\',this)"><span>'+nice+' ('+channels[cat].length+')</span><span class="cat-toggle">'+(collapsed?'+':'−')+'</span></div>';
+      html+='<div class="category-group'+(collapsed?' collapsed':'')+'" id="cat-group_'+cat+'">'+channels[cat].map(function(ch){ return row(ch,hide); }).join('')+'</div>';
     });
   }
   document.getElementById('ch-container').innerHTML=html; attachChannelEvents();
 }
+
+function toggleCategory(catId, headerEl){
+  var group = document.getElementById('cat-group_'+catId);
+  var toggle = headerEl.querySelector('.cat-toggle');
+  if(!group) return;
+  var isCollapsed = group.classList.contains('collapsed');
+  if(isCollapsed){
+    group.classList.remove('collapsed');
+    headerEl.classList.remove('collapsed');
+    toggle.textContent='−';
+    localStorage.setItem('cat_collapsed_'+catId, '0');
+  } else {
+    group.classList.add('collapsed');
+    headerEl.classList.add('collapsed');
+    toggle.textContent='+';
+    localStorage.setItem('cat_collapsed_'+catId, '1');
+  }
+}
+
 function row(ch,hideSub){
   var m=ch.method||'hls'; var active=(cur&&cur.url===ch.url)?'active':'';
   var isFav=favs.some(function(f){ return f.url===ch.url; }); var star=isFav?'★':'☆';
@@ -1446,9 +1530,7 @@ function initWeatherToggle(){
   }catch(err){}
 }
 
-/* ============================================================
-   ÄNDRING 1: GÖM NAV-BUTTONS VID SCROLL UPP
-   ============================================================ */
+/* ===== GÖM NAV-BUTTONS VID SCROLL UPP ===== */
 (function(){
   var navBar = document.querySelector('.nav-buttons');
   if(!navBar) return;
@@ -1459,10 +1541,8 @@ function initWeatherToggle(){
     var diff = y - lastY;
     if(Math.abs(diff) < threshold) return;
     if(diff > 0 && y > 60){
-      /* scrollar ner -> visa */
       navBar.classList.remove('scroll-hidden');
     } else if(diff < 0){
-      /* scrollar upp -> göm */
       navBar.classList.add('scroll-hidden');
     }
     lastY = y;
