@@ -576,30 +576,6 @@ body.tv-mode #tvStage .video-wrapper{
 body.tv-mode #tvStage video,
 body.tv-mode #tvStage iframe{object-fit:contain}
 
-#tvStageInfo{
-  position:fixed;
-  top:14px;right:16px;
-  background:rgba(0,0,0,0.72);
-  backdrop-filter:blur(8px);
-  border:1px solid rgba(78,204,163,0.35);
-  border-radius:12px;
-  padding:8px 14px;
-  z-index:5200;
-  max-width:min(420px,60vw);
-  pointer-events:none;
-  transition:opacity .4s;
-}
-#tvStageInfo .tv-name{
-  font-size:15px;font-weight:800;color:#4ecca3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;
-  text-shadow:0 0 10px #4ecca388;
-}
-#tvStageInfo .tv-scope{
-  font-size:10.5px;color:#9fd8c3;font-weight:700;margin-top:2px;display:block;
-}
-#tvStageInfo .tv-idx{
-  font-size:10.5px;color:#7fae9d;font-weight:600;margin-top:2px;display:block;
-}
-
 /* ============================================================
    Navigeringsfält nere i mitten
    – visas ENDAST i TV-läge
@@ -628,38 +604,6 @@ body.tv-mode #tvStage iframe{object-fit:contain}
   box-sizing:border-box;
 }
 #tvNavBar::-webkit-scrollbar{ display:none; }  /* Chrome/Safari */
-
-/* ===== MOBIL: TV-toolbar får plats på skärmen ===== */
-@media (max-width: 768px){
-  #tvNavBar{
-    left:8px;
-    right:8px;
-    bottom:12px;
-    transform:none;             /* ta bort translateX(-50%) */
-    max-width:none;
-    width:auto;
-    border-radius:20px;
-    padding:8px 10px;
-    gap:8px;
-    justify-content:flex-start;
-  }
-  .tvNavBtn{
-    padding:9px 12px;
-    font-size:12px;
-    min-height:44px;
-    min-width:44px;
-    gap:6px;
-  }
-  .tvNavBtn .kbd{
-    display:none;               /* dölj tangent-ledtrådar på mobil */
-  }
-  .tvNavBtn > span:not(.kbd):not(.ntb-icon){
-    display:none;               /* dölj text-etiketter, behåll ikoner */
-  }
-  .tvNavBtn.primary > span:not(.kbd){
-    display:inline;             /* behåll "Kanaler" på huvudknappen */
-  }
-}
 
 /* Toolbaren visas ENDAST i TV-läge */
 body.tv-mode #tvNavBar{
@@ -696,13 +640,54 @@ body.tv-mode #tvNavBar{
 }
 .tvNavBtn.primary .kbd{color:#04120d;background:rgba(255,255,255,.25);border-color:transparent}
 
-/* Dölj UI efter inaktivitet (toolbar + info-badge) */
-body.tv-mode.tv-idle #tvNavBar,
-body.tv-mode.tv-idle #tvStageInfo{
+/* ============================================================
+   ===== MOBIL: TV-toolbar får plats på skärmen =====
+   (måste ligga EFTER huvudreglerna för att inte överskridas)
+   ============================================================ */
+@media (max-width: 768px){
+  #tvNavBar{
+    left:0 !important;
+    right:0 !important;
+    bottom:8px !important;
+    width:100% !important;
+    max-width:100% !important;
+    transform:none !important;
+    border-radius:0;
+    border-left:none;
+    border-right:none;
+    padding:8px 10px;
+    gap:6px;
+    justify-content:flex-start;
+    box-sizing:border-box;
+  }
+  .tvNavBtn{
+    padding:9px 12px;
+    font-size:12px;
+    min-height:44px;
+    min-width:44px;
+    gap:6px;
+  }
+  .tvNavBtn .kbd{
+    display:none !important;
+  }
+  .tvNavBtn > span:not(.kbd):not(.ntb-icon){
+    display:none !important;
+  }
+  .tvNavBtn.primary > span:not(.kbd){
+    display:inline !important;
+  }
+
+  /* Idle-animation på mobil – glid rakt ned */
+  body.tv-mode.tv-idle #tvNavBar{
+    transform:translateY(140%) !important;
+  }
+}
+
+/* Dölj UI efter inaktivitet (endast toolbar) */
+body.tv-mode.tv-idle #tvNavBar{
   opacity:0;pointer-events:none;
   transform:translateY(140%);
 }
-body.tv-mode.tv-idle #tvStageInfo{transform:none}
 body.tv-mode.tv-idle video{cursor:none}
 
 /* ============================================================
@@ -729,6 +714,7 @@ body.tv-mode #tvClock{display:flex}
   font-family:'Courier New',monospace;font-weight:800;font-size:1.4rem;
   letter-spacing:2px;color:#4ecca3;
   white-space:nowrap;line-height:1.1;
+  transition:font-size .4s ease, letter-spacing .4s ease;
 }
 #tvClock .tvClockDate{
   font-size:0.8rem;font-weight:700;color:#e0ffef;
@@ -739,6 +725,13 @@ body.tv-mode.tv-clock-off #tvClock{display:none!important}
 /* Vid inaktivitet: bara SIFFRORNA kvar – datumet göms tillsammans med toolbar */
 body.tv-mode.tv-idle #tvClock .tvClockDate{ display:none; }
 body.tv-mode.tv-idle #tvClockBtn{opacity:.55}
+
+/* När toolbaren göms (idle): klockan blir dubbelt så stor */
+body.tv-mode.tv-idle #tvClock .tvClockTime{
+  font-size:2.8rem;
+  letter-spacing:4px;
+  transition:font-size .4s ease, letter-spacing .4s ease;
+}
 
 /* Kanal-overlay (bottom sheet) */
 #tvOverlay{
@@ -954,16 +947,11 @@ body.tv-mode.tv-overlay-open #tvOverlay{
   <aside class="channel-list" id="channel-list"><button class="close-btn" onclick="toggleList()">Stäng</button><div id="ch-container"></div></aside>
 </div>
 
-<!-- ===== TV-LÄGE: scen + info + nav + kanal-overlay ===== -->
+<!-- ===== TV-LÄGE: scen + klocka + nav + kanal-overlay ===== -->
 <div id="tvStage"></div>
 <div id="tvClock">
   <div class="tvClockTime" id="tvClockDisplay">--:--:--</div>
   <div class="tvClockDate" id="tvClockDate">Laddar...</div>
-</div>
-<div id="tvStageInfo">
-  <span class="tv-name" id="tvInfoName">Ingen kanal</span>
-  <span class="tv-scope" id="tvInfoScope"></span>
-  <span class="tv-idx" id="tvInfoIdx"></span>
 </div>
 <div id="tvNavBar" role="toolbar" aria-label="TV navigering">
   <button class="tvNavBtn" id="tvPrevBtn" title="Föregående kanal">⏮ <span class="kbd">◀</span></button>
@@ -2065,18 +2053,10 @@ function toggleTV(){
   else enterTvMode();
 }
 
-/* ===== Info-badge uppe till höger ===== */
+/* ===== Info-badge (no-op – borttagen) ===== */
 function updateTvInfo(){
-  var nameEl=document.getElementById('tvInfoName');
-  var scopeEl=document.getElementById('tvInfoScope');
-  var idxEl=document.getElementById('tvInfoIdx');
-  if(!nameEl) return;
-  if(!cur){ nameEl.textContent='Ingen kanal'; scopeEl.textContent=''; idxEl.textContent=''; return; }
-  var seq=getTvList();
-  var idx=seq.findIndex(function(c){ return c.url===cur.url; });
-  nameEl.textContent=cur.name;
-  scopeEl.textContent=tvScopeName();
-  idxEl.textContent = idx>=0 ? ('Kanal '+(idx+1)+' av '+seq.length) : 'Ej i aktuell lista';
+  /* Info-badge är borttagen – behåller funktionen som no-op
+     för att inte bryta anrop från enterTvMode() och play() */
 }
 
 /* ===== Fram/bak inom vald grupp ===== */
