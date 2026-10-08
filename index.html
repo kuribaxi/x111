@@ -619,18 +619,57 @@ body.tv-mode #tvStage iframe{object-fit:contain}
   z-index:5300;
   transition:transform .28s ease, opacity .28s;
   flex-wrap:nowrap;             /* alltid en rad */
-  justify-content:center;
-  max-width:96vw;
+  justify-content:flex-start;
+  max-width:min(96vw, 1100px);
   overflow-x:auto;              /* scrolla horisontellt om det behövs */
   overflow-y:hidden;
   -webkit-overflow-scrolling:touch;
   scrollbar-width:none;         /* Firefox */
+  box-sizing:border-box;
 }
 #tvNavBar::-webkit-scrollbar{ display:none; }  /* Chrome/Safari */
+
+/* ===== MOBIL: TV-toolbar får plats på skärmen ===== */
+@media (max-width: 768px){
+  #tvNavBar{
+    left:8px;
+    right:8px;
+    bottom:12px;
+    transform:none;             /* ta bort translateX(-50%) */
+    max-width:none;
+    width:auto;
+    border-radius:20px;
+    padding:8px 10px;
+    gap:8px;
+    justify-content:flex-start;
+  }
+  .tvNavBtn{
+    padding:9px 12px;
+    font-size:12px;
+    min-height:44px;
+    min-width:44px;
+    gap:6px;
+  }
+  .tvNavBtn .kbd{
+    display:none;               /* dölj tangent-ledtrådar på mobil */
+  }
+  .tvNavBtn > span:not(.kbd):not(.ntb-icon){
+    display:none;               /* dölj text-etiketter, behåll ikoner */
+  }
+  .tvNavBtn.primary > span:not(.kbd){
+    display:inline;             /* behåll "Kanaler" på huvudknappen */
+  }
+}
 
 /* Toolbaren visas ENDAST i TV-läge */
 body.tv-mode #tvNavBar{
   display:flex;
+}
+/* På desktop behåller vi translateX(-50%) vid idle */
+@media (min-width: 769px){
+  body.tv-mode.tv-idle #tvNavBar{
+    transform:translateX(-50%) translateY(140%);
+  }
 }
 
 .tvNavBtn{
@@ -661,7 +700,7 @@ body.tv-mode #tvNavBar{
 body.tv-mode.tv-idle #tvNavBar,
 body.tv-mode.tv-idle #tvStageInfo{
   opacity:0;pointer-events:none;
-  transform:translateX(-50%) translateY(140%);
+  transform:translateY(140%);
 }
 body.tv-mode.tv-idle #tvStageInfo{transform:none}
 body.tv-mode.tv-idle video{cursor:none}
