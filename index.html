@@ -666,42 +666,39 @@ body.tv-mode.tv-idle #tvStageInfo{
 body.tv-mode.tv-idle #tvStageInfo{transform:none}
 body.tv-mode.tv-idle video{cursor:none}
 
-/* Klocka i TV-läge - samma stil som vanliga läget (fixed-clock-box) */
+/* ============================================================
+   Klocka i TV-läge – transparent, inga skuggor, bara text
+   ============================================================ */
 #tvClock{
   position:fixed;
   top:14px;left:16px;
   z-index:5200;
-  background:rgba(0,0,0,0.82);
-  backdrop-filter:blur(10px);
-  border:1px solid #4ecca355;
-  border-radius:14px;
-  padding:9px 14px;
+  background:transparent;
+  border:none;
+  border-radius:0;
+  padding:0;
   display:none;
-  align-items:center;
-  gap:10px;
-  box-shadow:0 8px 28px rgba(0,0,0,0.6);
-  pointer-events:auto;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:2px;
+  box-shadow:none;
+  pointer-events:none;
   transition:opacity .4s, transform .4s;
 }
 body.tv-mode #tvClock{display:flex}
 #tvClock .tvClockTime{
-  font-family:'Courier New',monospace;font-weight:800;font-size:1.15rem;
-  letter-spacing:2px;color:#4ecca3;text-shadow:0 0 14px #4ecca3aa;
+  font-family:'Courier New',monospace;font-weight:800;font-size:1.4rem;
+  letter-spacing:2px;color:#4ecca3;
   white-space:nowrap;line-height:1.1;
 }
 #tvClock .tvClockDate{
-  font-size:0.78rem;opacity:0.9;color:#e0ffef;white-space:nowrap;
+  font-size:0.8rem;font-weight:700;color:#e0ffef;
+  white-space:nowrap;
 }
-#tvClockHide{
-  background:rgba(0,0,0,0.6);border:1px solid #4ecca355;color:#4ecca3;
-  border-radius:50%;width:26px;height:26px;font-size:0.8rem;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;transition:all 0.2s;
-}
-#tvClockHide:hover{background:#4ecca3;color:#000}
-/* Gömd av användaren – enda sättet klockan försvinner */
+/* Gömd av användaren – enda sättet klockan försvinner (styrs via toolbar-knappen 🕐) */
 body.tv-mode.tv-clock-off #tvClock{display:none!important}
-/* OBS: Klockan döljs ALDRIG automatiskt vid inaktivitet.
-   Endast manuellt via tvClockHide / K-knappen. */
+/* Vid inaktivitet: bara SIFFRORNA kvar – datumet göms tillsammans med toolbar */
+body.tv-mode.tv-idle #tvClock .tvClockDate{ display:none; }
 body.tv-mode.tv-idle #tvClockBtn{opacity:.55}
 
 /* Kanal-overlay (bottom sheet) */
@@ -923,7 +920,6 @@ body.tv-mode.tv-overlay-open #tvOverlay{
 <div id="tvClock">
   <div class="tvClockTime" id="tvClockDisplay">--:--:--</div>
   <div class="tvClockDate" id="tvClockDate">Laddar...</div>
-  <button id="tvClockHide" title="Göm klockan">✕</button>
 </div>
 <div id="tvStageInfo">
   <span class="tv-name" id="tvInfoName">Ingen kanal</span>
@@ -2208,10 +2204,6 @@ function toggleTvClock(){
   }
 }
 document.getElementById('tvClockBtn').onclick=toggleTvClock;
-document.getElementById('tvClockHide').onclick=function(e){
-  e.stopPropagation();
-  toggleTvClock();
-};
 
 /* ===== Fullskärm (hela appen) i TV-läge ===== */
 function tvToggleFullscreen(){
