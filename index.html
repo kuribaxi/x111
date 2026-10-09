@@ -400,7 +400,6 @@ canvas.analog-canvas{width:140px;height:140px;background:radial-gradient(ellipse
   0%,100%{box-shadow:0 4px 14px rgba(0,0,0,0.5),0 0 0 0 rgba(78,204,163,0.4);}
   50%{box-shadow:0 4px 14px rgba(0,0,0,0.5),0 0 0 5px rgba(78,204,163,0.15);}
 }
-/* Behåll gamla .nav-buttons oförändrad men ta bort sticky */
 .nav-buttons{
   position:static !important;
   transition:none;
@@ -585,7 +584,7 @@ body.tv-mode #tvStage iframe{object-fit:contain}
   position:fixed;
   left:50%;bottom:18px;
   transform:translateX(-50%);
-  display:none;                 /* dold utanför TV-läge */
+  display:none;
   gap:10px;
   padding:10px 14px;
   background:rgba(6,20,25,.92);
@@ -594,22 +593,20 @@ body.tv-mode #tvStage iframe{object-fit:contain}
   box-shadow:0 10px 40px rgba(0,0,0,.8), 0 0 20px rgba(78,204,163,.25);
   z-index:5300;
   transition:transform .28s ease, opacity .28s;
-  flex-wrap:nowrap;             /* alltid en rad */
+  flex-wrap:nowrap;
   justify-content:flex-start;
   max-width:min(96vw, 1100px);
-  overflow-x:auto;              /* scrolla horisontellt om det behövs */
+  overflow-x:auto;
   overflow-y:hidden;
   -webkit-overflow-scrolling:touch;
-  scrollbar-width:none;         /* Firefox */
+  scrollbar-width:none;
   box-sizing:border-box;
 }
-#tvNavBar::-webkit-scrollbar{ display:none; }  /* Chrome/Safari */
+#tvNavBar::-webkit-scrollbar{ display:none; }
 
-/* Toolbaren visas ENDAST i TV-läge */
 body.tv-mode #tvNavBar{
   display:flex;
 }
-/* På desktop behåller vi translateX(-50%) vid idle */
 @media (min-width: 769px){
   body.tv-mode.tv-idle #tvNavBar{
     transform:translateX(-50%) translateY(140%);
@@ -625,8 +622,8 @@ body.tv-mode #tvNavBar{
   font-size:14px;font-weight:800;
   cursor:pointer;min-height:48px;min-width:48px;
   transition:background .15s, border-color .15s;
-  flex-shrink:0;                /* krymp inte ihop */
-  white-space:nowrap;           /* radbryt inte text */
+  flex-shrink:0;
+  white-space:nowrap;
 }
 .tvNavBtn:hover{background:#1e4a55;border-color:#4ecca3}
 .tvNavBtn.primary{
@@ -640,10 +637,6 @@ body.tv-mode #tvNavBar{
 }
 .tvNavBtn.primary .kbd{color:#04120d;background:rgba(255,255,255,.25);border-color:transparent}
 
-/* ============================================================
-   ===== MOBIL: TV-toolbar får plats på skärmen =====
-   (måste ligga EFTER huvudreglerna för att inte överskridas)
-   ============================================================ */
 @media (max-width: 768px){
   #tvNavBar{
     left:0 !important;
@@ -676,14 +669,11 @@ body.tv-mode #tvNavBar{
   .tvNavBtn.primary > span:not(.kbd){
     display:inline !important;
   }
-
-  /* Idle-animation på mobil – glid rakt ned */
   body.tv-mode.tv-idle #tvNavBar{
     transform:translateY(140%) !important;
   }
 }
 
-/* Dölj UI efter inaktivitet (endast toolbar) */
 body.tv-mode.tv-idle #tvNavBar{
   opacity:0;pointer-events:none;
   transform:translateY(140%);
@@ -691,7 +681,7 @@ body.tv-mode.tv-idle #tvNavBar{
 body.tv-mode.tv-idle video{cursor:none}
 
 /* ============================================================
-   Klocka i TV-läge – transparent, inga skuggor, bara text
+   Klocka i TV-läge
    ============================================================ */
 #tvClock{
   position:fixed;
@@ -720,13 +710,9 @@ body.tv-mode #tvClock{display:flex}
   font-size:0.8rem;font-weight:700;color:#e0ffef;
   white-space:nowrap;
 }
-/* Gömd av användaren – enda sättet klockan försvinner (styrs via toolbar-knappen 🕐) */
 body.tv-mode.tv-clock-off #tvClock{display:none!important}
-/* Vid inaktivitet: bara SIFFRORNA kvar – datumet göms tillsammans med toolbar */
 body.tv-mode.tv-idle #tvClock .tvClockDate{ display:none; }
 body.tv-mode.tv-idle #tvClockBtn{opacity:.55}
-
-/* När toolbaren göms (idle): klockan blir dubbelt så stor */
 body.tv-mode.tv-idle #tvClock .tvClockTime{
   font-size:2.8rem;
   letter-spacing:4px;
@@ -934,6 +920,7 @@ body.tv-mode.tv-overlay-open #tvOverlay{
           <button class="mode-btn" id="mode-audio" onclick="setPlayMode('audio')">🎵 Audio</button>
         </div>
         <button class="btn" onclick="toggleList()">Kanaler</button>
+        <button class="btn" onclick="listDialog()">➕ Lista</button>
         <button class="btn" onclick="pip()">PiP</button>
         <button class="btn" onclick="fs()">Fullskärm</button>
         <button class="btn" onclick="reload()">Ladda om</button>
@@ -956,6 +943,7 @@ body.tv-mode.tv-overlay-open #tvOverlay{
 <div id="tvNavBar" role="toolbar" aria-label="TV navigering">
   <button class="tvNavBtn" id="tvPrevBtn" title="Föregående kanal">⏮ <span class="kbd">◀</span></button>
   <button class="tvNavBtn primary" id="tvListBtn" title="Öppna kanallista">📺 <span>Kanaler</span> <span class="kbd">OK</span></button>
+  <button class="tvNavBtn" id="tvAddBtn" title="Ny lista / lägg kanalen i lista">➕ <span class="kbd">A</span></button>
   <button class="tvNavBtn" id="tvNextBtn" title="Nästa kanal">⏭ <span class="kbd">▶</span></button>
   <button class="tvNavBtn" id="tvReloadBtn2" title="Ladda om kanal">🔄 <span class="kbd">R</span></button>
   <button class="tvNavBtn" id="tvClockBtn" title="Visa/göm klockan">🕐 <span class="kbd">K</span></button>
@@ -1071,13 +1059,13 @@ var filmRaw = [
   { name: 'UTV Hewler org', url: 'https://utvhawler.net/index.htm', method:'iframe', color:'purple' },
   { name: 'Shar TV HD', url: 'http://avrstream.com:1935/live/SHARTV/playlist.m3u8', color: 'purple' },
   { name: 'UTV Hawler', url: 'http://line.trxdnscloud.ru:80/live/1naebx0n1p/en1cy28eqj/324667.ts', method:'ts', color: 'purple' },
-  { name: 'Cihan TV', url: 'https://www.cihanhd.com/', method:'iframe', color: 'purple' },
-  { name: 'Cihan TV (external)', url: 'https://kurdtvs.net/channels.php?slug=cihan-tv-hd', method:'external', color: 'purple' },
-  { name: 'Kurdmax (extern)', url: 'https://www.kurdmax.tv/live-stream', method:'external', color: 'purple' },
-  { name: 'MMN Documentary', url: 'http://mmn.mypsx.net:1935/live/mmnhddocumentary/playlist.m3u8', color: 'purple' },
-  { name: 'MMN Drama', url: 'http://mmn.mypsx.net:1935/live/mmnhddrama/playlist.m3u8', color: 'purple' },
-  { name: 'MMN Movies', url: 'http://mmn.mypsx.net:1935/live/mmnhdmovies/playlist.m3u8', color: 'purple' },
-  { name: 'MMN Action', url: 'http://mmn.mypsx.net:1935/live/mmnhdaction/playlist.m3u8', color: 'purple' },
+  { name: 'Cihan TV', url: 'https://www.cihanhd.com/', method:'iframe', color:'purple' },
+  { name: 'Cihan TV (external)', url: 'https://kurdtvs.net/channels.php?slug=cihan-tv-hd', method:'external', color:'purple' },
+  { name: 'Kurdmax (extern)', url: 'https://www.kurdmax.tv/live-stream', method:'external', color:'purple' },
+  { name: 'MMN Documentary', url: 'http://mmn.mypsx.net:1935/live/mmnhddocumentary/playlist.m3u8', color:'purple' },
+  { name: 'MMN Drama', url: 'http://mmn.mypsx.net:1935/live/mmnhddrama/playlist.m3u8', color:'purple' },
+  { name: 'MMN Movies', url: 'http://mmn.mypsx.net:1935/live/mmnhdmovies/playlist.m3u8', color:'purple' },
+  { name: 'MMN Action', url: 'http://mmn.mypsx.net:1935/live/mmnhdaction/playlist.m3u8', color:'purple' },
   { name: 'Infinity TV', url: 'https://karwan.tv/infinity-tv/', method:'iframe', color:'purple' },
   { name: 'New Movies', url: 'https://karwan.tv/bnar-movies', method:'iframe', color:'purple' },
   { name: 'New Action TV', url: 'https://karwan.tv/bnar-action/', method:'iframe', color:'purple' },
@@ -1088,11 +1076,11 @@ var filmRaw = [
 var diniRaw = [
   { name: 'Amozhgary', url: 'https://app-live.org/live/3268334b/index.m3u8', color: 'blue' },
   { name: 'Amozhgary academy', url: 'https://app-live.org/live/a267c1b3/index.m3u8', color:'blue' },
-  { name: 'Shar Quran', url: 'https://live20.bozztv.com/giatv/giatv-sharqurantv/sharqurantv/chunks.m3u8', color: 'blue' },
+  { name: 'Shar Quran', url: 'https://live20.bozztv.com/giatv/giatv-sharqurantv/sharqurantv/chunks.m3u8', color:'blue' },
   { name: 'Spi Quran', url: 'https://live20.bozztv.com/giatv/giatv-spi_quran_hd/spi_quran_hd/chunks.m3u8', color:'blue' },
-  { name: 'MMN Quran', url: 'http://mmn.mypsx.net:1935/live/mmnhdquran/playlist.m3u8', color: 'blue' },
-  { name: 'Eman TV', url: 'https://avr.host247.net/live/emantv/tracks-v1a1/mono.m3u8', color: 'blue' },
-  { name: 'Dang Quran', url: 'https://live20.bozztv.com/giatv/giatv-Quran/Quran/playlist.m3u8', color: 'blue' },
+  { name: 'MMN Quran', url: 'http://mmn.mypsx.net:1935/live/mmnhdquran/playlist.m3u8', color:'blue' },
+  { name: 'Eman TV', url: 'https://avr.host247.net/live/emantv/tracks-v1a1/mono.m3u8', color:'blue' },
+  { name: 'Dang Quran', url: 'https://live20.bozztv.com/giatv/giatv-Quran/Quran/playlist.m3u8', color:'blue' },
   { name: 'Peshang tv', url: 'https://stream.forcaroo.com/stream/hls/desktop.m3u8', color:'blue' },
   { name: 'Walla Quran', url: 'http://cdn.karwan.tv/WALAQURAN/index.m3u8', method:'external',color:'blue' },
   { name: 'Ashna Quran TV', url: 'https://karwan.tv/ashna-quran/', method:'iframe', color:'blue' },
@@ -1142,6 +1130,78 @@ try{ favs=JSON.parse(localStorage.getItem('xomfavs')||'[]'); }catch(e){ favs=[];
 try{ currentUA=localStorage.getItem('xom_ua')||''; }catch(e){}
 try{ playMode=localStorage.getItem('xom_playmode')||'tv'; }catch(e){}
 
+/* ============================================================
+   ===== NYTT: EGNA LISTOR (skapa + lägg till kanal + radera) =====
+   ============================================================ */
+var lists = [];
+try{ lists = JSON.parse(localStorage.getItem('xom_lists')||'[]'); }catch(e){ lists=[]; }
+function saveLists(){ try{ localStorage.setItem('xom_lists', JSON.stringify(lists)); }catch(e){} }
+
+function listDialog(){
+  closeListDialog();
+  var c = cur;
+  var html = '<div style="max-width:440px;width:100%;margin:0 auto;text-align:left;background:#0d2129;border:2px solid #234852;border-radius:18px;padding:20px">';
+  html += '<h3 style="color:#4ecca3;margin-bottom:10px;font-size:1.15em">➕ Mina listor</h3>';
+  if (c) html += '<p style="font-size:14px;margin-bottom:12px;opacity:.9">Kanal: <b style="color:#4ecca3">'+escapeHtml(c.name)+'</b></p>';
+  else html += '<p style="font-size:13px;margin-bottom:12px;opacity:.7">Ingen kanal vald – du kan skapa listor men inte lägga till kanaler.</p>';
+  html += '<button class="btn" style="width:100%;margin-bottom:14px;font-weight:700" onclick="createListPrompt()">➕ Skapa ny lista'+(c ? ' (med '+escapeHtml(c.name)+')' : '')+'</button>';
+  if (!lists.length) html += '<p style="opacity:.6;font-size:13px;margin:8px 0">Inga listor än.</p>';
+  for(var i=0;i<lists.length;i++){
+    (function(idx){
+      var g = lists[idx];
+      var isIn = c && g.items.some(function(x){ return x.url===c.url; });
+      html += '<div style="display:flex;gap:8px;align-items:center;margin:6px 0">'+
+        '<button class="btn" style="flex:1;'+(isIn?'background:#4ecca3;color:#0a1c2a;font-weight:700':'')+'" onclick="toggleInList('+idx+')">'+(isIn?'✓ I listan':'+ Lägg till')+' · '+escapeHtml(g.name)+' ('+g.items.length+')</button>'+
+        '<button class="btn" style="background:#8a2e3a;flex:none" title="Radera listan" onclick="delList('+idx+')">🗑</button>'+
+      '</div>';
+    })(i);
+  }
+  html += '<button class="btn" style="width:100%;margin-top:16px" onclick="closeListDialog()">✖ Stäng</button></div>';
+  var div = document.createElement('div');
+  div.id = 'listDialog';
+  div.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:6000;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)';
+  div.innerHTML = html;
+  div.addEventListener('click', function(e){ if(e.target===div) div.remove(); });
+  document.body.appendChild(div);
+}
+function closeListDialog(){ var d = document.getElementById('listDialog'); if(d) d.remove(); }
+function listDialogRefresh(){ if(document.getElementById('listDialog')) listDialog(); }
+function createListPrompt(){
+  var name = prompt('Namn på nya listan:');
+  if(!name || !name.trim()) return;
+  var g = { id: 'g'+Date.now(), name: name.trim().slice(0,40), items: [] };
+  if(cur) g.items.push({ name: cur.name, url: cur.url, method: cur.method||'hls', proxied: !!cur.proxied });
+  lists.push(g);
+  saveLists();
+  renderTvTabs();
+  listDialogRefresh();
+}
+function toggleInList(i){
+  if(!cur){ alert('Välj en kanal först'); return; }
+  var g = lists[i];
+  if(!g) return;
+  var k = -1;
+  for(var j=0;j<g.items.length;j++){ if(g.items[j].url===cur.url){ k=j; break; } }
+  if(k>-1) g.items.splice(k,1);
+  else g.items.push({ name: cur.name, url: cur.url, method: cur.method||'hls', proxied: !!cur.proxied });
+  saveLists();
+  renderTvTabs();
+  if(document.body.classList.contains('tv-overlay-open')) renderTvOverlay();
+  listDialogRefresh();
+}
+function delList(i){
+  if(!lists[i]) return;
+  if(confirm('Radera listan "'+lists[i].name+'"?')){
+    var key = 'list:'+lists[i].id;
+    lists.splice(i,1);
+    saveLists();
+    if(tvGroup===key) tvGroup='__all__';
+    renderTvTabs();
+    if(document.body.classList.contains('tv-overlay-open')) renderTvOverlay();
+    listDialogRefresh();
+  }
+}
+
 function toggleCurtain(){
   var topWrapper=document.getElementById('topWrapper');
   var handle=document.getElementById('curtainHandle');
@@ -1186,9 +1246,7 @@ function destroyPlayers(){ if(hlsInst){ try{hlsInst.destroy();}catch(e){} hlsIns
 function reload(){ if(cur) play(cur.url,cur.name,cur.method,''); }
 function fs(){ var w=document.getElementById('vwrap'); if(document.fullscreenElement){ document.exitFullscreen(); } else if(w.requestFullscreen){ w.requestFullscreen().catch(function(){}); } }
 function pip(){ var vid=document.getElementById('vplayer'); if(!vid) { alert('PiP funkar endast i Video-läge med HLS kanal'); return; } if(document.pictureInPictureElement){ document.exitPictureInPicture().catch(function(){}); } else if(vid.requestPictureInPicture){ vid.requestPictureInPicture().catch(function(){ alert('PiP stöds ej för denna kanal'); }); } else { alert('PiP stöds ej'); } }
-/* toggleTV ersätts nedan av riktigt TV-läge */
-function toggleTV(){ enterTvMode(); }
-function toggleJSengine(){ jsEnabled=!jsEnabled; var btn=document.getElementById('jsToggleBtn'); btn.textContent=jsEnabled?'JS PA':'JS AV'; btn.classList.toggle('js-toggle-off', !jsEnabled); if(cur) play(cur.url,cur.name,cur.method,''); }
+function toggleJSengine(){ jsEnabled=!jsEnabled; var btn=document.getElementById('jsToggleBtn'); btn.textContent=jsEnabled?'JS PA':'JS AV'; btn.classList.toggle('js-toggle-off', !jsEnabled); var tvBtn=document.getElementById('tvJsBtn'); if(tvBtn){ tvBtn.innerHTML=(jsEnabled?'⚡ <span>JS PÅ</span>':'⛔ <span>JS AV</span>')+' <span class="kbd">J</span>'; tvBtn.style.background=jsEnabled?'':'#3a1f24'; tvBtn.style.borderColor=jsEnabled?'':'#a05560'; } if(cur) play(cur.url,cur.name,cur.method,''); }
 function setUA(){ var sel=document.getElementById('ua-select'); currentUA=sel.value; try{ localStorage.setItem('xom_ua',currentUA);}catch(e){} if(cur) play(cur.url,cur.name,cur.method,''); }
 function openCurrentNewTab(){ if(!cur){ alert('Välj kanal först'); return; } window.open(cur.url,'_blank'); }
 function fav(url,name){ var i=-1; for(var j=0;j<favs.length;j++){ if(favs[j].url===url){ i=j; break; } } if(i>-1) favs.splice(i,1); else favs.push({url:url,name:name}); localStorage.setItem('xomfavs',JSON.stringify(favs)); render(curFilter); }
@@ -1975,7 +2033,7 @@ render(null);
 /* ============================================================
    ===== TV-LÄGE: fullskärm + ⏮/⏭ + grupper + kanal-overlay =====
    ============================================================ */
-var tvGroup = '__all__';   /* '__all__', '__favs__' eller kategorinamn (heval, musik, ...) */
+var tvGroup = '__all__';   /* '__all__', '__favs__', kategorinamn eller 'list:<id>' */
 var tvOvTab  = null;
 var tvOvFocus = 0;
 var tvIdleTimer = null;
@@ -2003,6 +2061,10 @@ function getTvList(){
       return favs.some(function(f){ return f.url===ch.url; });
     });
   }
+  if(tvGroup && tvGroup.indexOf('list:')===0){
+    var g = lists.find(function(l){ return l.id===tvGroup.slice(5); });
+    return g ? g.items.slice() : [];
+  }
   if(tvGroup && tvGroup!=='__all__' && channels[tvGroup]){
     return channels[tvGroup].slice();
   }
@@ -2011,6 +2073,10 @@ function getTvList(){
 function tvScopeName(){
   if(tvGroup==='__favs__') return '⭐ Favoriter';
   if(tvGroup==='__all__')   return '📋 Alla kanaler';
+  if(tvGroup && tvGroup.indexOf('list:')===0){
+    var g = lists.find(function(l){ return l.id===tvGroup.slice(5); });
+    return '📁 '+(g? g.name : '');
+  }
   return tvGroupIcon(tvGroup)+' '+tvNice(tvGroup);
 }
 
@@ -2028,7 +2094,6 @@ function enterTvMode(){
   tvUiWake();
   renderTvTabs();
   updateTvInfo();
-  /* Synka JS-knappens utseende vid start av TV-läge */
   var jsB=document.getElementById('tvJsBtn');
   if(jsB){
     jsB.innerHTML = (jsEnabled?'⚡ <span>JS PÅ</span>':'⛔ <span>JS AV</span>')+' <span class="kbd">J</span>';
@@ -2047,7 +2112,6 @@ function exitTvMode(){
   var btn=document.getElementById('tv-btn'); if(btn) btn.textContent='TV-läge';
   try{ if(document.fullscreenElement) document.exitFullscreen().catch(function(){}); }catch(e){}
 }
-/* Överskriv gamla toggleTV så "TV-läge"-knappen använder nya läget */
 function toggleTV(){
   if(document.body.classList.contains('tv-mode')) exitTvMode();
   else enterTvMode();
@@ -2084,6 +2148,11 @@ function renderTvTabs(){
   Object.keys(channels).forEach(function(cat){
     html+='<button class="tvOvTab '+(tvGroup===cat?'active':'')+'" data-tvg="'+cat+'">'+
       '<span class="nm">'+tvGroupIcon(cat)+' '+tvNice(cat)+'</span><span class="cnt">'+channels[cat].length+'</span></button>';
+  });
+  /* NYTT: egna listor som flikar */
+  lists.forEach(function(g){
+    html+='<button class="tvOvTab '+(tvGroup==='list:'+g.id?'active':'')+'" data-tvg="list:'+g.id+'">'+
+      '<span class="nm">📁 '+escapeHtml(g.name)+'</span><span class="cnt">'+g.items.length+'</span></button>';
   });
   tabsEl.innerHTML=html;
   tabsEl.querySelectorAll('[data-tvg]').forEach(function(t){
@@ -2140,7 +2209,7 @@ function openTvOverlay(){
   renderTvTabs();
   renderTvOverlay();
   var list=getTvList();
-  var idx=list.findIndex(function(c){ return cur && c.url===cur.url; });
+  var idx=list.findIndex(function(c){ return cur && c.url===c.url; });
   tvOvFocus = idx>=0 ? idx : 0;
   setTimeout(tvOvApplyFocus,50);
 }
@@ -2175,6 +2244,7 @@ function tvOvActivate(){
 function tvIdleAllowed(){
   if(!document.body.classList.contains('tv-mode')) return false;
   if(document.body.classList.contains('tv-overlay-open')) return false;
+  if(document.getElementById('listDialog')) return false;
   if(!cur) return false;
   var vid=document.getElementById('vwrap').querySelector('video');
   var aud=document.getElementById('vwrap').querySelector('audio');
@@ -2184,7 +2254,6 @@ function tvIdleAllowed(){
 function tvUiWake(){
   var wasIdle = document.body.classList.contains('tv-idle');
   document.body.classList.remove('tv-idle');
-  /* Klockan visas igen när UI:t väcks vid musrörelse efter inaktivitet */
   if(wasIdle && document.body.classList.contains('tv-clock-off')){
     document.body.classList.remove('tv-clock-off');
     var btn = document.getElementById('tvClockBtn');
@@ -2208,6 +2277,7 @@ document.getElementById('tvPrevBtn').onclick=function(){ tvAdjacent(-1); };
 document.getElementById('tvNextBtn').onclick=function(){ tvAdjacent(1); };
 document.getElementById('tvListBtn').onclick=openTvOverlay;
 document.getElementById('tvOvClose').onclick=closeTvOverlay;
+document.getElementById('tvAddBtn').onclick=function(){ listDialog(); };
 document.getElementById('tvReloadBtn2').onclick=function(){ if(cur) reload(); };
 document.getElementById('tvExitBtn').onclick=exitTvMode;
 
@@ -2237,25 +2307,8 @@ function tvToggleFullscreen(){
 document.getElementById('tvFsBtn').onclick=tvToggleFullscreen;
 
 /* ===== JS-motor av/på i TV-läge (samma som knappen JS PA/AV) ===== */
-function toggleJSengine(){
-  jsEnabled=!jsEnabled;
-  var btn=document.getElementById('jsToggleBtn');
-  if(btn){ btn.textContent=jsEnabled?'JS PA':'JS AV'; btn.classList.toggle('js-toggle-off', !jsEnabled); }
-  var tvBtn=document.getElementById('tvJsBtn');
-  if(tvBtn){
-    tvBtn.innerHTML=(jsEnabled?'⚡ <span>JS PÅ</span>':'⛔ <span>JS AV</span>')+' <span class="kbd">J</span>';
-    tvBtn.title=jsEnabled?'JS-motor: stäng av':'JS-motor: sätt på';
-    tvBtn.style.background=jsEnabled?'':'#3a1f24';
-    tvBtn.style.borderColor=jsEnabled?'':'#a05560';
-  }
-  if(cur) play(cur.url,cur.name,cur.method,'');
-}
 document.getElementById('tvJsBtn').onclick=function(){
   toggleJSengine();
-  var curBtn=document.getElementById('tvJsBtn');
-  var txt=jsEnabled?'JS PÅ':'JS AV';
-  curBtn.dataset.flash=txt;
-  setTimeout(function(){ delete curBtn.dataset.flash; }, 1200);
 };
 
 /* ===== Tangentbord / TV-fjärr ===== */
@@ -2266,12 +2319,19 @@ document.addEventListener('keydown', function(e){
   var typing = ae && (ae.tagName==='INPUT'||ae.tagName==='TEXTAREA'||ae.tagName==='SELECT');
   if(typing) return;
 
+  /* List-dialog öppen: Esc stänger */
+  if(document.getElementById('listDialog')){
+    if(key==='Escape'||code===8||code===461){ e.preventDefault(); closeListDialog(); return; }
+    return;
+  }
+
   /* Overlay öppen: navigera i kanallistan */
   if(document.body.classList.contains('tv-overlay-open')){
     if(key==='ArrowDown'){ e.preventDefault(); tvOvMove('down'); return; }
     if(key==='ArrowUp'){ e.preventDefault(); tvOvMove('up'); return; }
     if(key==='Enter'||code===13){ e.preventDefault(); tvOvActivate(); return; }
     if(key==='Escape'||code===8||code===461){ e.preventDefault(); closeTvOverlay(); return; }
+    if(key==='a'||key==='A'){ e.preventDefault(); listDialog(); return; }
     if(code>=49 && code<=57){
       e.preventDefault();
       var n=code-49;
@@ -2285,6 +2345,7 @@ document.addEventListener('keydown', function(e){
   if(key==='ArrowRight'){ e.preventDefault(); tvAdjacent(1); return; }
   if(key==='ArrowLeft'){ e.preventDefault(); tvAdjacent(-1); return; }
   if(key==='Enter'||code===13){ e.preventDefault(); openTvOverlay(); return; }
+  if(key==='a'||key==='A'){ e.preventDefault(); listDialog(); return; }
   if(key==='r'||key==='R'){ e.preventDefault(); if(cur) reload(); return; }
   if(key==='k'||key==='K'){ e.preventDefault(); toggleTvClock(); return; }
   if(key==='f'||key==='F'){ e.preventDefault(); tvToggleFullscreen(); return; }
@@ -2294,11 +2355,10 @@ document.addEventListener('keydown', function(e){
   if(code===403){ e.preventDefault(); openTvOverlay(); return; }
   if(code===406){ e.preventDefault(); exitTvMode(); return; }
   if(code>=49 && code<=57){
-    /* 1-9 = snabbval ur FAVORITER (som IPTV Grid TV) */
     e.preventDefault();
-    var n=code-49;
+    var n2=code-49;
     var favList=allChannelsFlat().filter(function(ch){ return favs.some(function(f){ return f.url===ch.url; }); });
-    if(favList[n]) play(favList[n].url, favList[n].name, favList[n].method||'hls', !!favList[n].proxied);
+    if(favList[n2]) play(favList[n2].url, favList[n2].name, favList[n2].method||'hls', !!favList[n2].proxied);
     return;
   }
 });
