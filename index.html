@@ -681,7 +681,37 @@ body.tv-mode.tv-idle #tvNavBar{
 body.tv-mode.tv-idle video{cursor:none}
 
 /* ============================================================
-   Klocka i TV-läge
+   Kanalnamn-badge – övre höger hörn i TV-läge
+   ============================================================ */
+#tvChanName{
+  position:fixed;
+  top:14px;right:16px;
+  z-index:5200;
+  background:rgba(6,20,25,.85);
+  border:2px solid #4ecca3;
+  border-radius:14px;
+  padding:10px 18px;
+  font-size:1.1rem;font-weight:800;color:#4ecca3;
+  display:none;
+  flex-direction:column;align-items:flex-end;gap:3px;
+  box-shadow:0 8px 28px rgba(0,0,0,.6), 0 0 18px rgba(78,204,163,.25);
+  pointer-events:none;
+  max-width:min(60vw, 520px);
+  transition:opacity .35s, transform .35s;
+}
+#tvChanName .tvChanTag{
+  font-size:0.62rem;font-weight:800;color:#7fae9d;
+  letter-spacing:1.5px;text-transform:uppercase;
+}
+body.tv-mode #tvChanName{display:flex}
+/* Göms tillsammans med toolbaren vid inaktivitet */
+body.tv-mode.tv-idle #tvChanName{
+  opacity:0;
+  transform:translateX(130%);
+  pointer-events:none;
+}
+
+/* Klocka i TV-läge
    ============================================================ */
 #tvClock{
   position:fixed;
@@ -939,6 +969,10 @@ body.tv-mode.tv-overlay-open #tvOverlay{
 <div id="tvClock">
   <div class="tvClockTime" id="tvClockDisplay">--:--:--</div>
   <div class="tvClockDate" id="tvClockDate">Laddar...</div>
+</div>
+<div id="tvChanName">
+  <div class="tvChanTag" id="tvChanTag">LIVE</div>
+  <div id="tvChanNameText">Ingen kanal</div>
 </div>
 <div id="tvNavBar" role="toolbar" aria-label="TV navigering">
   <button class="tvNavBtn" id="tvPrevBtn" title="Föregående kanal">⏮ <span class="kbd">◀</span></button>
@@ -2117,10 +2151,21 @@ function toggleTV(){
   else enterTvMode();
 }
 
-/* ===== Info-badge (no-op – borttagen) ===== */
+/* ===== Kanalnamn-badge (övre höger hörn i TV-läge) ===== */
 function updateTvInfo(){
-  /* Info-badge är borttagen – behåller funktionen som no-op
-     för att inte bryta anrop från enterTvMode() och play() */
+  /* NYTT: uppdatera kanalnamn-badge i övre höger hörnet */
+  var nameEl = document.getElementById('tvChanNameText');
+  var tagEl  = document.getElementById('tvChanTag');
+  if(!nameEl) return;
+  if(cur){
+    nameEl.textContent = cur.name;
+    var t = cur.method || 'hls';
+    var tag = 'LIVE · ' + (t==='audio' ? 'RADIO' : t==='iframe' ? 'WEB' : t==='external' ? 'EXTERN' : t==='ts' ? 'TS' : cur.proxied ? 'PROXY' : 'HLS');
+    if(tagEl) tagEl.textContent = tag;
+  } else {
+    nameEl.textContent = 'Ingen kanal';
+    if(tagEl) tagEl.textContent = 'LIVE';
+  }
 }
 
 /* ===== Fram/bak inom vald grupp ===== */
