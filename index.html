@@ -586,25 +586,27 @@ body.tv-mode #tvStage iframe{object-fit:contain}
   top:110px;      /* under kanalnamn-badgen i övre höger hörn */
   bottom:110px;   /* över spelarens ljud-/fullskärmskontroller i nedre höger hörn */
   display:none;
-  flex-direction:column;
-  gap:8px;
-  padding:12px 10px;
+  align-items:center;
+  justify-content:center;
   background:rgba(6,20,25,.92);
   border:3px solid #4ecca3;
   border-radius:26px;
   box-shadow:0 10px 40px rgba(0,0,0,.8), 0 0 20px rgba(78,204,163,.25);
   z-index:5300;
   transition:transform .28s ease, opacity .28s;
-  flex-wrap:nowrap;
-  justify-content:center;
-  max-height:none;
-  overflow-y:auto;
-  overflow-x:hidden;
-  -webkit-overflow-scrolling:touch;
-  scrollbar-width:none;
+  overflow:hidden;
   box-sizing:border-box;
 }
-#tvNavBar::-webkit-scrollbar{ display:none; }
+#tvNavInner{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  padding:12px 10px;
+  flex:0 0 auto;
+  transform:scale(1);
+  transform-origin:center center;
+  transition:transform .2s ease;
+}
 
 body.tv-mode #tvNavBar{
   display:flex;
@@ -677,8 +679,10 @@ body.tv-mode #tvNavBar{
     max-width:calc(100vw - 12px);
     max-height:none;
     border-radius:22px;
-    padding:8px 6px;
+  }
+  #tvNavInner{
     gap:5px;
+    padding:8px 6px;
   }
   .tvNavBtn{
     padding:8px 10px;
@@ -1004,6 +1008,7 @@ body.tv-mode.tv-overlay-open #tvOverlay{
   <div id="tvChanNameText">Ingen kanal</div>
 </div>
 <div id="tvNavBar" role="toolbar" aria-label="TV navigering">
+<div id="tvNavInner">
   <button class="tvNavBtn" id="tvPrevBtn" title="Föregående kanal">⏮ <span class="kbd">◀</span></button>
   <button class="tvNavBtn primary" id="tvListBtn" title="Öppna kanallista">📺 <span>Kanaler</span> <span class="kbd">OK</span></button>
   <button class="tvNavBtn" id="tvAddBtn" title="Ny lista / lägg kanalen i lista">➕ <span class="kbd">A</span></button>
@@ -1018,6 +1023,7 @@ body.tv-mode.tv-overlay-open #tvOverlay{
   <button class="tvNavBtn" id="tvFsBtn" title="Fullskärm av/på">⛶ <span class="kbd">F</span></button>
   <button class="tvNavBtn" id="tvJsBtn" title="JS-motor av/på">⚡ <span class="kbd">J</span></button>
   <button class="tvNavBtn" id="tvExitBtn" title="Avsluta TV-läge">✖ <span class="kbd">Esc</span></button>
+</div>
 </div>
 <div id="tvOverlay" role="dialog" aria-label="Kanaler">
   <div class="tvOvHead">
@@ -2183,6 +2189,8 @@ function enterTvMode(){
   }
   tvVolRestore();
   tvVolUpdate();
+  setTimeout(fitTvNavBar, 150);
+  setTimeout(fitTvNavBar, 200);
 }
 function exitTvMode(){
   var vwrap = document.getElementById('vwrap');
@@ -2454,6 +2462,35 @@ document.getElementById('tvVolLevel').onclick=tvVolToggleMute;
 setInterval(function(){
   if(document.body.classList.contains('tv-mode')) tvVolUpdate();
 }, 800);
+
+/* ============================================================
+   ===== Auto-skalning av TV-toolbaren (vid zoom/mobil) =====
+   ============================================================ */
+function fitTvNavBar(){
+  var bar = document.getElementById('tvNavBar');
+  var inner = document.getElementById('tvNavInner');
+  if(!bar || !inner) return;
+  inner.style.transform = 'scale(1)';
+  var availH = bar.clientHeight;
+  var availW = bar.clientWidth;
+  var needH = inner.offsetHeight;
+  var needW = inner.offsetWidth;
+  if(!availH || !needH){ return; }
+  var s = Math.min(availH/needH, availW/needW);
+  if(s > 1) s = 1;
+  if(s < 0.3) s = 0.3;
+  inner.style.transform = 'scale(' + s + ')';
+}
+window.addEventListener('resize', fitTvNavBar);
+window.addEventListener('orientationchange', function(){ setTimeout(fitTvNavBar, 300); });
+setInterval(function(){
+  if(document.body.classList.contains('tv-mode')) fitTvNavBar();
+}, 1000);
+document.addEventListener('fullscreenchange', function(){ setTimeout(fitTvNavBar, 200); });
+document.addEventListener('webkitfullscreenchange', function(){ setTimeout(fitTvNavBar, 200); });
+if(window.visualViewport){
+  window.visualViewport.addEventListener('resize', fitTvNavBar);
+}
 
 /* ===== Tangentbord / TV-fjärr ===== */
 document.addEventListener('keydown', function(e){
