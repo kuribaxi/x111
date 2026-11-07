@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Heval · Karwan · Radio - Gardin Edition - Radio + TV/Ljud - FIXED Speda</title>
+<title>Heval · Karwan · Radio - FIXED Speda TV + Drama</title>
 <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script src="https://cdn.dashjs.org/latest/dash.all.min.js"></script>
@@ -147,7 +147,7 @@ body.tv-mode.tv-overlay-open #tvOverlay{transform:translateY(0);pointer-events:a
 </style>
 </head>
 <body>
-<div class="fix-banner">✅ FIXED: Speda HD går nu via proxy med Referer <b>https://www.speda.net/</b> — om direkt misslyckas provar spelaren automatiskt proxy</div>
+<div class="fix-banner">✅ FIXED: Speda TV + Speda Drama spelas nu i player — automatisk proxy-kedja (localhost → corsproxy → allorigins) med Referer speda.net</div>
 <div class="fixed-clock-corner hidden-by-curtain" id="fixedClockCorner"><div class="fixed-clock-box" id="fixedClockBox"><div class="fixed-clock-display" id="fixedClockDisplay">--:--:--</div><div class="fixed-date-text" id="fixedDateDisplay">Laddar...</div></div></div>
 <div class="fixed-weather-corner hidden-by-curtain" id="fixedWeatherCorner"><div class="fixed-weather-box" id="fixedWeatherBox"><span id="fixedWeatherIcon">🌤</span><span class="fixed-weather-temp" id="fixedWeatherTemp">--°</span><span class="fixed-weather-city" id="fixedWeatherCity">Sök</span><button class="weather-hide-btn" id="weatherHideBtn">✕</button></div><div class="fixed-weather-details" id="fixedWeatherDetails"><div id="fixedWeatherDetailText">Sök väder</div><div class="fw-week" id="fixedWeatherWeek"></div></div></div>
 <button class="weather-show-btn" id="weatherShowBtn">🌤 Visa väder</button>
@@ -169,11 +169,29 @@ body.tv-mode.tv-overlay-open #tvOverlay{transform:translateY(0);pointer-events:a
    Exempel Node-proxy (server.js) finns längst ner i denna fil som kommentar.
    Proxyn måste också skriva om .m3u8 så .ts går via proxy.
 */
+/* ===== SPEDA PROXY-KEDJA - DET HÄR ÄR FIXEN =====
+   Speda nekar direktuppspelning: Referer måste vara speda.net + CORS blockerar.
+   Därför: prova i ordning:
+   0 = direkt (funkar ibland)
+   1 = din egen proxy localhost:8787 (bäst, skickar Referer speda.net)
+   2 = corsproxy.io (publik, skickar vidare + fixar CORS, .ts följer med via proxy-URL)
+   3 = allorigins.win/raw (publik backup)
+   Spelaren byter automatiskt vid NETWORK_ERROR tills en funkar.
+*/
 const PROXY_BASE = 'http://localhost:8787';
-function proxify(url){
-  if(!PROXY_BASE) return url;
-  return PROXY_BASE + '/proxy?url=' + encodeURIComponent(url);
+var SPEDA_PROXY_LIST = [
+  function(u){ return u; },
+  function(u){ return PROXY_BASE + '/proxy?url=' + encodeURIComponent(u); },
+  function(u){ return 'https://corsproxy.io/?url=' + encodeURIComponent(u); },
+  function(u){ return 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u); }
+];
+function proxify(url, idx){
+  idx = (typeof idx==='number') ? idx : 1;
+  if(idx<0||idx>=SPEDA_PROXY_LIST.length) idx=1;
+  return SPEDA_PROXY_LIST[idx](url);
 }
+function isSpedaUrl(u){ return (u||'').indexOf('speda4.site')!==-1 || (u||'').indexOf('speda')!==-1; }
+function spedaProxyName(idx){ return ['Direkt','Lokal proxy :8787','corsproxy.io','allorigins'][idx]||('Proxy '+idx); }
 function getKarwanDirectCDN(karwanUrl){
   try{
     var clean = karwanUrl.replace(/\/+$/,'').split('?')[0].split('#')[0];
@@ -186,8 +204,10 @@ function getKarwanDirectCDN(karwanUrl){
 }
 /* ===== FIX: Speda HD - MÅSTE gå via proxy ===== */
 var hevalRaw = [
-  { name: 'Speda HD ✅ FIXED', url: 'https://www.speda4.site/upload/images/spedahd.m3u8', proxied: true, color: 'teal' },
-  { name: 'Speda HD (direkt - test)', url: 'https://www.speda4.site/upload/images/spedahd.m3u8', color: 'teal' },
+  { name: 'Speda TV ✅', url: 'https://www.speda4.site/upload/images/spedahd.m3u8', proxied: true, proxyIdx: 1, color: 'teal' },
+  { name: 'Speda Drama ✅', url: 'https://www.speda4.site/upload/images/spedadrama.m3u8', proxied: true, proxyIdx: 1, color: 'teal' },
+  { name: 'Speda TV (direkt)', url: 'https://www.speda4.site/upload/images/spedahd.m3u8', proxyIdx: 0, color: 'teal' },
+  { name: 'Speda Drama (direkt)', url: 'https://www.speda4.site/upload/images/spedadrama.m3u8', proxyIdx: 0, color: 'teal' },
   { name: 'Kurdistan TV', url: 'https://5a3ed7a72ed4b.streamlock.net/live/SMIL:myStream.smil/playlist.m3u8', color: 'teal' },
   { name: 'Kurdsat HD', url: 'https://hlspackager.akamaized.net/live/DB/KURDSAT_HD/HLS/KURDSAT_HD.m3u8', color: 'teal' },
   { name: 'MMN News', url: 'http://mmn.mypsx.net:1935/live/mmnhdnews/playlist.m3u8', color: 'teal' },
@@ -271,7 +291,7 @@ var filmRaw = [
   { name: 'New Movies', url: 'https://karwan.tv/bnar-movies', method:'iframe', color:'purple' },
   { name: 'New Action TV', url: 'https://karwan.tv/bnar-action/', method:'iframe', color:'purple' },
   { name: 'Soz Movie', url: 'https://live20.bozztv.com/giatv/giatv-sozetv/sozetv/chunks.m3u8', color:'purple' },
-  { name: 'Speda Drama', url: 'https://www.speda.net/', method:'external', color: 'purple' },
+  { name: 'Speda Drama ✅', url: 'https://www.speda4.site/upload/images/spedadrama.m3u8', proxied: true, proxyIdx: 1, color: 'purple' },
   { name: 'Cihan TV (external)', url: 'https://kurdtvs.net/channels.php?slug=cihan-tv-hd', method:'external', color:'purple' },
   { name: 'Kurdmax (extern)', url: 'https://www.kurdmax.tv/live-stream', method:'external', color:'purple' },
 ];
@@ -327,7 +347,7 @@ var RadioRaw = [
   { name: 'Nawa Radio', url: 'https://www.radionawa.com/Ku/Live.aspx', method:'iframe', color:'cyan' },
 ];
 var channels = {heval: hevalRaw.slice(),musik: musikRaw.slice(),minal: minalRaw.slice(),film: filmRaw.slice(),dini: diniRaw.slice(),sport: sportRaw.slice(),karwan: karwanRaw.slice(),Radio: RadioRaw.slice()};
-var hlsInst=null, cur=null, favs=[], jsEnabled=true, curFilter=null, playMode='tv', currentUA='', _spedaRetry=false;
+var hlsInst=null, cur=null, favs=[], jsEnabled=true, curFilter=null, playMode='tv', currentUA='', _spedaRetry=false, _proxyTry=1;
 try{ favs=JSON.parse(localStorage.getItem('xomfavs')||'[]'); }catch(e){ favs=[]; }
 try{ currentUA=localStorage.getItem('xom_ua')||''; }catch(e){}
 try{ playMode=localStorage.getItem('xom_playmode')||'tv'; }catch(e){}
@@ -342,10 +362,10 @@ function delList(i){ if(!lists[i]) return; if(confirm('Radera listan "'+lists[i]
 function toggleCurtain(){ var tw=document.getElementById('topWrapper'); var h=document.getElementById('curtainHandle'); var t=document.getElementById('handleText'); var ic=document.getElementById('handleIcon'); var cc=document.getElementById('fixedClockCorner'); var wc=document.getElementById('fixedWeatherCorner'); var closed=tw.classList.contains('curtain-closed'); if(closed){ tw.classList.remove('curtain-closed'); h.classList.remove('closed'); t.textContent='▲ Dölj Quran · Klocka · Datum · Väder'; ic.textContent='▲'; if(cc) cc.classList.add('hidden-by-curtain'); if(wc) wc.classList.add('hidden-by-curtain'); } else { tw.classList.add('curtain-closed'); h.classList.add('closed'); t.textContent='▼ Visa Quran · Klocka · Datum · Väder'; ic.textContent='▼'; if(cc) cc.classList.remove('hidden-by-curtain'); if(wc) wc.classList.remove('hidden-by-curtain'); } }
 function initCurtain(){ try{ document.getElementById('topWrapper').classList.remove('curtain-closed'); document.getElementById('fixedClockCorner').classList.add('hidden-by-curtain'); document.getElementById('fixedWeatherCorner').classList.add('hidden-by-curtain'); }catch(e){} }
 function destroyPlayers(){ if(hlsInst){ try{hlsInst.destroy();}catch(e){} hlsInst=null; } }
-function reload(){ if(cur) play(cur.url,cur.name,cur.method,cur.proxied); }
+function reload(){ if(cur) play(cur.url,cur.name,cur.method,cur.proxied,cur.proxyIdx); }
 function fs(){ var w=document.getElementById('vwrap'); if(document.fullscreenElement) document.exitFullscreen(); else if(w.requestFullscreen) w.requestFullscreen().catch(function(){}); }
 function pip(){ var vid=document.getElementById('vplayer'); if(!vid){alert('PiP funkar endast i Video-läge');return;} if(document.pictureInPictureElement) document.exitPictureInPicture().catch(function(){}); else if(vid.requestPictureInPicture) vid.requestPictureInPicture().catch(function(){alert('PiP stöds ej');}); }
-function toggleJSengine(){ jsEnabled=!jsEnabled; var b=document.getElementById('jsToggleBtn'); b.textContent=jsEnabled?'JS PÅ':'JS AV'; b.classList.toggle('js-toggle-off',!jsEnabled); if(cur) play(cur.url,cur.name,cur.method,cur.proxied); }
+function toggleJSengine(){ jsEnabled=!jsEnabled; var b=document.getElementById('jsToggleBtn'); b.textContent=jsEnabled?'JS PÅ':'JS AV'; b.classList.toggle('js-toggle-off',!jsEnabled); if(cur) play(cur.url,cur.name,cur.method,cur.proxied,cur.proxyIdx); }
 function setUA(){ var s=document.getElementById('ua-select'); currentUA=s.value; try{localStorage.setItem('xom_ua',currentUA);}catch(e){} if(cur) play(cur.url,cur.name,cur.method,cur.proxied); }
 function openCurrentNewTab(){ if(!cur){alert('Välj kanal först');return;} window.open(cur.url,'_blank'); }
 function fav(url,name){ var i=-1; for(var j=0;j<favs.length;j++){if(favs[j].url===url){i=j;break;}} if(i>-1) favs.splice(i,1); else favs.push({url:url,name:name}); try{localStorage.setItem('xomfavs',JSON.stringify(favs));}catch(e){} render(curFilter); }
@@ -356,20 +376,24 @@ function toggleNav(){ var w=document.getElementById('navWrapper'); w.classList.t
 function initNavToggle(){ try{ if(localStorage.getItem('nav_hidden')==='true') document.getElementById('navWrapper').classList.add('nav-hidden'); }catch(e){} }
 function render(filter){ curFilter=filter; var html=''; if(filter==='__favs__'){ var all=[]; Object.keys(channels).forEach(function(k){all=all.concat(channels[k]);}); var favList=all.filter(function(ch){return favs.some(function(f){return f.url===ch.url;});}); if(!favList.length) html='<div class="category-header"><span>⭐ Favoriter</span></div><div class="error-msg">Inga favoriter</div>'; else { var c=(localStorage.getItem('cat_collapsed___favs__')||'1')==='1'; html='<div class="category-header'+(c?' collapsed':'')+'" onclick="toggleCategory(\'__favs__\',this)"><span>⭐ Favoriter ('+favList.length+')</span><span class="cat-toggle">'+(c?'+':'−')+'</span></div><div class="category-group'+(c?' collapsed':'')+'" id="cat-group___favs__">'+favList.map(function(ch){return row(ch,true);}).join('')+'</div>'; } } else if(filter&&channels[filter]){ var nice=filter==='heval'?'Heval':filter==='karwan'?'Karwan TV':filter.charAt(0).toUpperCase()+filter.slice(1); var col=(localStorage.getItem('cat_collapsed_'+filter)||'1')==='1'; html='<div class="category-header'+(col?' collapsed':'')+'" onclick="toggleCategory(\''+filter+'\',this)"><span>'+nice+' ('+channels[filter].length+')</span><span class="cat-toggle">'+(col?'+':'−')+'</span></div><div class="category-group'+(col?' collapsed':'')+'" id="cat-group_'+filter+'">'+channels[filter].map(function(ch){return row(ch,false);}).join('')+'</div>'; } else { Object.keys(channels).forEach(function(cat){ var nice=cat==='heval'?'Heval':cat==='karwan'?'Karwan TV':cat.charAt(0).toUpperCase()+cat.slice(1); var col=(localStorage.getItem('cat_collapsed_'+cat)||'1')==='1'; html+='<div class="category-header'+(col?' collapsed':'')+'" onclick="toggleCategory(\''+cat+'\',this)"><span>'+nice+' ('+channels[cat].length+')</span><span class="cat-toggle">'+(col?'+':'−')+'</span></div><div class="category-group'+(col?' collapsed':'')+'" id="cat-group_'+cat+'">'+channels[cat].map(function(ch){return row(ch,false);}).join('')+'</div>'; }); } document.getElementById('ch-container').innerHTML=html; attachChannelEvents(); }
 function toggleCategory(id,el){ var g=document.getElementById('cat-group_'+id); if(!g) return; var col=g.classList.contains('collapsed'); g.classList.toggle('collapsed',!col); el.classList.toggle('collapsed',!col); el.querySelector('.cat-toggle').textContent=col?'−':'+'; try{localStorage.setItem('cat_collapsed_'+id,col?'0':'1');}catch(e){} }
-function row(ch,hideSub){ var m=ch.method||'hls'; var active=(cur&&cur.url===ch.url)?'active':''; var isFav=favs.some(function(f){return f.url===ch.url;}); var tag=''; if(ch.proxied) tag=' <span style="font-size:.6rem;background:#4ecca333;color:#4ecca3;padding:1px 5px;border-radius:10px;">proxy</span>'; else if(m==='iframe') tag=' <span style="font-size:.6rem;background:#0006;padding:1px 5px;border-radius:10px;">live</span>'; else if(m==='audio') tag=' <span style="font-size:.6rem;background:#0006;padding:1px 5px;border-radius:10px;">radio</span>'; else if(m==='external') tag=' <span style="font-size:.6rem;background:#0006;padding:1px 5px;border-radius:10px;">extern</span>'; return '<div class="channel-item '+ch.color+' '+active+'" data-url="'+escapeHtml(ch.url)+'" data-name="'+escapeHtml(ch.name)+'" data-method="'+m+'" data-proxied="'+(ch.proxied?'1':'0')+'"><span>'+escapeHtml(ch.name)+tag+'</span><button class="fav-btn '+(isFav?'is-fav':'')+'" onclick="event.stopPropagation();fav(\''+escapeHtml(ch.url)+'\',\''+escapeHtml(ch.name)+'\')">'+(isFav?'★':'☆')+'</button></div>'; }
-function attachChannelEvents(){ document.querySelectorAll('.channel-item').forEach(function(el){ el.addEventListener('click',function(){ play(this.dataset.url,this.dataset.name,this.dataset.method,this.dataset.proxied==='1'); }); }); }
+function row(ch,hideSub){ var m=ch.method||'hls'; var active=(cur&&cur.url===ch.url)?'active':''; var isFav=favs.some(function(f){return f.url===ch.url;}); var tag=''; if(ch.proxied) tag=' <span style="font-size:.6rem;background:#4ecca333;color:#4ecca3;padding:1px 5px;border-radius:10px;">proxy</span>'; else if(m==='iframe') tag=' <span style="font-size:.6rem;background:#0006;padding:1px 5px;border-radius:10px;">live</span>'; else if(m==='audio') tag=' <span style="font-size:.6rem;background:#0006;padding:1px 5px;border-radius:10px;">radio</span>'; else if(m==='external') tag=' <span style="font-size:.6rem;background:#0006;padding:1px 5px;border-radius:10px;">extern</span>'; return '<div class="channel-item '+ch.color+' '+active+'" data-url="'+escapeHtml(ch.url)+'" data-name="'+escapeHtml(ch.name)+'" data-method="'+m+'" data-proxied="'+(ch.proxied?'1':'0')+'" data-proxyidx="'+(typeof ch.proxyIdx==='number'?ch.proxyIdx:(ch.proxied?1:0))+'"><span>'+escapeHtml(ch.name)+tag+'</span><button class="fav-btn '+(isFav?'is-fav':'')+'" onclick="event.stopPropagation();fav(\''+escapeHtml(ch.url)+'\',\''+escapeHtml(ch.name)+'\')">'+(isFav?'★':'☆')+'</button></div>'; }
+function attachChannelEvents(){ document.querySelectorAll('.channel-item').forEach(function(el){ el.addEventListener('click',function(){ play(this.dataset.url,this.dataset.name,this.dataset.method,this.dataset.proxied==='1', parseInt(this.dataset.proxyidx||'0',10)); }); }); }
 function renderRadioPlayer(url,name){ var w=document.getElementById('vwrap'); w.innerHTML='<div class="radio-player"><div class="radio-icon">📻</div><div class="radio-name">'+escapeHtml(name)+'</div><div class="radio-visualizer"><div class="radio-bar"></div><div class="radio-bar"></div><div class="radio-bar"></div><div class="radio-bar"></div><div class="radio-bar"></div><div class="radio-bar"></div></div><audio id="vplayer" controls autoplay class="radio-audio"><source src="'+escapeHtml(url)+'"></audio><div style="opacity:.65;font-size:.82rem">LIVE · RADIO · '+escapeHtml(name)+'</div></div>'; var a=w.querySelector('audio'); if(a){a.volume=1; a.play().catch(function(){});} }
 function renderAudioOnlyPlayer(url,name){ var w=document.getElementById('vwrap'); w.innerHTML='<div class="audio-only-player"><div style="font-size:5rem">💿</div><div class="radio-name">'+escapeHtml(name)+'</div><div style="background:#0f2a1e;border:1px solid #4ecca344;padding:4px 14px;border-radius:20px;font-size:.72rem;color:#4ecca3">LJUD-LÄGE · HLS</div><div class="audio-visualizer"><div class="audio-bar"></div><div class="audio-bar"></div><div class="audio-bar"></div><div class="audio-bar"></div><div class="audio-bar"></div></div><video id="vplayer" style="display:none" autoplay></video><div><button class="btn primary" onclick="setPlayMode(\'tv\')">📺 Tillbaka till TV</button></div></div>'; var vid=document.getElementById('vplayer'); if(typeof Hls!=='undefined'&&Hls.isSupported()&&jsEnabled){ hlsInst=new Hls({enableWorker:false}); hlsInst.loadSource(url); hlsInst.attachMedia(vid); hlsInst.on(Hls.Events.MANIFEST_PARSED,function(){vid.play().catch(function(){});}); hlsInst.on(Hls.Events.ERROR,function(ev,d){ if(d.fatal&&!_spedaRetry&&!cur.proxied){ _spedaRetry=true; play(cur.url,cur.name,cur.method,true); } }); } else { vid.src=url; vid.play().catch(function(){}); } }
 /* ===== PLAY - MED SPEDA FALLBACK ===== */
-function play(url,name,method,proxied){
+function play(url,name,method,proxied,proxyIdx){
   if(window.innerWidth<=768) document.getElementById('channel-list').classList.remove('show');
   // Om vi kommer från fallback, nollställ inte retry-flaggan för samma kanal
   var isFallback = (cur && cur.url===url && proxied && !cur.proxied);
-  if(!isFallback) _spedaRetry=false;
-  cur={url:url,name:name,method:method,proxied:!!proxied};
+  if(!isFallback) _spedaRetry=false, _proxyTry=1;
+  var _isSpeda = isSpedaUrl(url);
+  if(typeof proxyIdx!=='number') proxyIdx = proxied ? 1 : (_isSpeda ? 1 : 0);
+  cur={url:url,name:name,method:method,proxied:!!proxied,proxyIdx:proxyIdx};
+  _proxyTry = proxyIdx;
   document.getElementById('ch-title').textContent=name; destroyPlayers();
   var wrap=document.getElementById('vwrap'); updateModeSwitcherUI(); updateTvInfo();
-  var playUrl = proxied ? proxify(url) : url;
+  var playUrl = proxify(url, _proxyTry);
+  console.log('[PLAY]', name, 'via', spedaProxyName(_proxyTry), playUrl);
   if(playMode==='audio'){
     if(method==='audio'){ renderRadioPlayer(playUrl,name); render(curFilter); return; }
     if(!method||method==='hls'){ renderAudioOnlyPlayer(playUrl,name); render(curFilter); return; }
@@ -382,7 +406,7 @@ function play(url,name,method,proxied){
     wrap.innerHTML='<iframe src="'+escapeHtml(url)+'" allowfullscreen allow="autoplay; fullscreen; picture-in-picture" style="width:100%;height:100%;border:none"></iframe>'; render(curFilter); return;
   }
   // HLS - huvudvägen (inkl Speda)
-  wrap.innerHTML='<video id="vplayer" controls autoplay playsinline style="width:100%;height:100%"></video>'+(proxied?'<div style="position:absolute;top:8px;left:8px;background:linear-gradient(135deg,#4ecca3,#2a8a68);color:#000;padding:4px 10px;border-radius:20px;font-size:.7rem;font-weight:800">🛰 Proxy aktiv · Referer speda.net</div>':'');
+  wrap.innerHTML='<video id="vplayer" controls autoplay playsinline style="width:100%;height:100%"></video>'+(proxied?'<div style="position:absolute;top:8px;left:8px;background:linear-gradient(135deg,#4ecca3,#2a8a68);color:#000;padding:4px 10px;border-radius:20px;font-size:.7rem;font-weight:800">🛰 Via '+spedaProxyName(_proxyTry)+' · Speda</div>':'');
   var vid=document.getElementById('vplayer');
   if(typeof Hls!=='undefined'&&Hls.isSupported()&&jsEnabled){
     hlsInst=new Hls({enableWorker:false, xhrSetup:function(xhr){ if(currentUA){ try{xhr.setRequestHeader('X-Forwarded-User-Agent',currentUA);}catch(e){} } }});
@@ -390,16 +414,17 @@ function play(url,name,method,proxied){
     hlsInst.on(Hls.Events.MANIFEST_PARSED,function(){ vid.play().catch(function(){}); });
     hlsInst.on(Hls.Events.ERROR,function(ev,d){
       if(d.fatal){
-        // ★ SPEDA FIX: om direkt misslyckas, prova via proxy EN gång
-        if(d.type===Hls.ErrorTypes.NETWORK_ERROR && !_spedaRetry && !cur.proxied){
-          _spedaRetry=true;
-          console.log('Direkt misslyckades, provar proxy för', cur.name);
-          wrap.innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:10px"><div class="spinner"></div><div style="color:#4ecca3;font-weight:700">Direkt blockerad — provar via proxy...</div><div style="font-size:.8rem;opacity:.6">Speda kräver Referer: speda.net</div></div>';
-          setTimeout(function(){ play(cur.url,cur.name,cur.method,true); },600);
+        // ★ SPEDA FIX: cykla igenom proxy-kedjan vid NETWORK_ERROR
+        if(d.type===Hls.ErrorTypes.NETWORK_ERROR && _proxyTry < SPEDA_PROXY_LIST.length-1){
+          _proxyTry++;
+          console.log('Misslyckades via', spedaProxyName(_proxyTry-1), '→ provar', spedaProxyName(_proxyTry), 'för', cur.name);
+          wrap.innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:10px"><div class="spinner"></div><div style="color:#4ecca3;font-weight:700">Blockerad via '+spedaProxyName(_proxyTry-1)+' — provar '+spedaProxyName(_proxyTry)+'...</div><div style="font-size:.8rem;opacity:.6">Speda kräver Referer: speda.net · Försök '+(_proxyTry+1)+' / '+SPEDA_PROXY_LIST.length+'</div></div>';
+          var _u=cur.url, _n=cur.name, _m=cur.method, _pi=_proxyTry;
+          setTimeout(function(){ play(_u,_n,_m,true,_pi); },700);
           return;
         }
         if(d.type===Hls.ErrorTypes.NETWORK_ERROR){ setTimeout(function(){ if(hlsInst) hlsInst.startLoad(); },2000); }
-        else { destroyPlayers(); wrap.innerHTML='<div class="error-msg"><h3>Kunde inte spela '+escapeHtml(cur.name)+'</h3><p>Prova knappen Ladda om, eller öppna i ny flik.<br>Om det är Speda: kolla att din proxy på localhost:8787 körs och skickar Referer: https://www.speda.net/</p><button class="btn primary" onclick="play(cur.url,cur.name,cur.method,true)">🔁 Prova via Proxy</button><button class="btn newtab" onclick="openCurrentNewTab()">↗ Ny flik</button></div>'; }
+        else { destroyPlayers(); wrap.innerHTML='<div class="error-msg"><h3>Kunde inte spela '+escapeHtml(cur.name)+'</h3><p>Prova knappen Ladda om, eller öppna i ny flik.<br>Om det är Speda: kolla att din proxy på localhost:8787 körs och skickar Referer: https://www.speda.net/</p><button class="btn primary" onclick="play(cur.url,cur.name,cur.method,true, Math.min((cur.proxyIdx||0)+1, 3))">🔁 Prova via Proxy</button><button class="btn newtab" onclick="openCurrentNewTab()">↗ Ny flik</button></div>'; }
       }
     });
   } else { vid.src=playUrl; vid.play().catch(function(){}); }
