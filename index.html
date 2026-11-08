@@ -1032,6 +1032,7 @@ body.tv-mode.tv-overlay-open #tvOverlay{
         <button class="btn" id="jsToggleBtn" onclick="toggleJSengine()">JS PÅ</button>
       </div>
     </div>
+    <div class="video-wrapper" id="vwrap"><div class="error-msg"><h3>Välj en kanal - Gardin + Radio Edition</h3><p>Video/Audio för ALLA • Radio med visualizer • Gardin • Quran EN</p></div></div>
   </main>
   <aside class="channel-list" id="channel-list"><button class="close-btn" onclick="toggleList()">Stäng</button><div id="ch-container"></div></aside>
 </div>
@@ -1124,7 +1125,7 @@ var hevalRaw = [
   { name: 'Rojhelat TV', url: 'https://hlspackager.akamaized.net/live/DB/ROJHELAT/HLS/ROJHELAT-avc1_2500000=10002,mp4a_128000=20000.m3u8', color: 'teal' },
   { name: 'Zagros', url: 'https://5a3ed7a72ed4b.streamlock.net/zagrostv/SMIL:myStream.smil/playlist.m3u8', color: 'teal' },
   { name: 'Iraqia Kurdish', url: 'https://imn-live.esite-lab.com/hls/iraqia-kurdish.m3u8', color:'teal' },
-  { name: 'AVA', url: 'https://ava.news/livewatch', ethod:'external',color: 'teal' },
+  { name: 'AVA', url: 'https://ava.news/livewatch', method:'external', color: 'teal' },
   { name: 'Speda', url: 'https://www.speda.net/', method:'external', color: 'teal' },
   { name: 'Sahar', url: 'https://sepehrtv.ir/live/sahar3/', method:'iframe', color: 'teal' },
   { name: 'Mahabad IRIB', url: 'https://sepehrtv.ir/live/mahabad/', method:'iframe', color: 'teal' },
@@ -1445,8 +1446,7 @@ function row(ch,hideSub){
   var m=ch.method||'hls'; var active=(cur&&cur.url===ch.url)?'active':'';
   var isFav=favs.some(function(f){ return f.url===ch.url; }); var star=isFav?'★':'☆';
   var tag=''; if(!hideSub){ if(ch.proxied) tag=' <span style="font-size:0.6rem;opacity:0.9;background:#4ecca333;color:#4ecca3;padding:1px 5px;border-radius:10px;">proxy</span>'; else if(m==='iframe') tag=' <span style="font-size:0.6rem;opacity:0.7;background:#0006;padding:1px 5px;border-radius:10px;">live</span>'; else if(m==='audio') tag=' <span style="font-size:0.6rem;opacity:0.7;background:#0006;padding:1px 5px;border-radius:10px;">radio</span>'; else if(m==='external') tag=' <span style="font-size:0.6rem;opacity:0.7;background:#0006;padding:1px 5px;border-radius:10px;">extern</span>'; }
-  var extra=''; if(ch.name.toLowerCase().includes('sepehr') || ch.name.toLowerCase().includes('kordestan') || ch.name.toLowerCase().includes('mahabad') || ch.name.toLowerCase().includes('sahar')) extra=' ✅';
-  return '<div class="channel-item '+ch.color+' '+active+'" data-url="'+escapeHtml(ch.url)+'" data-name="'+escapeHtml(ch.name)+'" data-method="'+m+'" data-proxied="'+(ch.proxied?'1':'0')+'"><span>'+escapeHtml(ch.name)+extra+tag+'</span><button class="fav-btn '+(isFav?'is-fav':'')+'" onclick="event.stopPropagation();fav(\''+escapeHtml(ch.url)+'\',\''+escapeHtml(ch.name)+'\')">'+star+'</button></div>';
+  return '<div class="channel-item '+ch.color+' '+active+'" data-url="'+escapeHtml(ch.url)+'" data-name="'+escapeHtml(ch.name)+'" data-method="'+m+'" data-proxied="'+(ch.proxied?'1':'0')+'"><span>'+escapeHtml(ch.name)+tag+'</span><button class="fav-btn '+(isFav?'is-fav':'')+'" onclick="event.stopPropagation();fav(\''+escapeHtml(ch.url)+'\',\''+escapeHtml(ch.name)+'\')">'+star+'</button></div>';
 }
 function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 function attachChannelEvents(){ var items=document.querySelectorAll('.channel-item'); for(var i=0;i<items.length;i++){ items[i].addEventListener('click', function(){ play(this.dataset.url,this.dataset.name,this.dataset.method,this.dataset.proxied==='1'); }); } }
@@ -1582,9 +1582,7 @@ function play(url,name,method,proxied){
         return;
       }
     }
-    var isSepehr = url.includes('sepehr') || url.includes('telewebion') || name.toLowerCase().includes('sepehr') || name.toLowerCase().includes('sahar') || name.toLowerCase().includes('kordestan') || name.toLowerCase().includes('mahabad');
-    var sepehrBadge = isSepehr ? '<div style="position:absolute;top:10px;left:10px;background:linear-gradient(135deg,#4ecca3,#2a8a68);color:#000;padding:4px 10px;border-radius:20px;font-size:0.7rem;font-weight:800;z-index:10;">✅ Sepehr FIXED</div>' : '';
-    wrap.innerHTML=sepehrBadge+'<iframe id="iframePlayer" src="'+escapeHtml(url)+'" allowfullscreen allow="autoplay; fullscreen; picture-in-picture" style="width:100%;height:100%;border:none;"></iframe>';
+    wrap.innerHTML='<iframe id="iframePlayer" src="'+escapeHtml(url)+'" allowfullscreen allow="autoplay; fullscreen; picture-in-picture" style="width:100%;height:100%;border:none;"></iframe>';
     render(curFilter); return;
   }
 
@@ -2273,7 +2271,7 @@ function tvAdjacent(delta){
     alert('Inga kanaler i "'+tvScopeName()+'"');
     return;
   }
-  var idx=seq.findIndex(function(c){ return cur && c.url===cur.url; });
+  var idx=seq.findIndex(function(c){ return cur && c.url===c.url; });
   if(idx<0) idx=0;
   else idx=(idx+delta+seq.length)%seq.length;
   var ch=seq[idx];
