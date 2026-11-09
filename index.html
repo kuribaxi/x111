@@ -2350,7 +2350,7 @@ function openTvOverlay(){
   renderTvTabs();
   renderTvOverlay();
   var list=getTvList();
-  var idx=list.findIndex(function(c){ return cur && c.url===c.url; });
+  var idx=list.findIndex(function(c){ return cur && c.url===cur.url; });
   tvOvFocus = idx>=0 ? idx : 0;
   setTimeout(tvOvApplyFocus,50);
 }
