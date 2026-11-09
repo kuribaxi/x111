@@ -1499,7 +1499,7 @@ function renderAudioOnlyPlayer(url, name){
     hlsInst.loadSource(url);
     hlsInst.attachMedia(vid);
     hlsInst.on(Hls.Events.MANIFEST_PARSED, function(){ vid.play().catch(function(){ badge.textContent='Tryck Play i webbläsaren'; }); badge.textContent='LIVE · Spelar'; });
-    hlsInst.on(Hls.Events.ERROR, function(ev,d){ if(d.fatal){ badge.textContent='Fel - försöker igen...'; if(d.type===Hls.ErrorTypes.NETWORK_ERROR) setTimeout(function(){ if(hlsInst) hlsInst.startLoad(); },2000); else destroyPlayers(); } });
+    hlsInst.on(Hls.Events.ERROR, function(ev,d){ if(d.fatal){ badge.textContent='Fel - försöker igen...'; if(d.type===Hls.ErrorTypes.NETWORK_ERROR) setTimeout(function(){ if(hlsInst) hlsInst.startLoad(); },2000); else if(d.type===Hls.ErrorTypes.MEDIA_ERROR) setTimeout(function(){ if(hlsInst){ hlsInst.recoverMediaError(); hlsInst.startLoad(); vid.play().catch(function(){}); } },1000); else destroyPlayers(); } });
   } else {
     vid.src=url; vid.play().catch(function(){ badge.textContent='Kunde inte spela'; }); badge.textContent='LIVE';
   }
@@ -1593,6 +1593,12 @@ function play(url,name,method,proxied){
   if(typeof Hls!=='undefined' && Hls.isSupported() && jsEnabled){
     hlsInst=new Hls({
       enableWorker:false,
+      liveSyncDurationCount:4,
+      maxBufferLength:30,
+      backBufferLength:30,
+      manifestLoadingMaxRetry:6,
+      levelLoadingMaxRetry:6,
+      fragLoadingMaxRetry:8,
       xhrSetup: function(xhr){
         if(currentUA) try{ xhr.setRequestHeader('X-Forwarded-User-Agent', currentUA); }catch(e){}
       }
@@ -1604,9 +1610,24 @@ function play(url,name,method,proxied){
       if(d.fatal){
         console.warn('HLS fatal error:', d);
         if(d.type===Hls.ErrorTypes.NETWORK_ERROR){ setTimeout(function(){ if(hlsInst) hlsInst.startLoad(); },2000); }
+        else if(d.type===Hls.ErrorTypes.MEDIA_ERROR){ setTimeout(function(){ if(hlsInst){ hlsInst.recoverMediaError(); hlsInst.startLoad(); vid.play().catch(function(){}); } },1000); }
         else { destroyPlayers(); }
       }
     });
+    /* Stall-vakt: om videon fastnar (utan fatal fel) – t.ex. smart-TV -
+       återstarta laddningen automatiskt istället för att stoppa */
+    var stallRecoveryAt=0;
+    vid.addEventListener('waiting',function(){ if(!stallRecoveryAt) stallRecoveryAt=Date.now(); });
+    vid.addEventListener('stalled',function(){ if(!stallRecoveryAt) stallRecoveryAt=Date.now(); });
+    vid.addEventListener('playing',function(){ stallRecoveryAt=0; });
+    var stallWatch=setInterval(function(){
+      if(!hlsInst){ clearInterval(stallWatch); return; }
+      if(stallRecoveryAt && Date.now()-stallRecoveryAt>4000){
+        stallRecoveryAt=Date.now();
+        try{ hlsInst.startLoad(); }catch(e){}
+        vid.play().catch(function(){});
+      }
+    },2000);
   } else {
     vid.src=playUrl; vid.play().catch(function(){});
   }
