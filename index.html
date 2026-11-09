@@ -1224,7 +1224,6 @@ var karwanRaw = [
 var RadioRaw = [
   { name: 'Rudaw Radio',   url: 'https://radio.rudaw.net/stream/live', method:'audio', color:'cyan' },
   { name: 'Kurdsat Radio', url: 'http://uk3.internet-radio.com:8011/stream/', method:'audio', color:'cyan' },
-  { name: 'Nalia Radio', url: 'https://hlspackager.akamaized.net/live/DB/NRT_HD/HLS/NRT_HD-avc1_2500000=10002,mp4a_128000=20000.m3u8', method:'audio', color:'cyan' },
   { name: 'Sunnat Radio',  url: 'https://a1.asurahosting.com:9380/radio.mp3', method:'audio', color:'cyan' },
   { name: 'Kurdland',  url: 'http://radio.kurdland.net/mp3', method:'hls', color:'cyan' },
   { name: 'Shafaq Radio',  url: 'https://radio.shafaq.com/kurdish', method:'hls', color:'cyan' },
@@ -1233,12 +1232,9 @@ var RadioRaw = [
   { name: 'Ava Radio',     url: 'https://ava.holan.it.com/;?type=http&nocache=1', method:'audio', color:'cyan' },
   { name: 'Speda Radio',     url: 'https://radio.host247.net/spedafm', method:'audio', color:'cyan' },
   { name: 'Sahar Radio', url: 'https://live4.presstv.ir/irib/irib5/playlist.m3u8', method:'audio', color:'cyan' },
-  { name: 'Mahabad Radio', url: 'https://s2cdn3.iranseda.ir/liveedgeprovincial/radio-mahabad/playlist.m3u8', method:'audio', color:'cyan' },
-  { name: 'Mahabad Radio-Nama', url: 'https://sepehrtv.ir/live/radiomahabad', method:'iframe', color:'cyan' },
-  { name: 'Sine Radio', url: 'https://s1cdn3.iranseda.ir/liveedgeprovincial/radio-kordestan/playlist.m3u8', method:'audio', color:'cyan' },
-  { name: 'Sine Radio-Nama', url: 'https://sepehrtv.ir/live/radiokordestan', method:'iframe', color:'cyan' },
-  { name: 'Kirmanshan Radio', url: 'https://s0cdn1.iranseda.ir/liveedgeprovincial/radio-kermanshah/playlist.m3u8', method:'audio', color:'cyan' },
-  { name: 'Ilam Radio', url: 'https://s2cdn3.iranseda.ir/liveedgeprovincial/radio-ilam/playlist.m3u8', method:'audio', color:'cyan' },
+  { name: 'Mahabad Radio', url: 'http://s0.cdn1.iranseda.ir:1935/liveedgeprovincial/radio-mahabad/playlist.m3u8', method:'audio', color:'cyan' },
+  { name: 'Mahabad Radio', url: 'https://sepehrtv.ir/live/radiomahabad', method:'iframe', color:'cyan' },
+  { name: 'Sine Radio', url: 'https://sepehrtv.ir/live/radiokordestan', method:'iframe', color:'cyan' },
   { name: 'Mahabad Radio Archiv', url: 'http://radio.iranseda.ir/timeArchive/?VALID=TRUE&ch=531', method:'external', color:'cyan' },
   { name: 'Welat FM', url: 'https://welattv.net/radio/', method:'iframe', color:'cyan' },
   { name: 'Nawa Radio', url: 'https://www.radionawa.com/Ku/Live.aspx', method:'iframe', color:'cyan' },
@@ -2275,7 +2271,7 @@ function tvAdjacent(delta){
     alert('Inga kanaler i "'+tvScopeName()+'"');
     return;
   }
-  var idx=seq.findIndex(function(c){ return cur && c.url===c.url; });
+  var idx=seq.findIndex(function(c){ return cur && c.url===cur.url; });
   if(idx<0) idx=0;
   else idx=(idx+delta+seq.length)%seq.length;
   var ch=seq[idx];
