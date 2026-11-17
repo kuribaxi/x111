@@ -12,166 +12,31 @@
 body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);color:#fff;min-height:100vh}
 .header{display:none!important}
 
-/* ===== FIXED KLOCKA & VÄDER - VAR SITT HÖRN - LITEN STORLEK ===== */
-.fixed-clock-corner{
-  position:fixed;
-  top:10px;
-  right:10px;
-  left:auto;
-  z-index:9997;
-  display:flex;
-  flex-direction:column;
-  align-items:flex-end;
-  gap:6px;
-  pointer-events:none;
-  transition:all 0.45s cubic-bezier(0.4,0,0.2,1);
-  transform:translateX(0);
-  opacity:1;
-}
-.fixed-weather-corner{
-  position:fixed;
-  top:10px;
-  left:10px;
-  right:auto;
-  z-index:9997;
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
-  gap:6px;
-  pointer-events:none;
-  transition:all 0.45s cubic-bezier(0.4,0,0.2,1);
-  transform:translateX(0);
-  opacity:1;
-}
+.fixed-clock-corner{position:fixed;top:10px;right:10px;left:auto;z-index:9997;display:flex;flex-direction:column;align-items:flex-end;gap:6px;pointer-events:none;transition:all 0.45s cubic-bezier(0.4,0,0.2,1);transform:translateX(0);opacity:1;}
+.fixed-weather-corner{position:fixed;top:10px;left:10px;right:auto;z-index:9997;display:flex;flex-direction:column;align-items:flex-start;gap:6px;pointer-events:none;transition:all 0.45s cubic-bezier(0.4,0,0.2,1);transform:translateX(0);opacity:1;}
 .fixed-clock-corner > *, .fixed-weather-corner > *{ pointer-events:auto; }
-.fixed-clock-corner.hidden-by-curtain,
-.fixed-clock-corner.modal-hidden{
-  opacity:0;
-  pointer-events:none;
-  transform:translateX(120%);
-  visibility:hidden;
-}
-.fixed-weather-corner.hidden-by-curtain,
-.fixed-weather-corner.modal-hidden{
-  opacity:0;
-  pointer-events:none;
-  transform:translateX(-120%);
-  visibility:hidden;
-}
-.fixed-clock-box{
-  min-height: 48px;
-  background:rgba(0,0,0,0.82);
-  backdrop-filter:blur(10px);
-  border:1px solid #4ecca355;
-  border-radius:14px;
-  padding:9px 12px;
-  display:flex;
-  align-items:center;
-  gap:8px;
-  box-shadow:0 8px 28px rgba(0,0,0,0.6);
-  cursor:pointer;
-  transition:all 0.2s;
-}
-.fixed-clock-box:hover{
-  border-color:#4ecca3;
-  box-shadow:0 8px 32px rgba(78,204,163,0.35);
-}
-.fixed-clock-display{
-  font-family:'Courier New',monospace;
-  font-weight:800;
-  font-size:1.15rem;
-  letter-spacing:2px;
-  color:#4ecca3;
-  text-shadow:0 0 14px #4ecca3aa;
-  white-space:nowrap;
-  line-height:1.1;
-}
-.fixed-date-text{
-  font-size:0.78rem;
-  opacity:0.9;
-  color:#e0ffef;
-  white-space:nowrap;
-  font-weight:700;
-  line-height:1.2;
-}
-.fixed-weather-box{
-  min-height: 48px;
-  background:rgba(0,0,0,0.82);
-  backdrop-filter:blur(10px);
-  border:1px solid #4ecca355;
-  border-radius:14px;
-  padding:9px 12px;
-  display:flex;
-  align-items:center;
-  gap:8px;
-  box-shadow:0 6px 18px rgba(0,0,0,0.5);
-  cursor:pointer;
-  transition:all 0.2s;
-  font-size:0.85rem;
-  white-space:nowrap;
-}
-.fixed-weather-box:hover{
-  border-color:#4ecca3;
-  box-shadow:0 8px 32px rgba(78,204,163,0.35);
-}
+.fixed-clock-corner.hidden-by-curtain,.fixed-clock-corner.modal-hidden{opacity:0;pointer-events:none;transform:translateX(120%);visibility:hidden;}
+.fixed-weather-corner.hidden-by-curtain,.fixed-weather-corner.modal-hidden{opacity:0;pointer-events:none;transform:translateX(-120%);visibility:hidden;}
+.fixed-clock-box{min-height:48px;background:rgba(0,0,0,0.82);backdrop-filter:blur(10px);border:1px solid #4ecca355;border-radius:14px;padding:9px 12px;display:flex;align-items:center;gap:8px;box-shadow:0 8px 28px rgba(0,0,0,0.6);cursor:pointer;transition:all 0.2s;}
+.fixed-clock-box:hover{border-color:#4ecca3;box-shadow:0 8px 32px rgba(78,204,163,0.35);}
+.fixed-clock-display{font-family:'Courier New',monospace;font-weight:800;font-size:1.15rem;letter-spacing:2px;color:#4ecca3;text-shadow:0 0 14px #4ecca3aa;white-space:nowrap;line-height:1.1;}
+.fixed-date-text{font-size:0.78rem;opacity:0.9;color:#e0ffef;white-space:nowrap;font-weight:700;line-height:1.2;}
+.fixed-weather-box{min-height:48px;background:rgba(0,0,0,0.82);backdrop-filter:blur(10px);border:1px solid #4ecca355;border-radius:14px;padding:9px 12px;display:flex;align-items:center;gap:8px;box-shadow:0 6px 18px rgba(0,0,0,0.5);cursor:pointer;transition:all 0.2s;font-size:0.85rem;white-space:nowrap;}
+.fixed-weather-box:hover{border-color:#4ecca3;box-shadow:0 8px 32px rgba(78,204,163,0.35);}
 .fixed-weather-icon{font-size:1.35rem}
 .fixed-weather-temp{font-weight:800;color:#4ecca3;font-size:1.05rem}
 .fixed-weather-city{opacity:0.8;font-size:0.78rem;max-width:120px;overflow:hidden;text-overflow:ellipsis;font-weight:600}
-.fixed-weather-details{
-  display:none;
-  background:rgba(0,0,0,0.92);
-  backdrop-filter:blur(14px);
-  border:1px solid #4ecca366;
-  border-radius:22px;
-  padding:18px 22px;
-  font-size:1.15rem;
-  box-shadow:0 10px 36px rgba(0,0,0,0.7);
-  min-width:380px;
-  text-align:center;
-}
+.fixed-weather-details{display:none;background:rgba(0,0,0,0.92);backdrop-filter:blur(14px);border:1px solid #4ecca366;border-radius:22px;padding:18px 22px;font-size:1.15rem;box-shadow:0 10px 36px rgba(0,0,0,0.7);min-width:380px;text-align:center;}
 .fixed-weather-details.show{display:block}
-.fixed-weather-details .fw-week{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  justify-content:center;
-  margin-top:12px;
-}
-.fixed-weather-details .fw-day{
-  background:rgba(0,0,0,0.4);
-  border:1px solid rgba(78,204,163,0.25);
-  border-radius:12px;
-  padding:8px 10px;
-  min-width:76px;
-  text-align:center;
-  font-size:1rem;
-}
-.fixed-weather-details .fw-day.today{
-  border-color:#4ecca3;
-  background:rgba(78,204,163,0.18);
-}
+.fixed-weather-details .fw-week{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px;}
+.fixed-weather-details .fw-day{background:rgba(0,0,0,0.4);border:1px solid rgba(78,204,163,0.25);border-radius:12px;padding:8px 10px;min-width:76px;text-align:center;font-size:1rem;}
+.fixed-weather-details .fw-day.today{border-color:#4ecca3;background:rgba(78,204,163,0.18);}
 .fixed-weather-details .fw-day .fwd-icon{font-size:1.8rem;margin:4px 0}
 .fixed-weather-details .fw-day .fwd-temp{font-weight:800;font-size:1.15rem}
 .fixed-weather-details .fw-day .fwd-name{opacity:0.75;font-size:0.85rem;text-transform:uppercase}
-.fixed-clock-corner .fixed-hide-btn, .fixed-weather-corner .fixed-hide-btn, .fixed-info-corner .fixed-hide-btn{
-  background:rgba(0,0,0,0.6);
-  border:1px solid #4ecca355;
-  color:#4ecca3;
-  border-radius:50%;
-  width:34px;
-  height:34px;
-  font-size:0.95rem;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  align-self:flex-end;
-  transition:all 0.2s;
-}
+.fixed-clock-corner .fixed-hide-btn, .fixed-weather-corner .fixed-hide-btn, .fixed-info-corner .fixed-hide-btn{background:rgba(0,0,0,0.6);border:1px solid #4ecca355;color:#4ecca3;border-radius:50%;width:34px;height:34px;font-size:0.95rem;cursor:pointer;display:flex;align-items:center;justify-content:center;align-self:flex-end;transition:all 0.2s;}
 .fixed-info-corner .fixed-hide-btn:hover{background:#4ecca3;color:#000}
-.fixed-info-corner.hidden .fixed-clock-box,
-.fixed-info-corner.hidden .fixed-weather-box,
-.fixed-info-corner.hidden .fixed-weather-details{display:none}
+.fixed-info-corner.hidden .fixed-clock-box,.fixed-info-corner.hidden .fixed-weather-box,.fixed-info-corner.hidden .fixed-weather-details{display:none}
 .fixed-info-corner.hidden .fixed-hide-btn{background:#4ecca3;color:#000}
 @media(max-width:900px){
   .fixed-info-corner{top:8px;right:8px;left:auto;max-width:340px;gap:6px}
@@ -189,82 +54,22 @@ body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:linear-gradient(1
   .fixed-weather-details .fw-day .fwd-name{font-size:0.7rem}
   .fixed-clock-corner .fixed-hide-btn, .fixed-weather-corner .fixed-hide-btn, .fixed-info-corner .fixed-hide-btn{width:26px;height:26px;font-size:0.8rem}
 }
-
-/* ===== MOBIL: KLOCKA UPPE HÖGER, VÄDER NER MED GÖM-KNAPP ===== */
 @media(max-width:600px){
-  .fixed-weather-corner{
-    top:auto !important;
-    bottom:8px;
-    left:8px;
-    right:auto;
-    max-width:calc(100vw - 16px);
-  }
-  .fixed-clock-corner{
-    top:8px;
-    right:8px;
-    left:auto;
-  }
-  .fixed-weather-box,
-  .fixed-clock-box{
-    padding:6px 10px;
-    min-height:40px;
-  }
+  .fixed-weather-corner{top:auto !important;bottom:8px;left:8px;right:auto;max-width:calc(100vw - 16px);}
+  .fixed-clock-corner{top:8px;right:8px;left:auto;}
+  .fixed-weather-box,.fixed-clock-box{padding:6px 10px;min-height:40px;}
   .fixed-clock-display{font-size:1rem}
   .fixed-date-text{font-size:0.65rem}
   .fixed-weather-temp{font-size:0.9rem}
   .fixed-weather-city{font-size:0.68rem;max-width:90px}
 }
-
-/* Göm-knapp för väder (liten ✕) */
-.weather-hide-btn{
-  position:absolute;
-  top:-8px;
-  right:-8px;
-  width:22px;
-  height:22px;
-  border-radius:50%;
-  background:#ff4d6d;
-  color:#fff;
-  border:2px solid #0a1e26;
-  font-size:0.7rem;
-  font-weight:800;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:10;
-  line-height:1;
-  padding:0;
-  box-shadow:0 2px 8px rgba(0,0,0,0.5);
-}
+.weather-hide-btn{position:absolute;top:-8px;right:-8px;width:22px;height:22px;border-radius:50%;background:#ff4d6d;color:#fff;border:2px solid #0a1e26;font-size:0.7rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;line-height:1;padding:0;box-shadow:0 2px 8px rgba(0,0,0,0.5);}
 .weather-hide-btn:hover{background:#ff2a4d;transform:scale(1.1)}
-
-/* När vädret är gömt – visa en liten "visa"-knapp */
-.weather-show-btn{
-  position:fixed;
-  bottom:8px;
-  left:8px;
-  z-index:9997;
-  background:rgba(0,0,0,0.82);
-  backdrop-filter:blur(10px);
-  border:1px solid #4ecca355;
-  border-radius:14px;
-  padding:6px 12px;
-  color:#4ecca3;
-  font-size:0.8rem;
-  font-weight:700;
-  cursor:pointer;
-  display:none;
-  align-items:center;
-  gap:6px;
-  box-shadow:0 6px 18px rgba(0,0,0,0.5);
-  transition:all 0.2s;
-}
+.weather-show-btn{position:fixed;bottom:8px;left:8px;z-index:9997;background:rgba(0,0,0,0.82);backdrop-filter:blur(10px);border:1px solid #4ecca355;border-radius:14px;padding:6px 12px;color:#4ecca3;font-size:0.8rem;font-weight:700;cursor:pointer;display:none;align-items:center;gap:6px;box-shadow:0 6px 18px rgba(0,0,0,0.5);transition:all 0.2s;}
 .weather-show-btn:hover{border-color:#4ecca3;box-shadow:0 8px 24px rgba(78,204,163,0.35)}
 .weather-show-btn.show{display:flex}
 .fixed-weather-corner.hidden-by-user{display:none !important}
 
-/* ===== GARDIN / CURTAIN ===== */
 .curtain-wrapper{position:relative;z-index:80;}
 .top-wrapper{background:linear-gradient(180deg,rgba(0,0,0,0.6),rgba(0,0,0,0.3));backdrop-filter:blur(4px);transition:transform 0.65s cubic-bezier(0.4,0,0.2,1),opacity 0.45s ease,max-height 0.65s cubic-bezier(0.4,0,0.2,1);overflow:hidden;max-height:2000px;transform:translateY(0);opacity:1;}
 .top-wrapper.curtain-closed{transform:translateY(-100%);opacity:0;max-height:0;pointer-events:none;}
@@ -341,71 +146,16 @@ canvas.analog-canvas{width:140px;height:140px;background:radial-gradient(ellipse
 .weather-day .wd-min{font-size:0.7rem;opacity:0.6}
 @media(max-width:1100px){.info-panel{background:rgba(0,0,0,0.55);backdrop-filter:blur(12px);border-bottom:1px solid #4ecca380;padding:14px 18px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:stretch;gap:14px}.clock-date-section,.weather-section{background:rgba(20,40,45,0.75);border-radius:14px;padding:6px 8px;backdrop-filter:blur(8px);box-shadow:0 2px 8px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.05);display:flex;align-items:center;flex-wrap:wrap;border:1px solid rgba(78,204,163,0.15)}}
 
-/* ===== NAV-BUTTONS GÖM-KNAPP (LITEN PIL) ===== */
-.nav-buttons-wrapper{
-  position:sticky;
-  top:0;
-  z-index:200;
-  transition:transform 0.35s cubic-bezier(0.4,0,0.2,1),opacity 0.35s ease;
-}
-.nav-buttons-wrapper.scroll-hidden{
-  transform:translateY(-120%);
-  opacity:0;
-  pointer-events:none;
-}
-.nav-buttons-wrapper.nav-hidden .nav-buttons{
-  display:none;
-}
-.nav-toggle-btn{
-  position:absolute;
-  top:100%;
-  left:50%;
-  transform:translateX(-50%);
-  background:linear-gradient(135deg,#1a3a42,#0f2a32);
-  border:1px solid #4ecca3;
-  border-top:none;
-  border-radius:0 0 12px 12px;
-  color:#4ecca3;
-  width:44px;
-  height:22px;
-  padding:0;
-  font-size:0.9rem;
-  font-weight:800;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 4px 14px rgba(0,0,0,0.5),0 1px 0 #4ecca3 inset;
-  z-index:201;
-  transition:all 0.25s ease;
-  line-height:1;
-}
-.nav-toggle-btn:hover{
-  background:linear-gradient(135deg,#2a5a62,#1a3a42);
-  box-shadow:0 6px 18px rgba(78,204,163,0.4),0 1px 0 #4ecca3 inset;
-  color:#a8ffde;
-}
-.nav-toggle-btn .ntb-icon{
-  font-size:0.85rem;
-  transition:transform 0.35s ease;
-  display:inline-block;
-}
-.nav-buttons-wrapper.nav-hidden .nav-toggle-btn .ntb-icon{
-  transform:rotate(180deg);
-}
-.nav-buttons-wrapper.nav-hidden .nav-toggle-btn{
-  animation:navPulse 2s ease-in-out infinite;
-}
-@keyframes navPulse{
-  0%,100%{box-shadow:0 4px 14px rgba(0,0,0,0.5),0 0 0 0 rgba(78,204,163,0.4);}
-  50%{box-shadow:0 4px 14px rgba(0,0,0,0.5),0 0 0 5px rgba(78,204,163,0.15);}
-}
-.nav-buttons{
-  position:static !important;
-  transition:none;
-}
-
-/* ===== NAV-BUTTONS UTSEENDE ===== */
+.nav-buttons-wrapper{position:sticky;top:0;z-index:200;transition:transform 0.35s cubic-bezier(0.4,0,0.2,1),opacity 0.35s ease;}
+.nav-buttons-wrapper.scroll-hidden{transform:translateY(-120%);opacity:0;pointer-events:none;}
+.nav-buttons-wrapper.nav-hidden .nav-buttons{display:none;}
+.nav-toggle-btn{position:absolute;top:100%;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#1a3a42,#0f2a32);border:1px solid #4ecca3;border-top:none;border-radius:0 0 12px 12px;color:#4ecca3;width:44px;height:22px;padding:0;font-size:0.9rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,0.5),0 1px 0 #4ecca3 inset;z-index:201;transition:all 0.25s ease;line-height:1;}
+.nav-toggle-btn:hover{background:linear-gradient(135deg,#2a5a62,#1a3a42);box-shadow:0 6px 18px rgba(78,204,163,0.4),0 1px 0 #4ecca3 inset;color:#a8ffde;}
+.nav-toggle-btn .ntb-icon{font-size:0.85rem;transition:transform 0.35s ease;display:inline-block;}
+.nav-buttons-wrapper.nav-hidden .nav-toggle-btn .ntb-icon{transform:rotate(180deg);}
+.nav-buttons-wrapper.nav-hidden .nav-toggle-btn{animation:navPulse 2s ease-in-out infinite;}
+@keyframes navPulse{0%,100%{box-shadow:0 4px 14px rgba(0,0,0,0.5),0 0 0 0 rgba(78,204,163,0.4);}50%{box-shadow:0 4px 14px rgba(0,0,0,0.5),0 0 0 5px rgba(78,204,163,0.15);}}
+.nav-buttons{position:static !important;transition:none;}
 .nav-buttons{display:flex;justify-content:center;flex-wrap:wrap;padding:12px 16px;background:rgba(0,0,0,0.25);border-bottom:1px solid rgba(78,204,163,0.15);backdrop-filter:blur(10px)}
 .nav-btn{background:#1e2f3f;color:#e0e0e0;border:none;padding:8px 18px;border-radius:40px;cursor:pointer;font-weight:600;transition:all 0.2s ease;font-size:0.9rem;box-shadow:0 1px 3px rgba(0,0,0,0.2);white-space:nowrap;margin:4px 4px}
 .nav-btn:hover,.nav-btn.active{background:#4ecca3;color:#0a1c2a;transform:scale(1.03)}
@@ -434,124 +184,29 @@ video,iframe{width:100%;height:100%;object-fit:contain;border:none;background:bl
 .js-toggle-off{background:#c95a2e!important}
 
 /* ===== ONLINE/OFFLINE STATUS-PRICK ===== */
-.status-dot{
-  display:inline-block;
-  width:10px;height:10px;
-  border-radius:50%;
-  margin-right:7px;
-  flex-shrink:0;
-  vertical-align:middle;
-  background:#777;
-  box-shadow:0 0 0 0 rgba(0,0,0,0);
-  transition:background .3s, box-shadow .3s;
-}
-.status-dot.checking{
-  background:#ffb020;
-  animation:statusPulse 1s ease-in-out infinite;
-}
-.status-dot.online{
-  background:#2ecc71;
-  box-shadow:0 0 8px rgba(46,204,113,.8);
-}
-.status-dot.offline{
-  background:#e74c3c;
-  box-shadow:0 0 8px rgba(231,76,60,.7);
-}
-@keyframes statusPulse{
-  0%,100%{opacity:1;transform:scale(1)}
-  50%{opacity:.5;transform:scale(.8)}
-}
-.channel-item > span:first-child{
-  display:flex;
-  align-items:center;
-  min-width:0;
-}
+.status-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px;flex-shrink:0;vertical-align:middle;background:#777;transition:background .3s, box-shadow .3s;}
+.status-dot.checking{background:#ffb020;animation:statusPulse 1s ease-in-out infinite;}
+.status-dot.online{background:#2ecc71;box-shadow:0 0 8px rgba(46,204,113,.8);}
+.status-dot.offline{background:#e74c3c;box-shadow:0 0 8px rgba(231,76,60,.7);}
+@keyframes statusPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.channel-item > span:first-child{display:flex;align-items:center;min-width:0;}
 
-/* ===== KATEGORI-TOGGLE (+ / −) ===== */
-.category-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-weight: 700;
-  font-size: 1.15rem;
-  padding: 12px 10px 10px;
-  color: #4ecca3;
-  border-bottom: 2px solid #4ecca3;
-  margin: 14px 0 8px;
-  cursor: pointer;
-  user-select: none;
-  transition: all 0.2s;
-}
-.category-header:hover {
-  background: rgba(78, 204, 163, 0.08);
-  border-radius: 8px 8px 0 0;
-}
-.category-header .cat-toggle {
-  background: rgba(78, 204, 163, 0.15);
-  border: 1px solid #4ecca3;
-  color: #4ecca3;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  font-size: 1.2rem;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-  transition: all 0.25s ease;
-  flex-shrink: 0;
-}
-.category-header .cat-toggle:hover {
-  background: #4ecca3;
-  color: #0a1c2a;
-  transform: scale(1.1);
-}
-.category-header.collapsed .cat-toggle {
-  background: #4ecca3;
-  color: #0a1c2a;
-}
-.category-group {
-  overflow: hidden;
-  transition: max-height 0.4s ease, opacity 0.3s ease;
-  max-height: 5000px;
-  opacity: 1;
-}
-.category-group.collapsed {
-  max-height: 0;
-  opacity: 0;
-  margin: 0;
-  padding: 0;
-}
+.category-header{display:flex;align-items:center;justify-content:space-between;font-weight:700;font-size:1.15rem;padding:12px 10px 10px;color:#4ecca3;border-bottom:2px solid #4ecca3;margin:14px 0 8px;cursor:pointer;user-select:none;transition:all 0.2s;}
+.category-header:hover{background:rgba(78, 204, 163, 0.08);border-radius:8px 8px 0 0;}
+.category-header .cat-toggle{background:rgba(78, 204, 163, 0.15);border:1px solid #4ecca3;color:#4ecca3;width:28px;height:28px;border-radius:50%;font-size:1.2rem;font-weight:800;display:flex;align-items:center;justify-content:center;line-height:1;transition:all 0.25s ease;flex-shrink:0;}
+.category-header .cat-toggle:hover{background:#4ecca3;color:#0a1c2a;transform:scale(1.1);}
+.category-header.collapsed .cat-toggle{background:#4ecca3;color:#0a1c2a;}
+.category-group{overflow:hidden;transition:max-height 0.4s ease,opacity 0.3s ease;max-height:5000px;opacity:1;}
+.category-group.collapsed{max-height:0;opacity:0;margin:0;padding:0;}
 
-/* ===== MOBIL – VISA KANALER + PLAY DIREKT ===== */
 @media(max-width:768px){
-  .container{
-    flex-direction:column;
-    padding:8px;
-    gap:8px;
-    min-height:auto;
-  }
-  .video-container{ order:1; min-height:52vh; }
-  .channel-list{
-    order:2;
-    position:static !important;
-    transform:none !important;
-    width:100% !important;
-    max-width:100% !important;
-    height:auto !important;
-    max-height:42vh;
-    border-radius:16px;
-    padding:10px;
-    overflow-y:auto;
-    background:rgba(0,0,0,0.45);
-    top:auto !important;
-  }
-  .channel-list.show{ transform:none !important; }
-  .close-btn{ display:none !important; }
-  .video-wrapper{ min-height:44vh; }
+  .container{flex-direction:column;padding:8px;gap:8px;min-height:auto;}
+  .video-container{order:1;min-height:52vh;}
+  .channel-list{order:2;position:static !important;transform:none !important;width:100% !important;max-width:100% !important;height:auto !important;max-height:42vh;border-radius:16px;padding:10px;overflow-y:auto;background:rgba(0,0,0,0.45);top:auto !important;}
+  .channel-list.show{transform:none !important;}
+  .close-btn{display:none !important;}
+  .video-wrapper{min-height:44vh;}
 }
-
 .mode-switcher{display:flex;align-items:center;background:rgba(0,0,0,0.4);border-radius:40px;padding:4px 6px;border:1px solid #4ecca355;margin:3px 4px}
 .mode-btn{background:transparent;border:none;color:#aaa;padding:5px 13px;border-radius:30px;cursor:pointer;font-size:0.78rem;font-weight:700;transition:all 0.2s}
 .mode-btn.active{background:#4ecca3;color:#0a1c2a}
@@ -584,379 +239,85 @@ video,iframe{width:100%;height:100%;object-fit:contain;border:none;background:bl
 .spinner{display:inline-block;width:22px;height:22px;border:3px solid rgba(78,204,163,0.3);border-radius:50%;border-top-color:#4ecca3;animation:spin 0.8s linear infinite;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* ============================================================
-   ===== TV-LÄGE (fullskärms-spelare + nav + kanal-overlay) =====
-   ============================================================ */
 body.tv-mode{overflow:hidden!important}
-body.tv-mode .container,
-body.tv-mode .nav-buttons-wrapper,
-body.tv-mode .curtain-wrapper,
-body.tv-mode .fixed-clock-corner,
-body.tv-mode .fixed-weather-corner,
-body.tv-mode .weather-show-btn{display:none!important}
-
-#tvStage{
-  position:fixed;
-  inset:0;
-  background:radial-gradient(ellipse at center,#0f2a35 0%,#060f14 100%);
-  z-index:5000;
-  display:none;
-}
+body.tv-mode .container,body.tv-mode .nav-buttons-wrapper,body.tv-mode .curtain-wrapper,body.tv-mode .fixed-clock-corner,body.tv-mode .fixed-weather-corner,body.tv-mode .weather-show-btn{display:none!important}
+#tvStage{position:fixed;inset:0;background:radial-gradient(ellipse at center,#0f2a35 0%,#060f14 100%);z-index:5000;display:none;}
 body.tv-mode #tvStage{display:block}
-body.tv-mode #tvStage .video-wrapper{
-  min-height:0;height:100%;width:100%;border-radius:0;background:#000;
-}
-body.tv-mode #tvStage video,
-body.tv-mode #tvStage iframe{object-fit:contain}
-
-/* ============================================================
-   VERTIKAL Navigeringsfält på HÖGER SIDA
-   ============================================================ */
-#tvNavBar{
-  position:fixed;
-  right:14px;
-  top:110px;
-  bottom:110px;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  background:rgba(6,20,25,.92);
-  border:3px solid #4ecca3;
-  border-radius:26px;
-  box-shadow:0 10px 40px rgba(0,0,0,.8), 0 0 20px rgba(78,204,163,.25);
-  z-index:5300;
-  transition:transform .28s ease, opacity .28s;
-  overflow:hidden;
-  box-sizing:border-box;
-}
-#tvNavInner{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  padding:12px 10px;
-  flex:0 0 auto;
-  transform:scale(1);
-  transform-origin:center center;
-  transition:transform .2s ease;
-}
-
-body.tv-mode #tvNavBar{
-  display:flex;
-}
-@media (min-width: 769px){
-  body.tv-mode.tv-idle #tvNavBar{
-    transform:translate(120%, 0);
-  }
-}
-
-.tvNavBtn{
-  display:flex;align-items:center;gap:8px;
-  background:#122c34;color:#e0ffef;
-  border:2px solid #234852;
-  border-radius:999px;
-  padding:10px 16px;
-  font-size:14px;font-weight:800;
-  cursor:pointer;min-height:48px;min-width:48px;
-  transition:background .15s, border-color .15s;
-  flex-shrink:0;
-  white-space:nowrap;
-}
+body.tv-mode #tvStage .video-wrapper{min-height:0;height:100%;width:100%;border-radius:0;background:#000;}
+body.tv-mode #tvStage video,body.tv-mode #tvStage iframe{object-fit:contain}
+#tvNavBar{position:fixed;right:14px;top:110px;bottom:110px;display:none;align-items:center;justify-content:center;background:rgba(6,20,25,.92);border:3px solid #4ecca3;border-radius:26px;box-shadow:0 10px 40px rgba(0,0,0,.8), 0 0 20px rgba(78,204,163,.25);z-index:5300;transition:transform .28s ease, opacity .28s;overflow:hidden;box-sizing:border-box;}
+#tvNavInner{display:flex;flex-direction:column;gap:8px;padding:12px 10px;flex:0 0 auto;transform:scale(1);transform-origin:center center;transition:transform .2s ease;}
+body.tv-mode #tvNavBar{display:flex;}
+@media (min-width: 769px){body.tv-mode.tv-idle #tvNavBar{transform:translate(120%, 0);}}
+.tvNavBtn{display:flex;align-items:center;gap:8px;background:#122c34;color:#e0ffef;border:2px solid #234852;border-radius:999px;padding:10px 16px;font-size:14px;font-weight:800;cursor:pointer;min-height:48px;min-width:48px;transition:background .15s, border-color .15s;flex-shrink:0;white-space:nowrap;}
 .tvNavBtn:hover{background:#1e4a55;border-color:#4ecca3}
-.tvNavBtn.primary{
-  background:linear-gradient(90deg,#2a8a68,#4ecca3);
-  border-color:transparent;color:#04120d;
-}
-.tvNavBtn .kbd{
-  font-family:monospace;font-size:11px;color:#7fae9d;
-  background:rgba(0,0,0,.45);border:1px solid #234852;
-  border-radius:6px;padding:2px 6px;
-}
+.tvNavBtn.primary{background:linear-gradient(90deg,#2a8a68,#4ecca3);border-color:transparent;color:#04120d;}
+.tvNavBtn .kbd{font-family:monospace;font-size:11px;color:#7fae9d;background:rgba(0,0,0,.45);border:1px solid #234852;border-radius:6px;padding:2px 6px;}
 .tvNavBtn.primary .kbd{color:#04120d;background:rgba(255,255,255,.25);border-color:transparent}
-
-/* ===== Ljudkontroller i vertikal toolbar ===== */
-.tvVolGroup{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:4px;
-  background:rgba(0,0,0,.35);
-  border:2px solid #234852;
-  border-radius:18px;
-  padding:6px 4px;
-  flex-shrink:0;
-}
-#tvVolLevel{
-  font-size:11px;font-weight:800;color:#4ecca3;
-  letter-spacing:1px;white-space:nowrap;cursor:pointer;
-  background:rgba(78,204,163,.12);
-  border:1px solid rgba(78,204,163,.35);
-  border-radius:10px;
-  padding:2px 8px;
-  text-align:center;
-  min-width:56px;
-}
+.tvVolGroup{display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(0,0,0,.35);border:2px solid #234852;border-radius:18px;padding:6px 4px;flex-shrink:0;}
+#tvVolLevel{font-size:11px;font-weight:800;color:#4ecca3;letter-spacing:1px;white-space:nowrap;cursor:pointer;background:rgba(78,204,163,.12);border:1px solid rgba(78,204,163,.35);border-radius:10px;padding:2px 8px;text-align:center;min-width:56px;}
 #tvVolLevel:hover{background:rgba(78,204,163,.25)}
-.tvVolGroup .tvNavBtn{
-  padding:8px 12px;min-height:40px;font-size:13px;
-}
-
+.tvVolGroup .tvNavBtn{padding:8px 12px;min-height:40px;font-size:13px;}
 @media (max-width: 768px){
-  #tvNavBar{
-    right:6px !important;
-    left:auto !important;
-    top:80px !important;
-    bottom:80px !important;
-    transform:none !important;
-    width:auto !important;
-    max-width:calc(100vw - 12px);
-    max-height:none;
-    border-radius:22px;
-  }
-  #tvNavInner{
-    gap:5px;
-    padding:8px 6px;
-  }
-  .tvNavBtn{
-    padding:8px 10px;
-    font-size:12px;
-    min-height:42px;
-    min-width:42px;
-    gap:4px;
-  }
-  .tvNavBtn .kbd{
-    display:none !important;
-  }
-  .tvNavBtn > span:not(.kbd):not(.ntb-icon){
-    display:none !important;
-  }
-  .tvNavBtn.primary > span:not(.kbd){
-    display:inline !important;
-  }
+  #tvNavBar{right:6px !important;left:auto !important;top:80px !important;bottom:80px !important;transform:none !important;width:auto !important;max-width:calc(100vw - 12px);max-height:none;border-radius:22px;}
+  #tvNavInner{gap:5px;padding:8px 6px;}
+  .tvNavBtn{padding:8px 10px;font-size:12px;min-height:42px;min-width:42px;gap:4px;}
+  .tvNavBtn .kbd{display:none !important;}
+  .tvNavBtn > span:not(.kbd):not(.ntb-icon){display:none !important;}
+  .tvNavBtn.primary > span:not(.kbd){display:inline !important;}
   .tvVolGroup{padding:4px 2px}
   #tvVolLevel{min-width:46px;font-size:10px}
-  body.tv-mode.tv-idle #tvNavBar{
-    transform:translate(130%, 0) !important;
-  }
+  body.tv-mode.tv-idle #tvNavBar{transform:translate(130%, 0) !important;}
 }
-
-body.tv-mode.tv-idle #tvNavBar{
-  opacity:0;pointer-events:none;
-  transform:translate(120%, 0);
-}
+body.tv-mode.tv-idle #tvNavBar{opacity:0;pointer-events:none;transform:translate(120%, 0);}
 body.tv-mode.tv-idle video{cursor:none}
-
-/* ============================================================
-   Kanalnamn-badge – övre höger hörn i TV-läge
-   ============================================================ */
-#tvChanName{
-  position:fixed;
-  top:14px;right:16px;
-  z-index:5700;
-  background:rgba(6,20,25,.85);
-  border:2px solid #4ecca3;
-  border-radius:14px;
-  padding:10px 18px;
-  font-size:1.1rem;font-weight:800;color:#4ecca3;
-  display:none;
-  flex-direction:column;align-items:flex-end;gap:3px;
-  box-shadow:0 8px 28px rgba(0,0,0,.6), 0 0 18px rgba(78,204,163,.25);
-  pointer-events:none;
-  max-width:min(60vw, 520px);
-  transition:opacity .35s, transform .35s;
-}
-#tvChanName .tvChanTag{
-  font-size:0.62rem;font-weight:800;color:#7fae9d;
-  letter-spacing:1.5px;text-transform:uppercase;
-}
+#tvChanName{position:fixed;top:14px;right:16px;z-index:5700;background:rgba(6,20,25,.85);border:2px solid #4ecca3;border-radius:14px;padding:10px 18px;font-size:1.1rem;font-weight:800;color:#4ecca3;display:none;flex-direction:column;align-items:flex-end;gap:3px;box-shadow:0 8px 28px rgba(0,0,0,.6), 0 0 18px rgba(78,204,163,.25);pointer-events:none;max-width:min(60vw, 520px);transition:opacity .35s, transform .35s;}
+#tvChanName .tvChanTag{font-size:0.62rem;font-weight:800;color:#7fae9d;letter-spacing:1.5px;text-transform:uppercase;}
 body.tv-mode #tvChanName{display:flex}
-body.tv-mode.tv-idle #tvChanName{
-  opacity:0;
-  transform:translateX(130%);
-  pointer-events:none;
-}
-
-/* Klocka i TV-läge
-   ============================================================ */
-#tvClock{
-  position:fixed;
-  top:14px;left:16px;
-  z-index:5200;
-  background:transparent;
-  border:none;
-  border-radius:0;
-  padding:0;
-  display:none;
-  flex-direction:column;
-  align-items:flex-start;
-  gap:2px;
-  box-shadow:none;
-  pointer-events:none;
-  transition:opacity .4s, transform .4s;
-}
+body.tv-mode.tv-idle #tvChanName{opacity:0;transform:translateX(130%);pointer-events:none;}
+#tvClock{position:fixed;top:14px;left:16px;z-index:5200;background:transparent;border:none;border-radius:0;padding:0;display:none;flex-direction:column;align-items:flex-start;gap:2px;box-shadow:none;pointer-events:none;transition:opacity .4s, transform .4s;}
 body.tv-mode #tvClock{display:flex}
-#tvClock .tvClockTime{
-  font-family:'Courier New',monospace;font-weight:800;font-size:1.4rem;
-  letter-spacing:2px;color:#4ecca3;
-  white-space:nowrap;line-height:1.1;
-  transition:font-size .4s ease, letter-spacing .4s ease, color .8s ease, text-shadow .8s ease;
-}
-#tvClock .tvClockDate{
-  font-size:0.8rem;font-weight:700;color:#e0ffef;
-  white-space:nowrap;
-}
+#tvClock .tvClockTime{font-family:'Courier New',monospace;font-weight:800;font-size:1.4rem;letter-spacing:2px;color:#4ecca3;white-space:nowrap;line-height:1.1;transition:font-size .4s ease, letter-spacing .4s ease, color .8s ease, text-shadow .8s ease;}
+#tvClock .tvClockDate{font-size:0.8rem;font-weight:700;color:#e0ffef;white-space:nowrap;}
 body.tv-mode.tv-clock-off #tvClock{display:none!important}
 body.tv-mode.tv-idle #tvClock .tvClockDate{ display:none; }
 body.tv-mode.tv-idle #tvClockBtn{opacity:.55}
-body.tv-mode.tv-idle #tvClock .tvClockTime{
-  font-size:2.8rem;
-  letter-spacing:4px;
-  transition:font-size .4s ease, letter-spacing .4s ease, color .8s ease, text-shadow .8s ease;
-}
-
-/* Kanal-overlay (bottom sheet) */
-#tvOverlay{
-  position:fixed;
-  left:0;right:0;bottom:0;
-  max-height:78vh;
-  background:linear-gradient(180deg, rgba(8,24,30,.97), rgba(4,14,18,.99));
-  border-top:3px solid #4ecca3;
-  box-shadow:0 -12px 40px rgba(0,0,0,.9);
-  z-index:5400;
-  transform:translateY(105%);
-  transition:transform .28s ease;
-  display:flex;
-  flex-direction:column;
-  pointer-events:none;
-}
-body.tv-mode.tv-overlay-open #tvOverlay{
-  transform:translateY(0);
-  pointer-events:auto;
-}
-#tvOverlay .tvOvHead{
-  display:flex;align-items:center;justify-content:space-between;
-  gap:12px;padding:14px 18px;
-  border-bottom:1px solid #1e3a44;
-  flex-shrink:0;flex-wrap:wrap;
-}
-#tvOverlay .tvOvTitle{
-  font-size:18px;font-weight:800;display:flex;align-items:center;gap:10px;color:#4ecca3;
-}
+body.tv-mode.tv-idle #tvClock .tvClockTime{font-size:2.8rem;letter-spacing:4px;transition:font-size .4s ease, letter-spacing .4s ease, color .8s ease, text-shadow .8s ease;}
+#tvOverlay{position:fixed;left:0;right:0;bottom:0;max-height:78vh;background:linear-gradient(180deg, rgba(8,24,30,.97), rgba(4,14,18,.99));border-top:3px solid #4ecca3;box-shadow:0 -12px 40px rgba(0,0,0,.9);z-index:5400;transform:translateY(105%);transition:transform .28s ease;display:flex;flex-direction:column;pointer-events:none;}
+body.tv-mode.tv-overlay-open #tvOverlay{transform:translateY(0);pointer-events:auto;}
+#tvOverlay .tvOvHead{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border-bottom:1px solid #1e3a44;flex-shrink:0;flex-wrap:wrap;}
+#tvOverlay .tvOvTitle{font-size:18px;font-weight:800;display:flex;align-items:center;gap:10px;color:#4ecca3;}
 #tvOverlay .tvOvTitle .cnt{font-size:13px;color:#7fae9d;font-weight:600}
-#tvOverlay .tvOvTabs{
-  display:flex;gap:8px;flex-wrap:wrap;align-items:center;
-}
-.tvOvTab{
-  display:inline-flex;align-items:center;gap:8px;
-  background:#122c34;color:#9fd8c3;
-  border:2px solid #234852;
-  padding:9px 14px;border-radius:12px;
-  cursor:pointer;min-height:48px;
-  font-size:13px;font-weight:800;
-  transition:.15s;max-width:220px;
-}
+#tvOverlay .tvOvTabs{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.tvOvTab{display:inline-flex;align-items:center;gap:8px;background:#122c34;color:#9fd8c3;border:2px solid #234852;padding:9px 14px;border-radius:12px;cursor:pointer;min-height:48px;font-size:13px;font-weight:800;transition:.15s;max-width:220px;}
 .tvOvTab:hover{background:#1e4a55;border-color:#4ecca3;color:#e0ffef}
-.tvOvTab.active{
-  background:linear-gradient(135deg,#2a8a68,#4ecca3);
-  color:#04120d;border-color:#4ecca3;
-  box-shadow:0 0 0 2px rgba(78,204,163,.35), 0 0 20px rgba(78,204,163,.25);
-}
+.tvOvTab.active{background:linear-gradient(135deg,#2a8a68,#4ecca3);color:#04120d;border-color:#4ecca3;box-shadow:0 0 0 2px rgba(78,204,163,.35), 0 0 20px rgba(78,204,163,.25);}
 .tvOvTab .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tvOvTab .cnt{
-  font-size:11px;font-weight:900;
-  background:rgba(0,0,0,.25);color:inherit;
-  border-radius:999px;padding:2px 8px;
-}
-#tvOverlay .tvOvGrid{
-  flex:1 1 auto;overflow-y:auto;
-  padding:12px;
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
-  gap:8px;align-content:start;
-  min-height:0;
-}
-.tvOvItem{
-  display:flex;align-items:center;gap:10px;
-  padding:10px 12px;
-  background:#0d2129;
-  border:3px solid transparent;
-  border-radius:12px;cursor:pointer;min-height:60px;
-  transition:background .15s, border-color .15s;
-}
+.tvOvTab .cnt{font-size:11px;font-weight:900;background:rgba(0,0,0,.25);color:inherit;border-radius:999px;padding:2px 8px;}
+#tvOverlay .tvOvGrid{flex:1 1 auto;overflow-y:auto;padding:12px;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px;align-content:start;min-height:0;}
+.tvOvItem{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#0d2129;border:3px solid transparent;border-radius:12px;cursor:pointer;min-height:60px;transition:background .15s, border-color .15s;}
 .tvOvItem:hover{background:#14313a}
-.tvOvItem.active{
-  border-color:#4ecca3;
-  background:rgba(78,204,163,.14);
-}
-.tvOvItem .num{
-  font-size:11px;font-weight:800;color:#7fae9d;
-  background:rgba(0,0,0,.4);border:1px solid #1e3a44;
-  border-radius:8px;padding:4px 8px;flex:0 0 auto;
-}
-.tvOvItem .nm{
-  font-size:14px;font-weight:700;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  flex:1;min-width:0;
-}
-.tvOvItem .tag{
-  font-size:9.5px;font-weight:800;flex:0 0 auto;
-  background:rgba(78,204,163,.14);color:#4ecca3;
-  border-radius:8px;padding:2px 7px;
-}
-.tvOvEmpty{
-  grid-column:1/-1;text-align:center;padding:40px 16px;
-  color:#7fae9d;font-size:14px;
-}
-@media(max-width:600px){
-  #tvOverlay .tvOvGrid{grid-template-columns:1fr}
-  #tvOverlay .tvOvTitle{font-size:15px}
-  .tvOvTab{padding:8px 10px;font-size:12px;min-height:42px}
-}
-
-/* ===== MOBIL TV-LÄGE: GÖM/VISA TOOLBAR ===== */
-#tvToolbarToggle{
-  position:fixed;
-  bottom:14px;right:14px;
-  z-index:5600;
-  display:none;
-  align-items:center;justify-content:center;
-  width:52px;height:52px;
-  border-radius:50%;
-  background:rgba(6,20,25,.9);
-  border:2px solid #4ecca3;
-  color:#4ecca3;
-  font-size:1.3rem;
-  cursor:pointer;
-  box-shadow:0 6px 22px rgba(0,0,0,.7), 0 0 14px rgba(78,204,163,.25);
-  transition:all .2s;
-}
+.tvOvItem.active{border-color:#4ecca3;background:rgba(78,204,163,.14);}
+.tvOvItem .num{font-size:11px;font-weight:800;color:#7fae9d;background:rgba(0,0,0,.4);border:1px solid #1e3a44;border-radius:8px;padding:4px 8px;flex:0 0 auto;}
+.tvOvItem .nm{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0;}
+.tvOvItem .tag{font-size:9.5px;font-weight:800;flex:0 0 auto;background:rgba(78,204,163,.14);color:#4ecca3;border-radius:8px;padding:2px 7px;}
+.tvOvEmpty{grid-column:1/-1;text-align:center;padding:40px 16px;color:#7fae9d;font-size:14px;}
+@media(max-width:600px){#tvOverlay .tvOvGrid{grid-template-columns:1fr}#tvOverlay .tvOvTitle{font-size:15px}.tvOvTab{padding:8px 10px;font-size:12px;min-height:42px}}
+#tvToolbarToggle{position:fixed;bottom:14px;right:14px;z-index:5600;display:none;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;background:rgba(6,20,25,.9);border:2px solid #4ecca3;color:#4ecca3;font-size:1.3rem;cursor:pointer;box-shadow:0 6px 22px rgba(0,0,0,.7), 0 0 14px rgba(78,204,163,.25);transition:all .2s;}
 #tvToolbarToggle:active{transform:scale(.92)}
 @media(max-width:768px){
   body.tv-mode #tvToolbarToggle{display:flex}
   body.tv-mode.tv-toolbar-hidden #tvNavBar{transform:translate(130%,0)!important;opacity:0;pointer-events:none}
   body.tv-mode.tv-toolbar-hidden #tvChanName{opacity:0;transform:translateX(130%);pointer-events:none}
 }
-
-/* ===== MOBIL TV-LÄGE: TRYCK VÄNSTER/HÖGER FÖR FÖREGÅENDE/NÄSTA KANAL ===== */
-#tvTapLeft,#tvTapRight{
-  position:fixed;
-  top:15%;bottom:20%;
-  width:25%;
-  display:none;
-  z-index:5250;
-  background:transparent;
-  border:none;
-}
+#tvTapLeft,#tvTapRight{position:fixed;top:15%;bottom:20%;width:25%;display:none;z-index:5250;background:transparent;border:none;}
 #tvTapLeft{left:0}
 #tvTapRight{right:0}
-@media(max-width:768px){
-  body.tv-mode #tvTapLeft,
-  body.tv-mode #tvTapRight{display:block}
-}
+@media(max-width:768px){body.tv-mode #tvTapLeft,body.tv-mode #tvTapRight{display:block}}
 </style>
 </head>
 <body>
 
-<!-- FIXED KLOCKA - HÖGER HORN -->
 <div class="fixed-clock-corner hidden-by-curtain" id="fixedClockCorner">
   <div class="fixed-clock-box" id="fixedClockBox" title="Klicka för att byta kalender">
     <div class="fixed-clock-display" id="fixedClockDisplay">--:--:--</div>
@@ -964,7 +325,6 @@ body.tv-mode.tv-overlay-open #tvOverlay{
   </div>
 </div>
 
-<!-- FIXED VÄDER - VÄNSTER HORN -->
 <div class="fixed-weather-corner hidden-by-curtain" id="fixedWeatherCorner">
   <div class="fixed-weather-box" id="fixedWeatherBox" title="Klicka för att visa detaljer" style="position:relative;">
     <span class="fixed-weather-icon" id="fixedWeatherIcon">🌤</span>
@@ -1069,7 +429,6 @@ body.tv-mode.tv-overlay-open #tvOverlay{
   <aside class="channel-list" id="channel-list"><button class="close-btn" onclick="toggleList()">Stäng</button><div id="ch-container"></div></aside>
 </div>
 
-<!-- ===== TV-LÄGE ===== -->
 <div id="tvStage"></div>
 <div id="tvClock">
   <div class="tvClockTime" id="tvClockDisplay">--:--:--</div>
@@ -1106,686 +465,6 @@ body.tv-mode.tv-overlay-open #tvOverlay{
   <div class="tvOvGrid" id="tvOvGrid"></div>
 </div>
 
-<!-- Mobil TV-läge -->
 <button id="tvTapLeft" aria-label="Föregående kanal"></button>
 <button id="tvTapRight" aria-label="Nästa kanal"></button>
 <button id="tvToolbarToggle" title="Visa/dölj toolbar">🎛</button>
-
-<script>
-/* ============================================================
-   PROXY-KONFIGURATION
-   ============================================================ */
-const PROXY_BASE = 'http://localhost:8787';
-
-function proxify(url){
-  if(!PROXY_BASE) return url;
-  return PROXY_BASE + '/proxy?url=' + encodeURIComponent(url);
-}
-
-function getKarwanDirectCDN(karwanUrl){
-  try{
-    var clean = karwanUrl.replace(/\/+$/,'').split('?')[0].split('#')[0];
-    var parts = clean.split('/').filter(function(p){return p;});
-    var slug = parts[parts.length-1].toLowerCase();
-    var map = {'ranya-city':'ranya-city','nalia-tv':'nalia-tv','znar-tv':'znar-tv','infinity-tv':'infinity-tv','barin-movies':'barin-movies','bnar-movies':'bnar-movies','red-tv':'red-tv','niroj-tv':'niroj-tv'};
-    slug = map[slug] || slug;
-    return 'https://cdn.karwan.tv/' + slug + '/index.m3u8';
-  }catch(e){ return null; }
-}
-var hevalRaw = [
-  { name: 'Kurdistan TV', url: 'https://5a3ed7a72ed4b.streamlock.net/live/SMIL:myStream.smil/playlist.m3u8', color: 'teal' },
-  { name: 'Kurdsat HD', url: 'https://hlspackager.akamaized.net/live/DB/KURDSAT_HD/HLS/KURDSAT_HD.m3u8', color: 'teal' },
-  { name: 'MMN News', url: 'http://mmn.mypsx.net:1935/live/mmnhdnews/playlist.m3u8', color: 'teal' },
-  { name: 'Kanal8', url: 'https://live.channel8.com/Channel8-Kurdish/index.fmp4.m3u8', color: 'teal' },
-  { name: 'Rudaw', url: 'https://live.rudaw.net/hls/rudaw-tv/master.m3u8', color: 'teal' },
-  { name: 'Kurdsat News', url: 'https://hlspackager.akamaized.net/live/DB/KURDSAT_NEWS/HLS/KURDSAT_NEWS.m3u8', color: 'teal' },
-  { name: 'AVA', url: 'https://avam2.site/upload/ava.m3u8', color: 'teal' },
-  { name: 'Rojava HD', url: 'https://hlspackager.akamaized.net/live/DB/ROJAVA_HD/HLS/ROJAVA_HD.m3u8', color: 'teal' },
-  { name: 'GK', url: 'https://live.host247.net/gk/gksat/chunklist_w624411416.m3u8', color: 'teal' },
-  { name: 'Payam TV', url: 'https://media2.streambrothers.com:1936/8218/8218/chunklist_w1239498607.m3u8', color: 'teal' },
-  { name: 'TRT Kurdi', url: 'https://tv-trtkurdi.medya.trt.com.tr/master_1440.m3u8', color: 'teal' },
-  { name: 'Kirkuk', url: 'https://live.kirkuklive.live/hls/stream/index.m3u8', color: 'teal' },
-  { name: 'Waar', url: 'https://live.kwikmotion.com/waarmedialive/waarmedia.smil/waarmediapublish/waarmedia_source/chunks.m3u8', color: 'teal' },
-  { name: 'PDKI', url: 'https://kurdchhls.wns.live/hls/stream.m3u8', color: 'teal' },
-  { name: 'Komala', url: 'https://komhls.wns.live/hls/stream.m3u8', color: 'teal' },
-  { name: 'Zagros24 TV', url: 'https://hlspackager.akamaized.net/live/DB/ZAGROS_24/HLS/ZAGROS_24.m3u8', color:'teal' },
-  { name: 'Ronahi', url: 'https://hlspackager.akamaized.net/live/DB/RONAHI_TV/HLS/RONAHI_TV.m3u8', color: 'teal' },
-  { name: 'Kurdistan24', url: 'https://hlspackager.akamaized.net/live/DB/K24/HLS/K24-avc1_2500000=10002,mp4a_128000=20000.m3u8', color: 'teal' },
-  { name: 'Nuce tv', url: 'https://hlspackager.akamaized.net/live/DB/NU_TV/HLS/NU_TV.m3u8', color:'teal' },
-  { name: 'Welat TV', url: 'https://stream.badinan.xyz/welat/tv/chunklist_w92683075.m3u8', color:'teal' },
-  { name: 'Strek tv', url: 'https://zindi.sterk.tv/live/sterk.m3u8', color:'teal' },
-  { name: 'Cira tv', url: 'https://hlspackager.akamaized.net/live/DB/CIRA_TV/HLS/CIRA_TV.m3u8', color:'teal' },
-  { name: 'Rojhelat TV', url: 'https://hlspackager.akamaized.net/live/DB/ROJHELAT/HLS/ROJHELAT-avc1_2500000=10002,mp4a_128000=20000.m3u8', color: 'teal' },
-  { name: 'Zagros', url: 'https://5a3ed7a72ed4b.streamlock.net/zagrostv/SMIL:myStream.smil/playlist.m3u8', color: 'teal' },
-  { name: 'Iraqia Kurdish', url: 'https://imn-live.esite-lab.com/hls/iraqia-kurdish.m3u8', color:'teal' },
-  { name: 'Sahar', url: 'https://sepehrtv.ir/live/sahar3/', method:'iframe', color: 'teal' },
-  { name: 'Mahabad IRIB', url: 'https://sepehrtv.ir/live/mahabad/', method:'iframe', color: 'teal' },
-  { name: 'Mahabad', url: 'https://ncdn.telewebion.net/mahabad/live/playlist.m3u8', color:'teal' },
-  { name: 'Sine IRIB', url: 'https://sepehrtv.ir/live/kordestan/', method:'iframe', color: 'teal' },
-  { name: 'Sine', url: 'https://ncdn.telewebion.net/kordestan/live/playlist.m3u8', color:'teal' },
-  { name: 'Speda/Speda Drama', url: 'https://www.speda.net/', method:'external', color: 'teal' },
-  { name: 'UTV Hewler org', url: 'https://utvhawler.net/index.htm', method:'iframe', color:'teal' },
-  { name: 'Kurdistan', url: 'https://www.kurdistan.tv/', method:'iframe', color: 'teal' },
-  { name: 'NRT News', url: 'https://live20.bozztv.com/giatv/giatv-nrt/nrt/chunks.m3u8', color: 'teal' },
-];
-var musikRaw = [
-  { name: 'Kurd 7', url: 'http://avrstream.com:1935/live/Kurd7HD/playlist.m3u8', color:'teal' },
-  { name: '4 Kurd', url: 'https://4kuhls.persiana.live/hls/stream.m3u8', color: 'teal' },
-  { name: 'MMN Clip', url: 'http://mmn.mypsx.net:1935/live/mmnhdclip/playlist.m3u8', color: 'teal' },
-  { name: 'Medmusik', url: 'http://54.36.110.140/live3/live3.m3u8', color: 'teal' },
-  { name: 'EuroKurd TV', url: 'https://www.eurokurd.tv/proxy.php?tail=playlist.m3u8', color: 'teal' },
-  { name: 'RanyaCity', url: 'https://avr.host247.net/Ranya/RanyaCity/tracks-v1a1/mono.m3u8', color:'teal' },
-  { name: 'Biner', url: 'https://lbgo.bozztv.com/ssh101/live/biner-zaxo/playlist.m3u8', color: 'teal' },
-  { name: 'Esra TV2', url: 'https://live20.bozztv.com/giatv/giatv-esra2hd_kamalblbas/esra2hd_kamalblbas/chunks.m3u8', color: 'teal' },
-  { name: 'Esra TV', url: 'https://live20.bozztv.com/giatv/giatv-ESRAHD/ESRAHD/chunks.m3u8', color:'teal' },
-  { name: 'Geryan tv', url: 'https://live20.bozztv.com/giatv/giatv-halabja88garyan/halabja88garyan/chunks.m3u8', color:'teal' },
-];
-var minalRaw = [
-  { name: 'Kidco', url: 'http://avrstream.com:1935/live/kidcohd/tracks-v1a1/mono.m3u8', color: 'blue' },
-  { name: 'Baxche', url: 'https://5dcabf026b188.streamlock.net/afarinTV/livestream/playlist.m3u8', color: 'blue' },
-  { name: 'Afarin Kids', url: 'https://65f16f0fdfc51.streamlock.net/afarinTV/livestream/playlist.m3u8', color: 'blue' },
-  { name: 'Zarok Kurmanci', url: 'https://zindikurmanci.zaroktv.com.tr/hls/0/stream.m3u8', color: 'blue' },
-  { name: 'Zarok Sorani', url: 'https://zindisorani.zaroktv.com.tr/hls/stream.m3u8', color: 'blue' },
-  { name: 'MMN Kids', url: 'http://mmn.mypsx.net:1935/live/mmnhdkids/playlist.m3u8', color: 'blue' },
-  { name: 'Gewher Kids', url: 'https://iptv-link.short.gy/Gewher_Kids.m3u8', color:'blue' },
-  { name: 'Spi Kids', url: 'https://live20.bozztv.com/giatv/giatv-spikids4k2025/spikids4k2025/chunks.m3u8', color:'blue' },
-  { name: 'One Kids', url: 'https://lbgo.bozztv.com/ssh101/ssh101/onekids4k/chunks.m3u8', color:'blue' },
-];
-var filmRaw = [
-  { name: 'Niroj tv', url: 'https://karwan.tv/niroj-tv/', method:'iframe', color:'purple' },
-  { name: 'Befrin TV', url: 'https://cdn.karwan.tv/befrin-tv/index.m3u8', color: 'purple' },
-  { name: 'MixKurdy', url: 'https://avr.host247.net/live/Mix-kurdy/tracks-v1a1/mono.m3u8', color: 'purple' },
-  { name: 'GK+', url: 'https://live.host247.net/gk/gkplus/playlist.m3u8', color:'purple' },
-  { name: 'Avar TV', url: 'https://avr.host247.net/live/AvarTv/tracks-v1a1/mono.m3u8', color: 'purple' },
-  { name: 'Khak TV', url: 'http://bblserver.ddns.net:1935/stream/khakhd/playlist.m3u8', color: 'purple' },
-  { name: 'Soran Entertainment', url: 'http://avrstream.com:1935/live/SoranEntertainment/playlist.m3u8', color:'purple' },
-  { name: 'Shar TV HD', url: 'http://avrstream.com:1935/live/SHARTV/playlist.m3u8', color: 'purple' },
-  { name: 'Cihan TV', url: 'https://www.cihanhd.com/', method:'iframe', color:'purple' },
-  { name: 'MMN Documentary', url: 'http://mmn.mypsx.net:1935/live/mmnhddocumentary/playlist.m3u8', color:'purple' },
-  { name: 'MMN Drama', url: 'http://mmn.mypsx.net:1935/live/mmnhddrama/playlist.m3u8', color:'purple' },
-  { name: 'MMN Movies', url: 'http://mmn.mypsx.net:1935/live/mmnhdmovies/playlist.m3u8', color:'purple' },
-  { name: 'MMN Action', url: 'http://mmn.mypsx.net:1935/live/mmnhdaction/playlist.m3u8', color:'purple' },
-  { name: 'Infinity TV', url: 'https://karwan.tv/infinity-tv/', method:'iframe', color:'purple' },
-  { name: 'New Movies', url: 'https://karwan.tv/bnar-movies', method:'iframe', color:'purple' },
-  { name: 'Barin Family', url: 'http://baskhd.ddns.net:40/live/BarinfamilyHD/mono.m3u8', color: 'purple' },
-  { name: 'Barin Movies', url: 'https://cdn.karwan.tv/barin-movies/index.m3u8', color:'purple' },
-  { name: 'New Family TV', url: 'https://cdn.karwan.tv/bnar-family/tracks-v1a1/mono.m3u8', color:'purple' },
-  { name: 'New Action TV', url: 'https://karwan.tv/bnar-action/', method:'iframe', color:'purple' },
-  { name: 'RED Tv', url: 'http://avrstream.com:1935/live/REDTV/playlist.m3u8', color:'purple' },
-  { name: 'Shna TV', url: 'https://lbgo.bozztv.com/ssh101/ssh101/shna12345/chunks.m3u8?lb_backend_hint=7', color:'purple' },
-  { name: 'Gewher tv', url: 'https://iptv-link.short.gy/Gewher.m3u8', color:'purple' },
-  { name: 'Soz Movie', url: 'https://live20.bozztv.com/giatv/giatv-sozetv/sozetv/chunks.m3u8', color:'purple' },
-  { name: 'Cihan TV (external)', url: 'https://kurdtvs.net/channels.php?slug=cihan-tv-hd', method:'external', color:'purple' },
-  { name: 'Kurdmax (extern)', url: 'https://www.kurdmax.tv/live-stream', method:'external', color:'purple' },
-];
-var diniRaw = [
-  { name: 'Amozhgary', url: 'https://app-live.org/live/3268334b/index.m3u8', color: 'blue' },
-  { name: 'AD tv', url: 'https://karwan.tv/ad-tv/', method:'iframe', color:'blue' },
-  { name: 'Amozhgary academy', url: 'https://app-live.org/live/a267c1b3/index.m3u8', color:'blue' },
-  { name: 'MMN Quran', url: 'http://mmn.mypsx.net:1935/live/mmnhdquran/playlist.m3u8', color:'blue' },
-  { name: 'Eman TV', url: 'https://avr.host247.net/live/emantv/tracks-v1a1/mono.m3u8', color:'blue' },
-  { name: 'Peshang tv', url: 'https://stream.forcaroo.com/stream/hls/desktop.m3u8', color:'blue' },
-  { name: 'Ashti QuranTV', url: 'http://avrstream.com:1935/live/AshtiTV/playlist.m3u8', color:'blue' },
-  { name: 'IMK Quran TV', url: 'http://avrstream.com:1935/live/IMKQURANHD/playlist.m3u8', color:'blue' },
-  { name: 'Farmoda TV', url: 'https://avr.host247.net/live/FarmodaTV/playlist.m3u8', color:'blue' },
-  { name: 'Mihrab HLS',    url: 'http://bblserver.ddns.net:1935/live/mihrabfm/playlist.m3u8', method:'hls', color:'blue' },
-  { name: 'Dang Quran', url: 'https://live20.bozztv.com/giatv/giatv-Quran/Quran/playlist.m3u8', color:'blue' },
-  { name: 'Shar Quran', url: 'https://live20.bozztv.com/giatv/giatv-sharqurantv/sharqurantv/chunks.m3u8', color:'blue' },
-  { name: 'Spi Quran', url: 'https://live20.bozztv.com/giatv/giatv-spi_quran_hd/spi_quran_hd/chunks.m3u8', color:'blue' },
-  { name: 'Niroj Ayni', url: 'https://karwan.tv/niroj-ayni/', method:'iframe', color:'blue' },
-  { name: 'Ashna Quran TV', url: 'https://karwan.tv/ashna-quran/', method:'iframe', color:'blue' },
-  { name: 'Walla Quran', url: 'http://cdn.karwan.tv/WALAQURAN/index.m3u8', method:'external',color:'blue' },
-];
-var sportRaw = [
-  { name: 'MMN Sport', url: 'http://mmn.mypsx.net:1935/live/mmnhdsport/playlist.m3u8', color:'green' },
-  { name: 'Gewher Sport',url: 'https://iptv-link.short.gy/Gewher_Sport.m3u8', color: 'green' },
-  { name: 'Shna TV sport', url: 'https://karwan.tv/shna-tv-3/', method:'iframe', color:'green' },
-];
-var karwanRaw = [
-  { name: 'Animal Box', url: 'https://karwan.tv/animal-box/', method:'iframe', color:'grey' },
-  { name: 'ALA TV', url: 'https://karwan.tv/ala-tv/', method:'iframe', color:'grey' },
-  { name: 'Derin TV', url: 'https://karwan.tv/derin-tv/', color:'grey' },
-  { name: 'Hormzyar tv', url: 'https://karwan.tv/hormzyar-tv/', method:'iframe', color:'grey' },
-  { name: 'Halabja TV', url: 'https://karwan.tv/halabja-tv', method:'iframe', color:'grey' },
-  { name: 'Znar Kids', url: 'https://karwan.tv/znar-kids/', method:'iframe', color:'grey' },
-  { name: 'UTV-2 TV', url: 'https://karwan.tv/utv-2/', method:'iframe', color:'grey' },
-  { name: 'Kurdmax Kurmanji', url: 'https://karwan.tv/kurdmax-tv-kurmanci/', method:'iframe', color:'grey' },
-  { name: 'Kurdmax Sorani', url: 'https://karwan.tv/kurdmax-tv/', method:'iframe', color:'grey' },
-];
-var RadioRaw = [
-  { name: 'Rudaw Radio',   url: 'https://radio.rudaw.net/stream/live', method:'audio', color:'cyan' },
-  { name: 'Kurdsat Radio', url: 'http://uk3.internet-radio.com:8011/stream/', method:'audio', color:'cyan' },
-  { name: 'Nalia Radio', url: 'https://hlspackager.akamaized.net/live/DB/NRT_HD/HLS/NRT_HD-avc1_2500000=10002,mp4a_128000=20000.m3u8', method:'audio', color:'cyan' },
-  { name: 'Sunnat Radio',  url: 'https://a1.asurahosting.com:9380/radio.mp3', method:'audio', color:'cyan' },
-  { name: 'Kurdland',  url: 'http://radio.kurdland.net/mp3', method:'hls', color:'cyan' },
-  { name: 'Shafaq Radio',  url: 'https://radio.shafaq.com/kurdish', method:'hls', color:'cyan' },
-  { name: 'Ava Radio',     url: 'https://ava.holan.it.com/;?type=http&nocache=1', method:'audio', color:'cyan' },
-  { name: 'Speda Radio',     url: 'https://radio.host247.net/spedafm', method:'audio', color:'cyan' },
-  { name: 'Sahar Radio', url: 'https://live4.presstv.ir/irib/irib5/playlist.m3u8', method:'audio', color:'cyan' },
-  { name: 'Mahabad Radio', url: 'https://s2cdn3.iranseda.ir/liveedgeprovincial/radio-mahabad/playlist.m3u8', method:'audio', color:'cyan' },
-  { name: 'Mahabad Radio-Nama', url: 'https://sepehrtv.ir/live/radiomahabad', method:'iframe', color:'cyan' },
-  { name: 'Sine Radio', url: 'https://s1cdn3.iranseda.ir/liveedgeprovincial/radio-kordestan/playlist.m3u8', method:'audio', color:'cyan' },
-  { name: 'Sine Radio-Nama', url: 'https://sepehrtv.ir/live/radiokordestan', method:'iframe', color:'cyan' },
-  { name: 'Kirmanshan Radio', url: 'https://s0cdn1.iranseda.ir/liveedgeprovincial/radio-kermanshah/playlist.m3u8', method:'audio', color:'cyan' },
-  { name: 'Ilam Radio', url: 'https://s2cdn3.iranseda.ir/liveedgeprovincial/radio-ilam/playlist.m3u8', method:'audio', color:'cyan' },
-  { name: 'Mahabad Radio Archiv', url: 'http://radio.iranseda.ir/timeArchive/?VALID=TRUE&ch=531', method:'external', color:'cyan' },
-  { name: 'Welat FM', url: 'https://welattv.net/radio/', method:'iframe', color:'cyan' },
-  { name: 'Nawa Radio', url: 'https://www.radionawa.com/Ku/Live.aspx', method:'iframe', color:'cyan' },
-];
-
-var channels = {heval: hevalRaw.slice(),musik: musikRaw.slice(),minal: minalRaw.slice(),film: filmRaw.slice(),dini: diniRaw.slice(),sport: sportRaw.slice(),karwan: karwanRaw.slice(),Radio: RadioRaw.slice()};
-var hlsInst=null, cur=null, favs=[], jsEnabled=true, curFilter=null, playMode='tv', currentUA='';
-try{ favs=JSON.parse(localStorage.getItem('xomfavs')||'[]'); }catch(e){ favs=[]; }
-try{ currentUA=localStorage.getItem('xom_ua')||''; }catch(e){}
-try{ playMode=localStorage.getItem('xom_playmode')||'tv'; }catch(e){}
-
-/* ============================================================
-   ===== EGNA LISTOR =====
-   ============================================================ */
-var lists = [];
-try{ lists = JSON.parse(localStorage.getItem('xom_lists')||'[]'); }catch(e){ lists=[]; }
-function saveLists(){ try{ localStorage.setItem('xom_lists', JSON.stringify(lists)); }catch(e){} }
-
-function listDialog(){
-  closeListDialog();
-  var c = cur;
-  var html = '<div style="max-width:440px;width:100%;margin:0 auto;text-align:left;background:#0d2129;border:2px solid #234852;border-radius:18px;padding:20px">';
-  html += '<h3 style="color:#4ecca3;margin-bottom:10px;font-size:1.15em">➕ Mina listor</h3>';
-  if (c) html += '<p style="font-size:14px;margin-bottom:12px;opacity:.9">Kanal: <b style="color:#4ecca3">'+escapeHtml(c.name)+'</b></p>';
-  else html += '<p style="font-size:13px;margin-bottom:12px;opacity:.7">Ingen kanal vald – du kan skapa listor men inte lägga till kanaler.</p>';
-  html += '<button class="btn" style="width:100%;margin-bottom:14px;font-weight:700" onclick="createListPrompt()">➕ Skapa ny lista'+(c ? ' (med '+escapeHtml(c.name)+')' : '')+'</button>';
-  if (!lists.length) html += '<p style="opacity:.6;font-size:13px;margin:8px 0">Inga listor än.</p>';
-  for(var i=0;i<lists.length;i++){
-    (function(idx){
-      var g = lists[idx];
-      var isIn = c && g.items.some(function(x){ return x.url===c.url; });
-      html += '<div style="display:flex;gap:8px;align-items:center;margin:6px 0">'+
-        '<button class="btn" style="flex:1;'+(isIn?'background:#4ecca3;color:#0a1c2a;font-weight:700':'')+'" onclick="toggleInList('+idx+')">'+(isIn?'✓ I listan':'+ Lägg till')+' · '+escapeHtml(g.name)+' ('+g.items.length+')</button>'+
-        '<button class="btn" style="background:#8a2e3a;flex:none" title="Radera listan" onclick="delList('+idx+')">🗑</button>'+
-      '</div>';
-    })(i);
-  }
-  html += '<button class="btn" style="width:100%;margin-top:16px" onclick="closeListDialog()">✖ Stäng</button></div>';
-  var div = document.createElement('div');
-  div.id = 'listDialog';
-  div.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:6000;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)';
-  div.innerHTML = html;
-  div.addEventListener('click', function(e){ if(e.target===div) div.remove(); });
-  document.body.appendChild(div);
-}
-function closeListDialog(){ var d = document.getElementById('listDialog'); if(d) d.remove(); }
-function listDialogRefresh(){ if(document.getElementById('listDialog')) listDialog(); }
-function createListPrompt(){
-  var name = prompt('Namn på nya listan:');
-  if(!name || !name.trim()) return;
-  var g = { id: 'g'+Date.now(), name: name.trim().slice(0,40), items: [] };
-  if(cur) g.items.push({ name: cur.name, url: cur.url, method: cur.method||'hls', proxied: !!cur.proxied });
-  lists.push(g);
-  saveLists();
-  renderTvTabs();
-  listDialogRefresh();
-}
-function toggleInList(i){
-  if(!cur){ alert('Välj en kanal först'); return; }
-  var g = lists[i];
-  if(!g) return;
-  var k = -1;
-  for(var j=0;j<g.items.length;j++){ if(g.items[j].url===cur.url){ k=j; break; } }
-  if(k>-1) g.items.splice(k,1);
-  else g.items.push({ name: cur.name, url: cur.url, method: cur.method||'hls', proxied: !!cur.proxied });
-  saveLists();
-  renderTvTabs();
-  if(document.body.classList.contains('tv-overlay-open')) renderTvOverlay();
-  listDialogRefresh();
-}
-function delList(i){
-  if(!lists[i]) return;
-  if(confirm('Radera listan "'+lists[i].name+'"?')){
-    var key = 'list:'+lists[i].id;
-    lists.splice(i,1);
-    saveLists();
-    if(tvGroup===key) tvGroup='__all__';
-    renderTvTabs();
-    if(document.body.classList.contains('tv-overlay-open')) renderTvOverlay();
-    listDialogRefresh();
-  }
-}
-
-function toggleCurtain(){
-  var topWrapper=document.getElementById('topWrapper');
-  var handle=document.getElementById('curtainHandle');
-  var text=document.getElementById('handleText');
-  var icon=document.getElementById('handleIcon');
-  var clockCorner=document.getElementById('fixedClockCorner'); var weatherCorner=document.getElementById('fixedWeatherCorner');
-  var isClosed=topWrapper.classList.contains('curtain-closed');
-  if(isClosed){
-    topWrapper.classList.remove('curtain-closed');
-    handle.classList.remove('closed');
-    text.textContent='▲ Dölj Quran · Klocka · Datum · Väder';
-    icon.textContent='▲';
-    localStorage.setItem('curtain_closed','false');
-    if(clockCorner) clockCorner.classList.add('hidden-by-curtain'); if(weatherCorner) weatherCorner.classList.add('hidden-by-curtain');
-  } else {
-    topWrapper.classList.add('curtain-closed');
-    handle.classList.add('closed');
-    text.textContent='▼ Visa Quran · Klocka · Datum · Väder';
-    icon.textContent='▼';
-    localStorage.setItem('curtain_closed','true');
-    if(clockCorner) clockCorner.classList.remove('hidden-by-curtain'); if(weatherCorner) weatherCorner.classList.remove('hidden-by-curtain');
-  }
-}
-function initCurtain(){
-  try{
-    var topWrapper=document.getElementById('topWrapper');
-    var handle=document.getElementById('curtainHandle');
-    var text=document.getElementById('handleText');
-    var icon=document.getElementById('handleIcon');
-    var clockCorner=document.getElementById('fixedClockCorner'); var weatherCorner=document.getElementById('fixedWeatherCorner');
-    topWrapper.classList.remove('curtain-closed');
-    handle.classList.remove('closed');
-    text.textContent='▲ Dölj Quran · Klocka · Datum · Väder';
-    icon.textContent='▲';
-    localStorage.setItem('curtain_closed','false');
-    if(clockCorner) clockCorner.classList.add('hidden-by-curtain'); if(weatherCorner) weatherCorner.classList.add('hidden-by-curtain');
-  }catch(e){
-    try{ document.getElementById('topWrapper').classList.remove('curtain-closed'); }catch(e2){}
-  }
-}
-function destroyPlayers(){ if(hlsInst){ try{hlsInst.destroy();}catch(e){} hlsInst=null; } }
-function reload(){ if(cur) play(cur.url,cur.name,cur.method,''); }
-function fs(){ var w=document.getElementById('vwrap'); if(document.fullscreenElement){ document.exitFullscreen(); } else if(w.requestFullscreen){ w.requestFullscreen().catch(function(){}); } }
-function pip(){ var vid=document.getElementById('vplayer'); if(!vid) { alert('PiP funkar endast i Video-läge med HLS kanal'); return; } if(document.pictureInPictureElement){ document.exitPictureInPicture().catch(function(){}); } else if(vid.requestPictureInPicture){ vid.requestPictureInPicture().catch(function(){ alert('PiP stöds ej för denna kanal'); }); } else { alert('PiP stöds ej'); } }
-function toggleJSengine(){ jsEnabled=!jsEnabled; var btn=document.getElementById('jsToggleBtn'); btn.textContent=jsEnabled?'JS PÅ':'JS AV'; btn.classList.toggle('js-toggle-off', !jsEnabled); var tvBtn=document.getElementById('tvJsBtn'); if(tvBtn){ tvBtn.innerHTML=(jsEnabled?'⚡ <span>JS PÅ</span>':'⛔ <span>JS AV</span>')+' <span class="kbd">J</span>'; tvBtn.style.background=jsEnabled?'':'#3a1f24'; tvBtn.style.borderColor=jsEnabled?'':'#a05560'; } if(cur) play(cur.url,cur.name,cur.method,''); }
-function setUA(){ var sel=document.getElementById('ua-select'); currentUA=sel.value; try{ localStorage.setItem('xom_ua',currentUA);}catch(e){} if(cur) play(cur.url,cur.name,cur.method,''); }
-function openCurrentNewTab(){ if(!cur){ alert('Välj kanal först'); return; } window.open(cur.url,'_blank'); }
-function fav(url,name){ var i=-1; for(var j=0;j<favs.length;j++){ if(favs[j].url===url){ i=j; break; } } if(i>-1) favs.splice(i,1); else favs.push({url:url,name:name}); localStorage.setItem('xomfavs',JSON.stringify(favs)); render(curFilter); }
-function toggleList(){ document.getElementById('channel-list').classList.toggle('show'); }
-function setPlayMode(mode){ playMode=mode; localStorage.setItem('xom_playmode',mode); document.getElementById('mode-tv').classList.toggle('active',mode==='tv'); document.getElementById('mode-audio').classList.toggle('active',mode==='audio'); if(cur) play(cur.url,cur.name,cur.method,''); }
-function updateModeSwitcherUI(){ document.getElementById('mode-tv').classList.toggle('active',playMode==='tv'); document.getElementById('mode-audio').classList.toggle('active',playMode==='audio'); }
-
-/* ===== NAV-BUTTONS GÖM/VISA ===== */
-function toggleNav(){
-  var wrapper = document.getElementById('navWrapper');
-  if(!wrapper) return;
-  var isHidden = wrapper.classList.contains('nav-hidden');
-  if(isHidden){
-    wrapper.classList.remove('nav-hidden');
-    try{ localStorage.setItem('nav_hidden','false'); }catch(e){}
-  } else {
-    wrapper.classList.add('nav-hidden');
-    try{ localStorage.setItem('nav_hidden','true'); }catch(e){}
-  }
-}
-function initNavToggle(){
-  try{
-    if(localStorage.getItem('nav_hidden') === 'true'){
-      var wrapper = document.getElementById('navWrapper');
-      if(wrapper){ wrapper.classList.add('nav-hidden'); }
-    }
-  }catch(e){}
-}
-
-/* ============================================================
-   ONLINE / OFFLINE STATUS-KONTROLL
-   ============================================================ */
-var statusCache = {};
-var statusCacheTime = {};
-var STATUS_TTL = 5 * 60 * 1000;
-
-function shouldCheckStatus(ch){
-  if(ch.method === 'external') return false;
-  if(ch.method === 'iframe' && !ch.url.match(/\.m3u8(\?|$)/i)) return false;
-  return true;
-}
-
-function checkStreamStatus(ch, callback){
-  var url = ch.url;
-  if(statusCache[url] && (Date.now() - (statusCacheTime[url]||0) < STATUS_TTL)){
-    callback(statusCache[url]);
-    return;
-  }
-  statusCache[url] = 'checking';
-  callback('checking');
-
-  var done = false;
-  function finish(state){
-    if(done) return; done = true;
-    statusCache[url] = state;
-    statusCacheTime[url] = Date.now();
-    callback(state);
-  }
-
-  var timer = setTimeout(function(){ finish('offline'); }, 6000);
-
-  try{
-    var testUrl = (typeof PROXY_BASE !== 'undefined' && PROXY_BASE)
-      ? PROXY_BASE + '/proxy?url=' + encodeURIComponent(url)
-      : url;
-
-    fetch(testUrl, { method:'HEAD', mode:'cors', cache:'no-store' })
-      .then(function(r){
-        clearTimeout(timer);
-        if(r.ok || r.status === 200 || r.status === 206){ finish('online'); }
-        else {
-          return fetch(testUrl, { method:'GET', headers:{'Range':'bytes=0-100'}, mode:'cors', cache:'no-store' })
-            .then(function(r2){ finish(r2.ok || r2.status===200 || r2.status===206 ? 'online' : 'offline'); })
-            .catch(function(){ tryVideoProbe(url, finish); });
-        }
-      })
-      .catch(function(){ tryVideoProbe(url, finish); });
-  }catch(e){
-    finish('offline');
-  }
-
-  function tryVideoProbe(streamUrl, fin){
-    var v = document.createElement('video');
-    v.muted = true; v.preload = 'metadata';
-    var ok = false;
-    v.addEventListener('loadedmetadata', function(){ ok = true; v.removeAttribute('src'); v.load(); fin('online'); });
-    v.addEventListener('error', function(){ if(!ok) fin('offline'); });
-    setTimeout(function(){ if(!ok){ try{ v.removeAttribute('src'); v.load(); }catch(e){} fin('offline'); } }, 5000);
-    v.src = streamUrl;
-  }
-}
-
-function runStatusChecksForRendered(){
-  var items = document.querySelectorAll('.channel-item');
-  items.forEach(function(el){
-    var url = el.dataset.url;
-    var method = el.dataset.method || 'hls';
-    var dot = el.querySelector('.status-dot');
-    if(!dot) return;
-    if(method === 'external'){
-      dot.style.display = 'none';
-      return;
-    }
-    var ch = { url:url, method:method };
-    checkStreamStatus(ch, function(state){
-      dot.classList.remove('checking','online','offline');
-      dot.classList.add(state);
-      dot.title = state === 'online' ? 'Online' : state === 'offline' ? 'Offline' : 'Kontrollerar...';
-    });
-  });
-}
-
-/* ============ RENDER MED KATEGORI-TOGGLE ============ */
-function render(filter){
-  curFilter=filter; var html='';
-  if(filter==='__favs__'){
-    var allCh=[]; Object.keys(channels).forEach(function(k){ allCh=allCh.concat(channels[k]); });
-    var favList=allCh.filter(function(ch){ return favs.some(function(f){ return f.url===ch.url; }); });
-    if(favList.length===0) html='<div class="category-title">Favoriter</div><div class="error-msg">Inga favoriter</div>';
-    else {
-      var favStored = localStorage.getItem('cat_collapsed___favs__');
-      var favCollapsed = (favStored === null) ? true : (favStored === '1');
-      html='<div class="category-header'+(favCollapsed?' collapsed':'')+'" onclick="toggleCategory(\'__favs__\',this)"><span>⭐ Favoriter ('+favList.length+')</span><span class="cat-toggle">'+(favCollapsed?'+':'−')+'</span></div>';
-      html+='<div class="category-group'+(favCollapsed?' collapsed':'')+'" id="cat-group___favs__">'+favList.map(function(ch){ return row(ch,true); }).join('')+'</div>';
-    }
-  } else if(filter&&channels[filter]){
-    var nice=filter==='heval'?'Heval':filter==='karwan'?'Karwan TV':filter.charAt(0).toUpperCase()+filter.slice(1);
-    var singleStored = localStorage.getItem('cat_collapsed_'+filter);
-    var singleCollapsed = (singleStored === null) ? true : (singleStored === '1');
-    html='<div class="category-header'+(singleCollapsed?' collapsed':'')+'" onclick="toggleCategory(\''+filter+'\',this)"><span>'+nice+' ('+channels[filter].length+')</span><span class="cat-toggle">'+(singleCollapsed?'+':'−')+'</span></div>';
-    html+='<div class="category-group'+(singleCollapsed?' collapsed':'')+'" id="cat-group_'+filter+'">'+channels[filter].map(function(ch){ var hide=(filter==='heval'||filter==='karwan'); return row(ch,hide); }).join('')+'</div>';
-  } else {
-    Object.keys(channels).forEach(function(cat){
-      var nice=cat==='heval'?'Heval':cat==='karwan'?'Karwan TV':cat.charAt(0).toUpperCase()+cat.slice(1);
-      var hide=(cat==='heval'||cat==='karwan');
-      var stored = localStorage.getItem('cat_collapsed_'+cat);
-      var collapsed = (stored === null) ? true : (stored === '1');
-      html+='<div class="category-header'+(collapsed?' collapsed':'')+'" onclick="toggleCategory(\''+cat+'\',this)"><span>'+nice+' ('+channels[cat].length+')</span><span class="cat-toggle">'+(collapsed?'+':'−')+'</span></div>';
-      html+='<div class="category-group'+(collapsed?' collapsed':'')+'" id="cat-group_'+cat+'">'+channels[cat].map(function(ch){ return row(ch,hide); }).join('')+'</div>';
-    });
-  }
-  document.getElementById('ch-container').innerHTML=html;
-  attachChannelEvents();
-  setTimeout(runStatusChecksForRendered, 300);
-}
-
-function toggleCategory(catId, headerEl){
-  var group = document.getElementById('cat-group_'+catId);
-  var toggle = headerEl.querySelector('.cat-toggle');
-  if(!group) return;
-  var isCollapsed = group.classList.contains('collapsed');
-  if(isCollapsed){
-    group.classList.remove('collapsed');
-    headerEl.classList.remove('collapsed');
-    toggle.textContent='−';
-    localStorage.setItem('cat_collapsed_'+catId, '0');
-  } else {
-    group.classList.add('collapsed');
-    headerEl.classList.add('collapsed');
-    toggle.textContent='+';
-    localStorage.setItem('cat_collapsed_'+catId, '1');
-  }
-  setTimeout(runStatusChecksForRendered, 300);
-}
-
-function row(ch,hideSub){
-  var m=ch.method||'hls'; var active=(cur&&cur.url===ch.url)?'active':'';
-  var isFav=favs.some(function(f){ return f.url===ch.url; }); var star=isFav?'★':'☆';
-  var tag=''; if(!hideSub){ if(ch.proxied) tag=' <span style="font-size:0.6rem;opacity:0.9;background:#4ecca333;color:#4ecca3;padding:1px 5px;border-radius:10px;">proxy</span>'; else if(m==='iframe') tag=' <span style="font-size:0.6rem;opacity:0.7;background:#0006;padding:1px 5px;border-radius:10px;">live</span>'; else if(m==='audio') tag=' <span style="font-size:0.6rem;opacity:0.7;background:#0006;padding:1px 5px;border-radius:10px;">radio</span>'; else if(m==='external') tag=' <span style="font-size:0.6rem;opacity:0.7;background:#0006;padding:1px 5px;border-radius:10px;">extern</span>'; }
-
-  var dot = (m === 'external')
-    ? '<span class="status-dot" style="display:none"></span>'
-    : '<span class="status-dot checking" data-status-url="'+escapeHtml(ch.url)+'"></span>';
-
-  return '<div class="channel-item '+ch.color+' '+active+'" data-url="'+escapeHtml(ch.url)+'" data-name="'+escapeHtml(ch.name)+'" data-method="'+m+'" data-proxied="'+(ch.proxied?'1':'0')+'">'+
-    '<span>'+dot+escapeHtml(ch.name)+tag+'</span>'+
-    '<button class="fav-btn '+(isFav?'is-fav':'')+'" onclick="event.stopPropagation();fav(\''+escapeHtml(ch.url)+'\',\''+escapeHtml(ch.name)+'\')">'+star+'</button>'+
-  '</div>';
-}
-function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
-function attachChannelEvents(){
-  var items=document.querySelectorAll('.channel-item');
-  for(var i=0;i<items.length;i++){
-    items[i].addEventListener('click', function(){ play(this.dataset.url,this.dataset.name,this.dataset.method,this.dataset.proxied==='1'); });
-  }
-  setTimeout(runStatusChecksForRendered, 250);
-}
-
-function renderRadioPlayer(url, name){
-  var wrap=document.getElementById('vwrap');
-  wrap.innerHTML=
-    '<div class="radio-player">'+
-      '<div class="radio-icon">📻</div>'+
-      '<div class="radio-name">'+escapeHtml(name)+'</div>'+
-      '<div class="radio-visualizer">'+
-        '<div class="radio-bar"></div><div class="radio-bar"></div><div class="radio-bar"></div>'+
-        '<div class="radio-bar"></div><div class="radio-bar"></div><div class="radio-bar"></div>'+
-        '<div class="radio-bar"></div><div class="radio-bar"></div>'+
-      '</div>'+
-      '<audio id="vplayer" controls autoplay class="radio-audio"><source src="'+escapeHtml(url)+'">Din webbläsare stödjer inte audio.</audio>'+
-      '<div class="radio-status">LIVE · RADIO STREAM · '+escapeHtml(name)+'</div>'+
-      '<div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center"><button class="btn" onclick="setPlayMode(\'tv\')">📺 Video</button><button class="btn newtab" onclick="openCurrentNewTab()">↗ Ny flik</button></div>'+
-    '</div>';
-  var aud=document.getElementById('vwrap').querySelector('audio');
-  if(aud){ aud.volume=1.0; aud.play().catch(function(){}); }
-}
-
-function renderAudioOnlyPlayer(url, name){
-  var wrap=document.getElementById('vwrap');
-  wrap.innerHTML=
-    '<div class="audio-only-player">'+
-      '<div class="audio-only-icon">💿</div>'+
-      '<div class="audio-only-name">'+escapeHtml(name)+'</div>'+
-      '<div class="audio-only-label">LJUD-LÄGE · HLS STREAM</div>'+
-      '<div class="audio-visualizer">'+
-        '<div class="audio-bar"></div><div class="audio-bar"></div><div class="audio-bar"></div>'+
-        '<div class="audio-bar"></div><div class="audio-bar"></div><div class="audio-bar"></div>'+
-        '<div class="audio-bar"></div><div class="audio-bar"></div><div class="audio-bar"></div>'+
-        '<div class="audio-bar"></div>'+
-      '</div>'+
-      '<div class="audio-only-controls">'+
-        '<div class="audio-vol-wrap">🔊 <input type="range" id="audioVolSlider" min="0" max="1" step="0.05" value="1"></div>'+
-        '<div class="audio-info-badge" id="audioStatusBadge">Ansluter...</div>'+
-      '</div>'+
-      '<video id="vplayer" style="display:none;" autoplay></video>'+
-      '<div style="margin-top:14px;display:flex;gap:8px;"><button class="btn primary" onclick="setPlayMode(\'tv\')">📺 Tillbaka till TV</button><button class="btn newtab" onclick="openCurrentNewTab()">↗ Ny flik</button></div>'+
-    '</div>';
-  var vid=document.getElementById('vplayer');
-  var badge=document.getElementById('audioStatusBadge');
-  var volSlider=document.getElementById('audioVolSlider');
-  volSlider.addEventListener('input', function(){ if(vid) vid.volume=parseFloat(volSlider.value); });
-  if(typeof Hls!=='undefined' && Hls.isSupported() && jsEnabled){
-    hlsInst=new Hls({enableWorker:false});
-    hlsInst.loadSource(url);
-    hlsInst.attachMedia(vid);
-    hlsInst.on(Hls.Events.MANIFEST_PARSED, function(){ vid.play().catch(function(){ badge.textContent='Tryck Play i webbläsaren'; }); badge.textContent='LIVE · Spelar'; });
-    hlsInst.on(Hls.Events.ERROR, function(ev,d){ if(d.fatal){ badge.textContent='Fel - försöker igen...'; if(d.type===Hls.ErrorTypes.NETWORK_ERROR) setTimeout(function(){ if(hlsInst) hlsInst.startLoad(); },2000); else if(d.type===Hls.ErrorTypes.MEDIA_ERROR) setTimeout(function(){ if(hlsInst){ hlsInst.recoverMediaError(); hlsInst.startLoad(); vid.play().catch(function(){}); } },1000); else destroyPlayers(); } });
-  } else {
-    vid.src=url; vid.play().catch(function(){ badge.textContent='Kunde inte spela'; }); badge.textContent='LIVE';
-  }
-}
-
-function play(url,name,method,proxied){
-  if(window.innerWidth<=768) document.getElementById('channel-list').classList.remove('show');
-  cur={url:url,name:name,method:method,proxied:!!proxied}; document.getElementById('ch-title').textContent=name; destroyPlayers();
-  var wrap=document.getElementById('vwrap');
-  updateModeSwitcherUI();
-  updateTvInfo();
-
-  var playUrl = proxied ? proxify(url) : url;
-
-  if(playMode==='audio'){
-    if(method==='audio'){
-      renderRadioPlayer(playUrl,name);
-      render(curFilter); return;
-    }
-    if(!method || method==='hls'){
-      renderAudioOnlyPlayer(playUrl,name);
-      render(curFilter); return;
-    }
-    if(method==='iframe' || method==='external'){
-      wrap.innerHTML='<div class="audio-only-player">'+
-        '<div class="audio-only-icon">🎵</div>'+
-        '<div class="audio-only-name">'+escapeHtml(name)+'</div>'+
-        '<div class="audio-only-label">LJUD-LÄGE AKTIVT · '+method.toUpperCase()+'</div>'+
-        '<div class="audio-visualizer"><div class="audio-bar"></div><div class="audio-bar"></div><div class="audio-bar"></div><div class="audio-bar"></div><div class="audio-bar"></div></div>'+
-        '<div style="background:#0f2a1e;border:1px solid #4ecca344;padding:8px 14px;border-radius:20px;font-size:0.75rem;margin-bottom:14px;text-align:center;">Video dold för att spara data<br>Denna kanal är iframe/extern</div>'+
-        '<div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">'+
-          '<button class="btn primary" onclick="setPlayMode(\'tv\')">📺 Byt till Video</button>'+
-          '<button class="btn newtab" onclick="openCurrentNewTab()">↗ Öppna i ny flik</button>'+
-        '</div>'+
-        '<div style="margin-top:12px;opacity:0.5;font-size:0.7rem;">UA: '+(currentUA? 'Custom':'Auto')+' · '+method+'</div></div>';
-      render(curFilter); return;
-    }
-  }
-
-  if(method==='external'){
-    wrap.innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:20px;text-align:center;"><div style="font-size:2.5rem">🔗</div><div style="color:#4ecca3;font-weight:bold;margin:10px 0;">'+escapeHtml(name)+'</div><div style="background:#4ecca333;border:1px solid #4ecca3;padding:8px 14px;border-radius:20px;font-size:0.8rem;color:#4ecca3;">✅ Öppnad i ny flik</div><div style="display:flex;gap:10px;margin-top:14px;"><a href="'+escapeHtml(url)+'" target="_blank" class="btn primary" style="text-decoration:none;padding:10px 20px;display:inline-block;">▶ Öppna igen</a><button class="btn" onclick="setPlayMode(\'audio\')">🎵 Ljud-läge</button></div></div>';
-    window.open(url,'_blank');
-    render(curFilter); return;
-  }
-  if(method==='audio'){
-    renderRadioPlayer(playUrl,name);
-    render(curFilter); return;
-  }
-  if(method==='iframe'){
-    if(url.indexOf('karwan.tv')!==-1){
-      var directCDN = getKarwanDirectCDN(url);
-      if(directCDN){
-        wrap.innerHTML='<div class="extract-box"><div class="spinner"></div><div style="margin-top:14px;color:#4ecca3;font-weight:bold;">'+escapeHtml(name)+'</div><div style="font-size:0.8rem;opacity:0.7;margin-top:6px;">🔍 Hämtar direkt länk via proxy...<br><span style="font-size:0.7rem;opacity:0.6;">'+escapeHtml(directCDN)+'</span></div></div>';
-        (function(cdn, originalUrl, channelName){
-          var vidId = 'vplayer_karwan_'+Date.now();
-          var testWrap = document.createElement('div'); testWrap.style.display='none'; testWrap.innerHTML='<video id="'+vidId+'"></video>'; document.body.appendChild(testWrap);
-          var testVid = document.getElementById(vidId); var played = false;
-          var timeout = setTimeout(function(){
-            if(!played){ if(testWrap.parentNode) testWrap.parentNode.removeChild(testWrap);
-              wrap.innerHTML='<iframe src="'+escapeHtml(originalUrl)+'" allowfullscreen allow="autoplay; fullscreen; picture-in-picture" style="width:100%;height:100%;border:none;background:#000;"></iframe><div style="position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,0.7);color:#ff8a4c;padding:4px 10px;border-radius:12px;font-size:0.7rem;">⚠ Direkt HLS misslyckades • Visar iframe fallback</div>'; render(curFilter);
-            }
-          }, 5000);
-          if(typeof Hls!=='undefined' && Hls.isSupported() && jsEnabled){
-            var tempHls = new Hls({enableWorker:false}); tempHls.loadSource(cdn); tempHls.attachMedia(testVid);
-            tempHls.on(Hls.Events.MANIFEST_PARSED, function(){ played=true; clearTimeout(timeout); if(testWrap.parentNode) testWrap.parentNode.removeChild(testWrap); tempHls.destroy();
-              wrap.innerHTML='<video id="vplayer" controls autoplay playsinline style="width:100%;height:100%;"></video><div style="position:absolute;top:8px;left:8px;background:linear-gradient(135deg,#4ecca3,#2a8a68);color:#000;padding:4px 10px;border-radius:20px;font-size:0.7rem;font-weight:800;">✅ Direkt HLS • '+escapeHtml(channelName)+'</div>';
-              var vid=document.getElementById('vplayer'); destroyPlayers();
-              if(typeof Hls!=='undefined' && Hls.isSupported() && jsEnabled){ hlsInst=new Hls({enableWorker:false}); hlsInst.loadSource(cdn); hlsInst.attachMedia(vid); hlsInst.on(Hls.Events.MANIFEST_PARSED,function(){ vid.play().catch(function(){}); }); }else{ vid.src=cdn; vid.play().catch(function(){}); }
-              render(curFilter);
-            });
-            tempHls.on(Hls.Events.ERROR, function(ev,data){ if(data.fatal){ clearTimeout(timeout); played=true; if(testWrap.parentNode) testWrap.parentNode.removeChild(testWrap); tempHls.destroy(); wrap.innerHTML='<iframe src="'+escapeHtml(originalUrl)+'" allowfullscreen style="width:100%;height:100%;border:none;"></iframe>'; render(curFilter); } });
-          }else{
-            testVid.src=cdn;
-            testVid.addEventListener('loadedmetadata', function(){ played=true; clearTimeout(timeout); if(testWrap.parentNode) testWrap.parentNode.removeChild(testWrap);
-              wrap.innerHTML='<video id="vplayer" controls autoplay playsinline style="width:100%;height:100%;"></video><div style="position:absolute;top:8px;left:8px;background:linear-gradient(135deg,#4ecca3,#2a8a68);color:#000;padding:4px 10px;border-radius:20px;font-size:0.7rem;font-weight:800;">✅ Direkt HLS</div>';
-              var vid=document.getElementById('vplayer'); destroyPlayers(); vid.src=cdn; vid.play().catch(function(){}); render(curFilter);
-            });
-          }
-        })(directCDN, url, name);
-        return;
-      }
-    }
-    wrap.innerHTML='<iframe id="iframePlayer" src="'+escapeHtml(url)+'" allowfullscreen allow="autoplay; fullscreen; picture-in-picture" style="width:100%;height:100%;border:none;"></iframe>';
-    render(curFilter); return;
-  }
-
-  wrap.innerHTML='<video id="vplayer" controls autoplay playsinline style="width:100%;height:100%;"></video>'+
-    (proxied ? '<div style="position:absolute;top:8px;left:8px;background:linear-gradient(135deg,#4ecca3,#2a8a68);color:#000;padding:4px 10px;border-radius:20px;font-size:0.7rem;font-weight:800;">🛰 Proxy aktiv</div>' : '');
-  var vid=document.getElementById('vwrap').querySelector('video');
-  if(!vid) vid=document.getElementById('vplayer');
-  if(typeof Hls!=='undefined' && Hls.isSupported() && jsEnabled){
-    hlsInst=new Hls({
-      enableWorker:false,
-      liveSyncDurationCount:4,
-      maxBufferLength:30,
-      backBufferLength:30,
-      manifestLoadingMaxRetry:6,
-      levelLoadingMaxRetry:6,
-      fragLoadingMaxRetry:8,
-      xhrSetup: function(xhr){
-        if(currentUA) try{ xhr.setRequestHeader('X-Forwarded-User-Agent', currentUA); }catch(e){}
-      }
-    });
-    hlsInst.loadSource(playUrl);
-    hlsInst.attachMedia(vid);
-    hlsInst.on(Hls.Events.MANIFEST_PARSED,function(){ vid.play().catch(function(){}); });
-    hlsInst.on(Hls.Events.ERROR, function(ev,d){
-      if(d.fatal){
-        console.warn('HLS fatal error:', d);
-        if(d.type===Hls.ErrorTypes.NETWORK_ERROR){ setTimeout(function(){ if(hlsInst) hlsInst.startLoad(); },2000); }
-        else if(d.type===Hls.ErrorTypes.MEDIA_ERROR){ setTimeout(function(){ if(hlsInst){ hlsInst.recoverMediaError(); hlsInst.startLoad(); vid.play().catch(function(){}); } },1000); }
-        else { destroyPlayers(); }
-      }
-    });
-    var stallRecoveryAt=0;
-    vid.addEventListener('waiting',function(){ if(!stallRecoveryAt) stallRecoveryAt=Date.now(); });
-    vid.addEventListener('stalled',function(){ if(!stallRecoveryAt) stallRecoveryAt=Date.now(); });
-    vid.addEventListener('playing',function(){ stallRecoveryAt=0; });
-    var stallWatch=setInterval(function(){
-      if(!hlsInst){ clearInterval(stallWatch); return; }
-      if(stallRecoveryAt && Date.now()-stallRecoveryAt>4000){
-        stallRecoveryAt=Date.now();
-        try{ hlsInst.startLoad(); }catch(e){}
-        vid.play().catch(function(){});
-      }
-    },2000);
-  } else {
-    vid.src=playUrl; vid.play().catch(function(){});
-  }
-  render(curFilter);
-}
-function setAllBtnsInactive(){ var btns=document.querySelectorAll('.nav-btn'); for(var i=0;i<btns.length;i++) btns[i].classList.remove('active'); }
-function showAll(btn){ setAllBtnsInactive(); btn.classList.add('active'); render(null); }
-function showFavs(btn){ setAllBtnsInactive(); btn.classList.add('active'); render('__favs__'); }
-function filterDirect(btn,cat){ setAllBtnsInactive(); btn.classList.add('active'); render(cat); }
-function initClock(){
-  var digitalDiv=document.getElementById('digitalClockDisplay'); var canvas=document.getElementById('analogCanvas'); var ctx=canvas.getContext('2d');
-  function drawClock(){
-    var size=300; canvas.width=size; canvas.height=size; var cx=size/2, cy=size/2; var radius=132; ctx.clearRect(0,0,size,size);
-    ctx.beginPath(); ctx.arc(cx,cy,radius+8,0,Math.PI*2); ctx.fillStyle='rgba(0,0,0,0.3)'; ctx.fill();
-    var bgGrad=ctx.createRadialGradient(cx-30,cy-30,10,cx,cy,radius); bgGrad.addColorStop(0,'#1e3a45'); bgGrad.addColorStop(0.5,'#122a32'); bgGrad.addColorStop(1,'#081820');
-    ctx.beginPath(); ctx.arc(cx,cy,radius,0,Math.PI*2); ctx.fillStyle=bgGrad; ctx.fill();
-    ctx.beginPath(); ctx.arc(cx,cy,radius-2,0,Math.PI*2); ctx.strokeStyle='#4ecca3'; ctx.lineWidth=3; ctx.stroke();
-    var now=new Date(); var hours=now.getHours()%12; var minutes=now.getMinutes(); var seconds=now.getSeconds(); var ms=now.getMilliseconds();
-    var smoothSec=seconds+ms/1000; var smoothMin=minutes+smoothSec/60; var smoothHour=hours+smoothMin/60;
-    for(var i=0;i<60;i++){ var angle=(i*6-90)*Math.PI/180; var isHour=i%5===0; var len=isHour?18:7; var w=isHour?3:1; var r1=radius-16-len; var r2=radius-16; var x1=cx+r1*Math.cos(angle); var y1=cy+r1*Math.sin(angle); var x2=cx+r2*Math.cos(angle); var y2=cy+r2*Math.sin(angle); ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.strokeStyle=isHour?'#4ecca3':'rgba(78,204,163,0.35)'; ctx.lineWidth=w; ctx.lineCap='round'; ctx.stroke(); }
-    ctx.fillStyle='#e0ffee'; ctx.font='bold 22px Segoe UI, sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
-    for(var h=1;h<=12;h++){ var ang=(h*30-90)*Math.PI/180; var tx=cx+(radius-42)*Math.cos(ang); var ty=cy+(radius-42)*Math.sin(ang); ctx.shadowColor='#4ecca3'; ctx.shadowBlur=8; ctx.fillText(h.toString(),tx,ty); ctx.shadowBlur=0; }
-    var hourAngle=(smoothHour*30-90)*Math.PI/180; ctx.save(); ctx.translate(cx,cy); ctx.rotate(hourAngle); ctx.beginPath(); ctx.moveTo(-12,0); ctx.lineTo(0,-6); ctx.lineTo(radius*0.52,-1.5); ctx.lineTo(radius*0.52,1.5); ctx.lineTo(0,6); ctx.closePath(); ctx.fillStyle='#e0ffee'; ctx.fill(); ctx.restore();
-    var minAngle=(smoothMin*6-90)*Math.PI/180; ctx.save(); ctx.translate(cx,cy); ctx.rotate(minAngle); ctx.beginPath(); ctx.moveTo(-16,0); ctx.lineTo(0,-4.5); ctx.lineTo(radius*0.72,-1); ctx.lineTo(radius*0.72,1); ctx.lineTo(0,4.5); ctx.closePath(); ctx.fillStyle='#ffffff'; ctx.fill(); ctx.restore();
-    var secAngle=(smoothSec*6-90)*Math.PI/180; ctx.save(); ctx.translate(cx,cy); ctx.rotate(secAngle); ctx.beginPath(); ctx.moveTo(-22,0); ctx.lineTo(-22,-1); ctx.lineTo(radius*0.82,-1); ctx.lineTo(radius*0.82,1); ctx.lineTo(-22,1); ctx.closePath(); ctx.fillStyle='#ff4d6d'; ctx.fill(); ctx.beginPath(); ctx.arc(radius*0.82+6,0,6,0,Math.PI*2); ctx.fillStyle='#ff4d6d'; ctx.fill(); ctx.restore();
-    ctx.beginPath(); ctx.arc(cx,cy,11,0,Math.PI*2); ctx.fillStyle='#4ecca3'; ctx.fill(); ctx.beginPath(); ctx.arc(cx,cy,3,0,Math.PI*2); ctx.fillStyle='#ff4d6d'; ctx.fill();
-    var h2=now.getHours(), m=now.getMinutes(), s=now.getSeconds(); digitalDiv.innerText=(h2<10?'0'+h2:h2)+':'+(m<10?'0'+m:m)+':'+(s<10?'0'+s:s);
-  }
-  drawClock(); setInterval(drawClock,50);
-}
